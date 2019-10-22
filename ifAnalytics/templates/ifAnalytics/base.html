@@ -1,0 +1,138 @@
+{% load static %} <!-- carregamento de arquivos estaticos Django -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<title>Geral - IfAnalytics</title>
+	<link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+	<link rel="stylesheet" href="{% static 'css/Estilos.css' %}">
+	<meta name="description" content="Geral - IfAnalytics">
+	<meta name="keywwords" content="IFRS, Analytics, SIGAA">
+	<meta name="author" content="Crístian Gusberti">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+
+<body>
+	<div id="cabecalho">
+		<img class="imagem" src="{% static 'images/Logo.PNG' %}" height="70" width="50" alt="Logotipo IFRS">
+		<h1>IfAnalytics</h1>
+	</div><br>
+
+
+	<!-- Script para indicação de menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!!-->
+	<script type="text/javascript" src="{% static 'js/MenuAtivo.js' %}"></script> 
+
+
+
+	<nav id="menu_superior">
+		<ul>
+			<li><a href="#" title="Página inicial/login">Home</a></li>
+			<li><a href="#" title="Cursos Integrados">Integrado</a></li>
+			<li><a href="#" title="Cursos Técnicos">Técnico</a></li>
+			<li><a href="#" title="Cursos Superiores">Superior</a></li>
+			<li><a href="#" title="Cursos Pós-Graduação">Pós-Graduação</a></li>
+			<li class="alinhaDireita" ><a href="#" title="Sair do sistema">Sair</a></li>
+		</ul>
+	</nav><br>
+
+
+	<nav id="menu_direita">
+		<div class="preencher"><span class="negrito">Menu</span><img src="{% static 'images/menu_icon.PNG' %}" class="icone_menu_opaco"></div>
+		<ul style="padding-left: 2px">
+			<li><a href="{% url 'geral' %}" title="Informações Gerais">Geral</a><img src="{% static 'images/geral_icon.PNG' %}" class="icone_menu_opaco"></li>
+			<li><a href="{% url 'notas' %}" title="Informações sobre notas">Notas</a><img src="{% static 'images/notas_icon.PNG' %}" class="icone_menu"></li>
+			<li><a href="{% url 'frequencias' %}" title="Informaç~eos sobre frequência">Frequência</a><img src="{% static 'images/frequencia_icon.PNG' %}" class="icone_menu"></li>
+			<li><a href="{% url 'suporte' %}" title="Suporte do sistema">Suporte</a><img src="{% static 'images/suporte_icon.PNG' %}" class="icone_menu_opaco"></li>
+		</ul>
+	</nav>
+
+
+	<div id="filtros">
+		<form id="filtros_selecao" method="GET" data-urlform = "{ url 'ifAnalytics:campus_choices_ajax'%}">
+			<select id="campus" name="campus" class="combobox">
+				<option value="" hidden disabled selected>Campus</option>
+				<option value="Campus1">Campus1</option>
+				<option value="Campus2">Campus2</option>
+				<option value="Campus3">Campus3</option>
+				<option value="Campus4">Campus4</option>
+				<option value="...">...</option>
+			</select><br><br>
+
+			<select id="curso" name="curso" class="combobox">
+				<option value="" hidden disabled selected>Curso</option>
+				<option value="Curso1">Curso1</option>
+				<option value="Curso2">Curso2</option>
+				<option value="Curso3">Curso3</option>
+				<option value="Curso4">Curso4</option>
+				<option value="...">...</option>
+			</select>
+
+			<select id="periodo" name="periodo" class="combobox">
+				<option value="20192" selected>2019/2</option>
+				<option value="20191">2019/1</option>
+				<option value="20182">2018/2</option>
+				<option value="20181">2018/1</option>
+				<option value="...">...</option>
+			</select><br><br>
+
+			<select id="turma" name="turma" class="combobox">
+				<option value="" hidden disabled selected>Turma</option>
+				<option value="Turma1">Turma1</option>
+				<option value="Turma2">Turma2</option>
+				<option value="Turma3">Turma3</option>
+				<option value="Turma4">Turma4</option>
+				<option value="...">...</option>
+			</select><br><br>
+
+			<select id="aluno" name="aluno" class="combobox">
+				<option value="" hidden disabled selected>Aluno</option>
+				<option value="Aluno1">Aluno1</option>
+				<option value="Aluno2">Aluno2</option>
+				<option value="Aluno3">Aluno3</option>
+				<option value="Aluno4">Aluno4</option>
+				<option value="...">...</option>
+			</select><br>
+		</form>
+	</div>
+
+	<!-- Área de Plotagem dos gráficos específica de cada página-->
+	{% block content %}
+	{% endblock %}
+	<!-- Fim da Área de plotagem -->
+
+	<div id="rodape"><br>
+		<b>Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul - IFRS</b>
+		<address>Rua General Osório, 348 | Bairro Centro | CEP: 95700-086 | Bento Gonçalves/RS</address>
+		<span><a href="mailto:dti@ifrs.edu.br">dti@ifrs.edu.br</a> | (54) 3449-3328 - <a href="https://www.ifrs.edu.br" target="_blank">www.ifrs.edu.br</a> </span>
+	</div>
+
+
+
+
+
+{% block js %}
+
+<script>
+$('#campus').change(function() {
+      //let urlForm = $('#filtros_selecao').data('urlform');
+      let campusId = $(this).val();
+      console.log(campusId);
+      
+
+      // $.ajax({
+      //   url: urlCities,
+      //   data: {
+      //     uf: ufIdCity
+      //   },
+      //   success: function(response) {
+      //     $('#citySelect').html(response);
+      //     $('#districtSelect').html('<option value="">---------------------</option>');
+      //   }
+      // })
+    });
+</script>
+{% endblock js %}
+
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+// Tentar isolar a criação dos graficos em JS aqui, em arquivos JS.

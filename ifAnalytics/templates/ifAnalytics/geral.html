@@ -1,0 +1,40 @@
+{% extends 'ifAnalytics/base.html' %}
+
+
+{% block content %}
+<div id="dashboards">
+
+	<!-- Scripts para criação do gráfico -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawChart);
+
+       // Populando o gráfico com dados
+       function drawChart() {
+
+       	var data = google.visualization.arrayToDataTable([
+       		['Forma de ingresso', 'Alunos'],
+       		['Acesso universal',     11],
+       		['Indígena',      2],
+       		['Baixa Renda',  2],
+       		['Preto/Pardo', 3],
+       		['PCD',    7]
+       		]);
+
+       	var options = {
+       		title: 'Forma de Ingresso',
+       		backgroundColor: '#E1F0DB',
+       	};
+
+       	var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+       	chart.draw(data, options);
+       }
+	</script>
+
+	<!-- Plotagem do gráfico -->
+	<div id="piechart" style="width: 400px; height: 300px;"></div>
+
+</div>
+{% endblock %}

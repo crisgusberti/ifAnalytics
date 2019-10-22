@@ -1,0 +1,215 @@
+/*====Estrutura Geral====*/
+html{
+/*	height: 100%;*/
+}
+body{
+background-color: #ECFDF0;
+}
+h1{
+	text-align:left;
+	color: #B9DCBB;
+	font-family: helvetica;
+}
+
+/*====Menu Superior====*/
+nav#menu_superior ul{
+	background-color: #E1F0DB;
+	list-style: none;
+	margin: 0;
+	border-bottom: 0.5px solid  #999999;
+	border-top: 0.5px solid  #999999;
+}
+nav#menu_superior li{
+	display: inline-block;
+	color: #999999;
+	font-family: helvetica;
+	padding: 10px;
+}
+nav#menu_superior li:hover{
+	background-color: #606060;
+}
+nav#menu_superior a{
+	color: grey;
+	text-decoration: none;
+}
+nav#menu_superior a:hover{
+	color: white;
+}
+.alinhaDireita{
+	float: right;
+}
+
+/*====Menu Direita====*/
+nav#menu_direita {
+	background-color: #E1F0DB;
+	border: 0.5px solid #999999;
+	border-top-right-radius: 5px;
+	font-family: helvetica;
+	width:180px;
+	float: left;
+	margin-top: 10px;
+	height: 100vh;
+}
+nav#menu_direta ul{
+	/*padding-left: -0px;*/
+}
+nav#menu_direita li{
+	color: #999999;
+	list-style: none;
+	padding: 3px;
+}
+nav#menu_direita li:hover{
+	background-color: #606060;
+}
+nav#menu_direita a{
+	color: grey;
+	text-decoration: none;
+	line-height: 1.5;
+}
+nav#menu_direita a:hover{
+	color: white;
+}
+.active{								/*classe usada para estilizar menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!*/
+	color: grey;
+	text-decoration: none;
+	/*background-color: #DBD8D8;*/
+	/*cursor: default;*/
+	background-color: #606060;
+}
+.preencher{
+	background-color: #B9DCBB;
+	border: 0.5px solid #999999;
+	border-top-right-radius: 5px;
+	padding: 3px;
+	opacity: 0.75;
+}
+.icone_menu{
+	float: right;
+	max-width:20px;
+    max-height:30px;
+    width: auto;
+    height: auto;
+    opacity: 0.5;
+}
+.icone_menu_opaco{
+	float: right;
+	max-width:20px;
+    max-height:30px;
+    width: auto;
+    height: auto;
+	opacity: 150;
+}
+.negrito{
+	font-weight:bold;
+}
+
+/*====Div dos filtros====*/
+div#filtros{
+	margin-left:200px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color:Black;
+	font-family: helvetica;
+	background-color: #ECFCF1;
+}
+.combobox {
+	padding: 3px;
+	font-size: 14px;
+	border-width: 1px;
+	border-color: #999999;
+	background-color: #B9DCBB;
+	color: grey;
+	border-style: solid;
+	border-radius: 7px;
+	width:99%;
+	opacity: 0.75;
+	text-align-last: center;
+}
+select#curso{
+	width: 79%;
+}
+select#periodo{
+	width: 20%;
+}
+.combobox:focus {
+	outline:none;
+}
+
+/*====Div Dashboards====*/
+div#dashboards {
+	/*border:1px solid black; */
+	margin-left: 200px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color:Black;
+	font-family: helvetica;
+	background-color: #ECFCF1;
+	padding: 10px 10px 10px 10px;
+/*	height: 100vh;*/
+}
+
+/*====Logo IFRS====*/
+.imagem{
+	float: right;
+}
+
+/*====Rodapé====*/
+#rodape{
+	clear:both;
+	text-align:left;
+	font-family: helvetica;
+	font-size: small;
+	color: grey;
+}
+
+
+
+/*.imagemCenter {
+	margin-top: 5px;
+	float:none;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top: 0px;
+}*/
+
+/*form#formulario, #formularioProfessor{
+	width: 300px;
+	margin: 0 auto;
+}*/
+/*.btn-enviar {
+	border-top: 1px solid #96d1f8;
+	background: #65a9d7;
+	border-radius: 8px;
+	color: white;
+	font-family: Georgia, serif;
+	vertical-align: middle;
+}*/
+/*.btn-enviar:hover {
+	border-top-color: #28597a;
+	background: #28597a;
+	color: #ccc;
+}
+.btn-enviar:active {
+	border-top-color: #1b435e;
+	background: #1b435e;
+}*/
+/*option{
+	font-family: helvetica; 
+	text-align: center;
+}*/
+
+/*h2{
+	text-align:center;
+	font-family:verdana;
+	font-size:18px;
+}
+h3{
+	font-style: italic;
+	text-align:center;
+	font-family:verdana;
+	font-size:16px;
+	color: Maroon;
+}*/
+
+
