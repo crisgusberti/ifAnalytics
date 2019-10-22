@@ -15,7 +15,7 @@ AND id_unidade IN
   SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(31)
 )
 
--- consulta para os períodos de turmas do técnico
+-- consulta para os períodos de turmas do graduação
 
 SELECT DISTINCT ano, periodo, (ano || '/' || periodo) AS periodo_formatado 
 FROM ensino.turma t 
@@ -24,7 +24,7 @@ WHERE cc.id_unidade IN
 (
 	SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(52)	
 )
-and cc.nivel = 'T'
+and cc.nivel = 'G'
 order by ano desc, periodo desc
 
 -- consulta para as turmas do campus

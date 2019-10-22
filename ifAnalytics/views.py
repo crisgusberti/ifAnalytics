@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db import connection
+from collections import namedtuple
 
 def geral(request):
 	return render(request, 'ifAnalytics/geral.html')
@@ -13,26 +14,46 @@ def frequencias(request):
 def suporte(request):
 	return render(request, 'ifAnalytics/suporte.html')
 
-# def campus_choices_ajax (request):
-# 	campus = request.GET.get('campus')
-#     cursos = City.objects.filter(campus=campus)  #fazer a consulta dos cursos daquele campus
-#
-#	  cursos = consulta_cursos(campus) #mais ou menos assim?
-#
-#     context = {'cursos': cursos}
-#     return render(request, 'includes/_cities_choices.html', context) #inclui oque está no context dentro dos campus do select de curso
+def namedtuplefetchall(cursor):
+    #"Return all rows from a cursor as a namedtuple"
+    desc = cursor.description
+    nt_result = namedtuple('Result', [col[0] for col in desc])
+    return [nt_result(*row) for row in cursor.fetchall()]
 
-
-# Mais ou menos assim lá no select do curso no HTML:
-# # {% for city in cities %}
-#   <option value="{{ city.pk }}">{{ city.name }}</option>
-# {% endfor %}
-
-
-def consulta_cursos(self):
+def consulta_campus(request):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT curso_nome FROM cursos WHERE campus = %s", [self.campus])
-        rows = cursor.fetchall()
-    return rows
+        cursor.execute("SELECT id_unidade, nome FROM comum.unidade WHERE unidade_responsavel = id_unidade AND id_unidade NOT IN (2, 605, 723) ORDER BY nome")
+        rows = namedtuplefetchall(cursor);
+        context = {'campus': rows}
+    return render(request, 'ifAnalytics/consulta_campus.html', context)
 
-# esse link é referencia importante: https://docs.djangoproject.com/pt-br/2.2/topics/db/sql/#executing-custom-sql-directly
+def consulta_cursos(request):
+    campus_id = request.GET.get('campus_id')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id_curso, nome FROM curso WHERE ativo IS TRUE AND id_unidade IN( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s))", [campus_id])
+        rows = namedtuplefetchall(cursor);
+        context = {'cursos': rows}
+    return render(request, 'ifAnalytics/consulta_cursos.html', context)
+
+def consulta_periodos(request):
+    campus_id = request.GET.get('campus_id')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT DISTINCT ano, periodo, (ano || '/' || periodo) AS periodo_formatado FROM ensino.turma t INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina WHERE cc.id_unidade IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND cc.nivel = 'G' ORDER BY ano DESC, periodo DESC", [campus_id])
+        rows = namedtuplefetchall(cursor);
+        context = {'periodos': rows}
+    return render(request, 'ifAnalytics/consulta_periodos.html', context)
+
+def consulta_turmas(request):
+    campus_id = request.GET.get('campus_id')
+    ano_turma = request.GET.get('ano_turma')
+    semestre_turma = request.GET.get('semestre_turma')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT ano, periodo, t.id_turma, t.codigo AS codigo_turma, cc.codigo AS codigo_disciplina, ccd.nome FROM ensino.turma t INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = cc.id_detalhe WHERE cc.id_unidade IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND cc.nivel = 'G' AND ano = %s AND periodo = %s", [campus_id, ano_turma, semestre_turma])
+        rows = namedtuplefetchall(cursor);
+        context = {'turmas': rows}
+    return render(request, 'ifAnalytics/consulta_turmas.html', context)
+
+
+
+
+

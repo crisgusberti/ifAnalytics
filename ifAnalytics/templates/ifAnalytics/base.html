@@ -48,40 +48,23 @@
 
 
 	<div id="filtros">
-		<form id="filtros_selecao" method="GET" data-urlform = "{ url 'ifAnalytics:campus_choices_ajax'%}">
+		<form id="filtros_selecao" method="GET">
 			<select id="campus" name="campus" class="combobox">
-				<option value="" hidden disabled selected>Campus</option>
-				<option value="Campus1">Campus1</option>
-				<option value="Campus2">Campus2</option>
-				<option value="Campus3">Campus3</option>
-				<option value="Campus4">Campus4</option>
-				<option value="...">...</option>
+				<!-- <option value="">SELECIONE</option> -->
 			</select><br><br>
 
+			
 			<select id="curso" name="curso" class="combobox">
-				<option value="" hidden disabled selected>Curso</option>
-				<option value="Curso1">Curso1</option>
-				<option value="Curso2">Curso2</option>
-				<option value="Curso3">Curso3</option>
-				<option value="Curso4">Curso4</option>
-				<option value="...">...</option>
+				<option value="">Curso</option>
 			</select>
 
+
 			<select id="periodo" name="periodo" class="combobox">
-				<option value="20192" selected>2019/2</option>
-				<option value="20191">2019/1</option>
-				<option value="20182">2018/2</option>
-				<option value="20181">2018/1</option>
-				<option value="...">...</option>
+				<option value="">Periodo</option>
 			</select><br><br>
 
 			<select id="turma" name="turma" class="combobox">
-				<option value="" hidden disabled selected>Turma</option>
-				<option value="Turma1">Turma1</option>
-				<option value="Turma2">Turma2</option>
-				<option value="Turma3">Turma3</option>
-				<option value="Turma4">Turma4</option>
-				<option value="...">...</option>
+				<option value="">Turma</option>
 			</select><br><br>
 
 			<select id="aluno" name="aluno" class="combobox">
@@ -108,31 +91,85 @@
 
 
 
-
-
 {% block js %}
-
 <script>
-$('#campus').change(function() {
-      //let urlForm = $('#filtros_selecao').data('urlform');
-      let campusId = $(this).val();
-      console.log(campusId);
-      
+//Consulta Campus
+$( document ).ready(function() {
+ 	$.ajax({
+        url: '/consulta_campus/',
+        success: function(response) {
+           $('#campus').html(response);
+        }
+      })
+    }
+ );
 
-      // $.ajax({
-      //   url: urlCities,
-      //   data: {
-      //     uf: ufIdCity
-      //   },
-      //   success: function(response) {
-      //     $('#citySelect').html(response);
-      //     $('#districtSelect').html('<option value="">---------------------</option>');
-      //   }
-      // })
-    });
+//Consulta Cursos 
+$('#campus').change(function() {
+	let campusId = $(this).val();
+   
+   	$.ajax({
+        url: '/consulta_cursos/',
+        data: {
+          'campus_id' : campusId
+        },
+        success: function(response) {
+          $('#curso').html(response);
+          											//incluir aqui chamada para função habilita_grafico_tal          
+        }
+      })
+  	
+//Consulta períodos junto com cursos
+	$.ajax({
+        url: '/consulta_periodos/',
+        data: {
+          'campus_id' : campusId
+        },
+        success: function(response) {
+          $('#periodo').html(response);
+        }
+      })
+
+  });
+
+//Consulta turmas
+$('#periodo').change(function() {
+	let campusId = $("#campus").val();   
+	let periodo = $(this).val();
+	let arrayString = periodo.split("/");
+	console.log(periodo);
+	let ano = arrayString[0];
+	console.log(ano);
+	
+
+	let semestre = arrayString[1];
+	console.log(semestre);
+
+	$.ajax({
+        url: '/consulta_turmas/',
+        data: {
+          'campus_id' : campusId,
+          'ano_turma' : ano,
+          'semestre_turma' : semestre
+        },
+        success: function(response) {
+          $('#turma').html(response);
+          // $('#proximoID').html('<option value="">---------------------</option>'); maneira de deixar o proximo não selecionado
+        }
+      })
+   
+    }
+    );
+
+//Função para habilitar ou desabilitar graficos de acordo com seu preenchimento.
+function habilita_graficos_curso(){
+	$("#grafico_periodo_ingresso").show();	
+	$("#grafico_periodo_ingresso").hide();
+
+}	
+
 </script>
 {% endblock js %}
-
 
 </body>
 </html>
