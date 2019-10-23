@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.db import connection
 from collections import namedtuple
 
+
+#Renderiza as paginas HTML para acesso pelos links do menu da direita
 def geral(request):
 	return render(request, 'ifAnalytics/geral.html')
 
@@ -14,23 +16,26 @@ def frequencias(request):
 def suporte(request):
 	return render(request, 'ifAnalytics/suporte.html')
 
+# A função namedtuplefetchall é da documentação do Django e serve
+# para consultas cruas SQL, mas retona elas em um array de tuplas (nome: valor)
 def namedtuplefetchall(cursor):
-    #"Return all rows from a cursor as a namedtuple"
     desc = cursor.description
     nt_result = namedtuple('Result', [col[0] for col in desc])
     return [nt_result(*row) for row in cursor.fetchall()]
 
+# As funções consulta_campus, consulta_cursos, consulta_periodos e consulta_turmas servem para 
+# montagem dos combobox que filtram os dados dos gráficos
 def consulta_campus(request):
-    with connection.cursor() as cursor:
+    with connection.cursor() as cursor: # o metodo cursos() do Django serve para fazer consultas SQL cruas
         cursor.execute("SELECT id_unidade, nome FROM comum.unidade WHERE unidade_responsavel = id_unidade AND id_unidade NOT IN (2, 605, 723) ORDER BY nome")
-        rows = namedtuplefetchall(cursor);
-        context = {'campus': rows}
-    return render(request, 'ifAnalytics/consulta_campus.html', context)
+        rows = namedtuplefetchall(cursor); # retorma o resultado da consulta SQL em tuplas nomeadas
+        context = {'campus': rows} # armazena em conxtext o resultado das consultas em um array "campus"
+    return render(request, 'ifAnalytics/consulta_campus.html', context) # carrega no arquivo html o conteúdo de context
 
 def consulta_cursos(request):
-    campus_id = request.GET.get('campus_id')
+    campus_id = request.GET.get('campus_id') # aqui eu pego o campus_ID que vem da base.html na função Jquery/ajax que chama a URL "consulta_cursos" 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT id_curso, nome FROM curso WHERE ativo IS TRUE AND id_unidade IN( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s))", [campus_id])
+        cursor.execute("SELECT id_curso, nome FROM curso WHERE ativo IS TRUE AND id_unidade IN( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s))", [campus_id]) # o campus_id pego na variavel acima serve de parametro para a consulta SQL e é substituído em "%s"
         rows = namedtuplefetchall(cursor);
         context = {'cursos': rows}
     return render(request, 'ifAnalytics/consulta_cursos.html', context)
@@ -44,7 +49,7 @@ def consulta_periodos(request):
     return render(request, 'ifAnalytics/consulta_periodos.html', context)
 
 def consulta_turmas(request):
-    campus_id = request.GET.get('campus_id')
+    campus_id = request.GET.get('campus_id') #pegando as variáveis passads por ajax da base.html no jquery de consulta_turmas
     ano_turma = request.GET.get('ano_turma')
     semestre_turma = request.GET.get('semestre_turma')
     with connection.cursor() as cursor:

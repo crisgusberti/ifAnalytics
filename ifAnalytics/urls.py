@@ -1,13 +1,16 @@
 from django.urls import path
-from ifAnalytics.views import geral, notas, frequencias, suporte, consulta_campus, consulta_cursos, consulta_periodos, consulta_turmas
-# from ifAnalytics.views import notas
-# from ifAnalytics.views import frequencias
-# from ifAnalytics.views import suporte
-# from ifAnalytics.views import consulta_cursos
-# from ifAnalytics.views import consulta_campus
-# from ifAnalytics.views import consulta_periodos
+from ifAnalytics.views import geral
+from ifAnalytics.views import notas
+from ifAnalytics.views import frequencias
+from ifAnalytics.views import suporte
+from ifAnalytics.views import consulta_cursos
+from ifAnalytics.views import consulta_campus
+from ifAnalytics.views import consulta_periodos
+from ifAnalytics.views import consulta_turmas
 
 urlpatterns = [
+	# Cada uma das views definidas deve ser registrada aqui (lembrar de importar acima)
+	# Na ordem: 'ENDEREÇO', 'FUNÇÃO(nome da view)', 'NAME=(opcional. Variável que referencia a view') 
 	path('geral/', geral, name='geral'),
 	path('notas/', notas, name='notas'),
 	path('frequencias/', frequencias, name='frequencias'),

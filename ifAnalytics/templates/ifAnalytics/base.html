@@ -49,15 +49,13 @@
 
 	<div id="filtros">
 		<form id="filtros_selecao" method="GET">
-			<select id="campus" name="campus" class="combobox">
+			<select id="campus" name="campus" class="combobox"> <!-- select populado pelo ajax abaixo -->
 				<!-- <option value="">SELECIONE</option> -->
 			</select><br><br>
-
 			
 			<select id="curso" name="curso" class="combobox">
 				<option value="">Curso</option>
 			</select>
-
 
 			<select id="periodo" name="periodo" class="combobox">
 				<option value="">Periodo</option>
@@ -67,14 +65,14 @@
 				<option value="">Turma</option>
 			</select><br><br>
 
-			<select id="aluno" name="aluno" class="combobox">
+			<!-- <select id="aluno" name="aluno" class="combobox"> COMBO DOS ALUNOS NÃO TEM NA PÁGINA GERAL
 				<option value="" hidden disabled selected>Aluno</option>
 				<option value="Aluno1">Aluno1</option>
 				<option value="Aluno2">Aluno2</option>
 				<option value="Aluno3">Aluno3</option>
 				<option value="Aluno4">Aluno4</option>
 				<option value="...">...</option>
-			</select><br>
+			</select><br> -->
 		</form>
 	</div>
 
@@ -93,18 +91,18 @@
 
 {% block js %}
 <script>
-//Consulta Campus
-$( document ).ready(function() {
+//popula selec Campus
+$( document ).ready(function() { //isso faz com que ao ser carregad a página execute o ajax abaixo
  	$.ajax({
-        url: '/consulta_campus/',
-        success: function(response) {
-           $('#campus').html(response);
+        url: '/consulta_campus/', //chama a view "consulta_campus"
+        success: function(response) { 
+           $('#campus').html(response); //em caso de sucesso a resposta daquela view é carregado dentro do id "campus" desse arquivo HTML
         }
       })
     }
  );
 
-//Consulta Cursos 
+//popula select Cursos 
 $('#campus').change(function() {
 	let campusId = $(this).val();
    
@@ -119,7 +117,7 @@ $('#campus').change(function() {
         }
       })
   	
-//Consulta períodos junto com cursos
+//popula select períodos junto com cursos
 	$.ajax({
         url: '/consulta_periodos/',
         data: {
@@ -132,22 +130,17 @@ $('#campus').change(function() {
 
   });
 
-//Consulta turmas
+//popula select turmas
 $('#periodo').change(function() {
 	let campusId = $("#campus").val();   
 	let periodo = $(this).val();
 	let arrayString = periodo.split("/");
-	console.log(periodo);
 	let ano = arrayString[0];
-	console.log(ano);
-	
-
 	let semestre = arrayString[1];
-	console.log(semestre);
 
 	$.ajax({
         url: '/consulta_turmas/',
-        data: {
+        data: { //passando por ajax para a view "consulta_turmas", as variáveis definidas acima
           'campus_id' : campusId,
           'ano_turma' : ano,
           'semestre_turma' : semestre
