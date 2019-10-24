@@ -11,6 +11,7 @@
 <script>
        {% block jquery %}
               var endpoint = '/get_data/'
+              var data_from_view2;
               // var defaultData = []
               // var labels = [];
               $.ajax({
@@ -21,6 +22,8 @@
                       // labels = data.labels
                       // defaultData = data.default
                       // drawChart()
+                      // drawChart(data_from_view)
+                      data_from_view2 = data_from_view
                   },
                   error: function(error_data){
                       console.log("error")
@@ -33,10 +36,13 @@
 
 
               google.charts.load('current', {'packages':['corechart']});
-              google.charts.setOnLoadCallback(drawChart);
+              google.charts.setOnLoadCallback(function() { drawChart(data_from_view2);});
 
               // Populando o gráfico com dados
-              function drawChart() {
+              function drawChart(data_from_view2) {
+                     console.log("de dentro da funçao")
+                     console.log(data_from_view2[0][1])
+              // function drawChart(data_from_view) {
 
                      //var dadosGrafico = google.visualization.arrayToDataTable(data);
                      //var dadosGrafico = google.visualization.arrayToDataTable([data_from_view]);
@@ -44,14 +50,52 @@
 
 
 
-                     var data = google.visualization.arrayToDataTable([
-                            ['Forma de ingresso', 'Alunos'],
-                            ['Acesso universal',     11],
-                            ['Indígena',      2],
-                            ['Baixa Renda',  2],
-                            ['Preto/Pardo', 3],
-                            ['PCD',    7]
-                            ]);
+                     // var data = google.visualization.arrayToDataTable([
+                     //        ['Forma de ingresso', 'Alunos'],
+
+                     //        [data_from_view2[0][0], data_from_view2[0][1]],
+                     //        ['Indígena',      2],
+                     //        ['Baixa Renda',  2],
+                     //        ['Preto/Pardo', 3],
+                     //        ['PCD',    7]
+                     //        ]);
+
+data = new google.visualization.DataTable();
+        data.addColumn('string', 'Forma de Ingresso');
+        data.addColumn('number', 'Alunos');
+//         for (linhas in data_from_view2) {
+//  data.addRows(data_from_view2);             acho q esse for tbm funciona
+// }
+
+
+for (var i = 0; i < data_from_view2.length; i++) {
+   data.addRows([data_from_view2[i]]);
+   
+}
+
+       //isso aqui em baixo funciona mas nao é automatizado
+        //data.addRows([data_from_view2[0], data_from_view2[1]]);
+
+
+
+
+                     // var data = google.visualization.arrayToDataTable([
+                     //            ['Forma de ingresso', 'alunos'],
+                     //            [data_from_view.descricao, data_from_view.alunos],
+                     //            // ['2º Bimestre', resp.Meta2],
+                     //            // ['3º Bimestre', resp.Meta3],
+                     //            // ['4º Bimestre', resp.Meta4],
+                     //            // ['5º Bimestre', resp.Meta5],
+                     //            // ['6º Bimestre', resp.Meta6]
+                     //          ]);
+
+
+
+
+
+
+
+
 
                      var options = {
                             title: 'Forma de Ingresso',
