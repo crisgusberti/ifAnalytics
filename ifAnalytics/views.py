@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.db import connection
 from collections import namedtuple
+from django.http import JsonResponse
 
 
 #Renderiza as paginas HTML para acesso pelos links do menu da direita
@@ -59,6 +60,17 @@ def consulta_turmas(request):
     return render(request, 'ifAnalytics/consulta_turmas.html', context)
 
 
-
-
+###################
+def get_data(request):
+    
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT mi.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) AND d.nivel NOT IN ('E', 'L') GROUP BY mi.id_modalidade_ingresso ORDER BY mi.descricao")
+        rows = cursor.fetchall();
+        
+    # data = {
+    #     "sales": 100,
+    #     "customers": 10,
+    # }
+    return JsonResponse(rows, safe=False)
+    #return JsonResponse(data)
 

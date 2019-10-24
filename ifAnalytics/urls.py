@@ -7,6 +7,7 @@ from ifAnalytics.views import consulta_cursos
 from ifAnalytics.views import consulta_campus
 from ifAnalytics.views import consulta_periodos
 from ifAnalytics.views import consulta_turmas
+from ifAnalytics.views import get_data
 
 urlpatterns = [
 	# Cada uma das views definidas deve ser registrada aqui (lembrar de importar acima)
@@ -19,5 +20,6 @@ urlpatterns = [
 	path('consulta_campus/', consulta_campus, name='consulta_campus'),
 	path('consulta_periodos/', consulta_periodos, name='consulta_periodos'),
 	path('consulta_turmas/', consulta_turmas, name='consulta_turmas'),
+	path('get_data/', get_data, name='get_data'),
 ]
     
