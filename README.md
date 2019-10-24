@@ -19,6 +19,7 @@ Preparação do ambiente:
 -->
 - em seguinda iniciar o servidor da aplicação com o comando "python manage.py runserver"
 - acessar a aplicação pelo endereço "http://127.0.0.1:8000/geral/"
+- OBS: o arquivo "settings.py" não é dispoibilizado no projeto
 
 
 
