@@ -68,7 +68,7 @@ def get_data_forma_ingresso(request):
 
 def get_data_status_discente(request):
     with connection.cursor() as cursor:
-        #cursor.execute("SELECT mi.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) AND d.nivel NOT IN ('E', 'L') GROUP BY mi.id_modalidade_ingresso ORDER BY mi.descricao")
+        cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.nivel IN ('G') GROUP BY sd.status ORDER BY sd.descricao")
         rows = cursor.fetchall();
     return JsonResponse(rows, safe=False)
 
