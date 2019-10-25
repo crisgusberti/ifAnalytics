@@ -2,21 +2,28 @@
 
 {% block content %}
 <script> //GRÁFICO FORMA DE INGRESSO
-       {% block jquery %}
               //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
-              $.ajax({
-                  method: "GET",
-                  url: '/get_data_forma_ingresso/',
-                  success: function(data_from_view){
-                    data_forma_ingresso = data_from_view
-                    console.log(data_forma_ingresso)
-                  },
-                  error: function(error_data){
-                     console.log("error")
-                     console.log(error_data)
-                  }
-              })
-
+              // $( document ).ready(function() {     
+                     var data_forma_ingresso;
+                     var campusId = $("#campus").val();
+                     // alert(campusId); 
+                     $.ajax({
+                         method: "GET",
+                         url: '/get_data_forma_ingresso/',
+                         data: {
+                              // 'campus_id' : 31
+                              'campus_id' : campusId
+                         },
+                         success: function(data_from_view){
+                           data_forma_ingresso = data_from_view
+                         },
+                         error: function(error_data){
+                            console.log("error")
+                            console.log(error_data)
+                         }
+                     })
+                 // })     
+                            
               google.charts.setOnLoadCallback(function() {drawChart_forma_ingresso(data_forma_ingresso);});
 
               // Populando o gráfico com dados
@@ -42,19 +49,16 @@
 
                      chart.draw(data, options);
               }
-
-       {% endblock %}
 </script>
 
 <script> //GRÁFICO STATUS DISCENTE
-       {% block status_discente %}
               //pegando os dados da view "get_data_status_discente" para popular o gráfico
+              var data_status_discente;
               $.ajax({
                   method: "GET",
                   url: '/get_data_status_discente/',
                   success: function(data_from_view){
                      data_status_discente = data_from_view
-                     console.log(data_status_discente)
                   },
                   error: function(error_data){
                      console.log("error")
@@ -87,8 +91,6 @@
 
                      chart.draw(data, options);
               }
-
-       {% endblock %}
 </script>
 
 

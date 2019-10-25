@@ -54,6 +54,9 @@ WHERE d.nivel IN ('G')
 GROUP BY sd.status
 ORDER BY sd.descricao
 
+
+-- considera
+
 -- Dados detalhados
 SELECT sd.descricao, d.nivel, d.matricula, p.nome AS nome_pessoa, c.id_curso, c.nome 
 FROM discente d 

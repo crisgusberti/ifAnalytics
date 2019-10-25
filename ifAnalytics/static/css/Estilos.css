@@ -70,11 +70,13 @@ nav#menu_direita a:hover{
 	color: white;
 }
 .active{								/*classe usada para estilizar menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!*/
-	color: grey;
+	color: white !important;
 	text-decoration: none;
-	/*background-color: #DBD8D8;*/
-	/*cursor: default;*/
+	cursor: default;
 	background-color: #606060;
+	padding: 10px;
+	border-bottom: 0.5px solid  #606060;
+	border-top: 0.5px solid  #606060;
 }
 .preencher{
 	background-color: #B9DCBB;

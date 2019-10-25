@@ -1,6 +1,11 @@
 // Script para fazer funcionar a identificação de menu atual ativo
 
-
+$(document).ready(function(){
+	$('ul li a').click(function(){
+		$('li a').removeClass("active");
+		$(this).addClass("active");
+	});
+});
 
 
 
@@ -10,14 +15,14 @@
 //  * retorna o nome da página atual sem a extensão
 //  */
 //     function thisPage(){
-  
+	
 //   var url = document.URL; //retorna a url da página
 //   var urlArr = url.split("/");//retorna um array da url separado pelas barras
 //   var lastInd = urlArr.length -1;//retorna o ultimo índice do array (tamanho total menos 1, pois o array começa do zero)
 //   var thisPageExtension = urlArr[lastInd];//retorna a pagina atual + a extensão .html .php etc.
 //   var thisPageArr = thisPageExtension.split(".");//retorna outro array separando o nome da pagina da extenção
 //   var thisPage = thisPageArr[0];//retorna a pagina atual sem a extensão
-  
+
 //   return thisPage;
 //   } // fim da função thisPage
 

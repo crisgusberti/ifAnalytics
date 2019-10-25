@@ -31,6 +31,61 @@ WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) AND d.nivel NOT IN ('E', 'L')
 GROUP BY mi.id_modalidade_ingresso
 ORDER BY mi.descricao
 
+-- passando o campus
+
+SELECT mi.descricao, COUNT(d.*) AS total_alunos 
+FROM discente d 
+INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso
+WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) 
+AND d.nivel NOT IN ('E', 'L')
+
+AND d.id_gestora_academica IN (
+   SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz({31})
+)
+
+GROUP BY mi.id_modalidade_ingresso
+ORDER BY mi.descricao
+
+-- passando o curso
+
+SELECT mi.descricao, COUNT(d.*) AS total_alunos 
+FROM discente d 
+INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso
+WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) 
+AND d.nivel NOT IN ('E', 'L')
+
+AND d.id_curso = {28}
+
+GROUP BY mi.id_modalidade_ingresso
+ORDER BY mi.descricao
+
+-- passando um período (ano/semestre)
+
+SELECT  mi.descricao, COUNT(d.*) AS total_alunos 
+FROM discente d 
+INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso
+
+WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) 
+AND d.nivel NOT IN ('E', 'L')
+
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
+AND d.id_curso = 509023
+
+
+-- passando o id da turma
+SELECT  mi.descricao, COUNT(distinct d.id_discente) AS total_alunos 
+FROM discente d 
+INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso
+
+INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente
+WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) 
+
+AND mc.id_turma = {4735}
+
+GROUP BY mi.id_modalidade_ingresso
+ORDER BY mi.descricao
+
+
 -- Dados detalhados
 SELECT mi.descricao, d.matricula, p.nome AS nome_pessoa, c.id_curso, c.nome 
 FROM discente d 

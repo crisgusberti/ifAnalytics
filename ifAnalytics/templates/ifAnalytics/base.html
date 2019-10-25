@@ -3,12 +3,12 @@
 <html lang="pt-br">
 <head>
 	<meta charset="UTF-8">
-	<title>Geral - IfAnalytics</title>
-	<link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
-	<link rel="stylesheet" href="{% static 'css/Estilos.css' %}">
 	<meta name="description" content="Geral - IfAnalytics">
 	<meta name="keywwords" content="IFRS, Analytics, SIGAA">
 	<meta name="author" content="Crístian Gusberti">
+	<title>Geral - IfAnalytics</title>
+	<link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+	<link rel="stylesheet" href="{% static 'css/Estilos.css' %}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>	<!-- Scripts da biblioteca Google Charts -->
 	<script>google.charts.load('current', {'packages':['corechart']});</script> <!-- Load Charts and the corechart package from Google Charts. -->
@@ -21,8 +21,7 @@
 	</div><br>
 
 
-	<!-- Script para indicação de menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!!-->
-	<script type="text/javascript" src="{% static 'js/MenuAtivo.js' %}"></script> 
+
 
 
 
@@ -43,10 +42,15 @@
 		<ul style="padding-left: 2px">
 			<li><a href="{% url 'geral' %}" title="Informações Gerais">Geral</a><img src="{% static 'images/geral_icon.PNG' %}" class="icone_menu_opaco"></li>
 			<li><a href="{% url 'notas' %}" title="Informações sobre notas">Notas</a><img src="{% static 'images/notas_icon.PNG' %}" class="icone_menu"></li>
-			<li><a href="{% url 'frequencias' %}" title="Informaç~eos sobre frequência">Frequência</a><img src="{% static 'images/frequencia_icon.PNG' %}" class="icone_menu"></li>
+			<li><a href="{% url 'frequencias' %}" title="Informações sobre frequência">Frequência</a><img src="{% static 'images/frequencia_icon.PNG' %}" class="icone_menu"></li>
 			<li><a href="{% url 'suporte' %}" title="Suporte do sistema">Suporte</a><img src="{% static 'images/suporte_icon.PNG' %}" class="icone_menu_opaco"></li>
 		</ul>
 	</nav>
+
+
+
+	<!-- Script para indicação de menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!!-->
+	<!-- <script src="{% static '/js/MenuAtivo.js' %}"></script>  -->
 
 
 	<div id="filtros">
@@ -78,6 +82,7 @@
 		</form>
 	</div>
 
+
 	<!-- Área de Plotagem dos gráficos específica de cada página-->
 	{% block content %}
 	{% endblock %}
@@ -106,7 +111,7 @@ $( document ).ready(function() { //isso faz com que ao ser carregad a página ex
 
 //popula select Cursos 
 $('#campus').change(function() {
-	let campusId = $(this).val();
+	var campusId = $(this).val();
    
    	$.ajax({
         url: '/consulta_cursos/',
