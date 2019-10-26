@@ -3,28 +3,31 @@
 {% block content %}
 <script> //GRÁFICO FORMA DE INGRESSO
               //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
-              // $( document ).ready(function() {     
-                     var data_forma_ingresso;
-                     var campusId = $("#campus").val();
-                     // alert(campusId); 
+              let data_forma_ingresso
+              function renderChart(campusId){
+                    // let data_forma_ingresso;
                      $.ajax({
                          method: "GET",
-                         url: '/get_data_forma_ingresso/',
+                         url: '/get_data_forma_ingresso/', 
                          data: {
                               // 'campus_id' : 31
+                              //'campus_id' : 49
                               'campus_id' : campusId
                          },
                          success: function(data_from_view){
                            data_forma_ingresso = data_from_view
+                           console.log(data_forma_ingresso)
+                            google.charts.setOnLoadCallback(function() {drawChart_forma_ingresso(data_forma_ingresso);});
+                           
                          },
                          error: function(error_data){
                             console.log("error")
                             console.log(error_data)
                          }
                      })
-                 // })     
-                            
-              google.charts.setOnLoadCallback(function() {drawChart_forma_ingresso(data_forma_ingresso);});
+                     }
+               
+              
 
               // Populando o gráfico com dados
               function drawChart_forma_ingresso(data_forma_ingresso) {
@@ -32,11 +35,11 @@
                      data.addColumn('string', 'Forma de Ingresso');
                      data.addColumn('number', 'Alunos');
 
-                     for (var i = 0; i < data_forma_ingresso.length; i++) {
+                     for (let i = 0; i < data_forma_ingresso.length; i++) {
                             data.addRows([data_forma_ingresso[i]]);
                      }
 
-                     var options = {
+                     let options = {
                             title: 'Forma de Ingresso',
                             backgroundColor: '#E1F0DB',
                             chartArea: {left: 10, height: 250, width: 600},
@@ -45,7 +48,7 @@
                             sliceVisibilityThreshold: 0,
                      };
 
-                     var chart = new google.visualization.PieChart(document.getElementById('piechart_forma_ingresso'));
+                     let chart = new google.visualization.PieChart(document.getElementById('piechart_forma_ingresso'));
 
                      chart.draw(data, options);
               }

@@ -112,6 +112,8 @@ $( document ).ready(function() { //isso faz com que ao ser carregad a página ex
 //popula select Cursos 
 $('#campus').change(function() {
 	var campusId = $(this).val();
+	console.log(renderChart)
+	renderChart(campusId);
    
    	$.ajax({
         url: '/consulta_cursos/',
@@ -144,6 +146,7 @@ $('#periodo').change(function() {
 	let arrayString = periodo.split("/");
 	let ano = arrayString[0];
 	let semestre = arrayString[1];
+
 
 	$.ajax({
         url: '/consulta_turmas/',

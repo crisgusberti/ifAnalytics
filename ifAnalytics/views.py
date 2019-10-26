@@ -94,11 +94,11 @@ def get_data_forma_ingresso(request):
     #             cursor.execute("SELECT mi.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) AND d.nivel NOT IN ('E', 'L') AND d.id_curso = %s GROUP BY mi.id_modalidade_ingresso ORDER BY mi.descricao", [curso_id]) 
     #             rows = cursor.fetchall();
     #         return JsonResponse(rows, safe=False)
-    if campus_id is not None:
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT mi.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) AND d.nivel NOT IN ('E', 'L') AND d.id_gestora_academica IN ( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s) ) GROUP BY mi.id_modalidade_ingresso ORDER BY mi.descricao", [campus_id]) 
-            rows = cursor.fetchall();
-        return JsonResponse(rows, safe=False)     
+    #if campus_id is not None:
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT mi.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) AND d.nivel NOT IN ('E', 'L') AND d.id_gestora_academica IN ( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s) ) GROUP BY mi.id_modalidade_ingresso ORDER BY mi.descricao", [campus_id]) 
+        rows = cursor.fetchall();
+    return JsonResponse(rows, safe=False)     
 
 
 
