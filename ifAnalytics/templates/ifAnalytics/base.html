@@ -21,10 +21,6 @@
 	</div><br>
 
 
-
-
-
-
 	<nav id="menu_superior">
 		<ul>
 			<li><a href="#" title="Página inicial/login">Home</a></li>
@@ -46,7 +42,6 @@
 			<li><a href="{% url 'suporte' %}" title="Suporte do sistema">Suporte</a><img src="{% static 'images/suporte_icon.PNG' %}" class="icone_menu_opaco"></li>
 		</ul>
 	</nav>
-
 
 
 	<!-- Script para indicação de menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!!-->
@@ -95,82 +90,98 @@
 	</div>
 
 
-
 {% block js %}
 <script>
-//popula selec Campus
-$( document ).ready(function() { //isso faz com que ao ser carregad a página execute o ajax abaixo
- 	$.ajax({
-        url: '/consulta_campus/', //chama a view "consulta_campus"
-        success: function(response) { 
-           $('#campus').html(response); //em caso de sucesso a resposta daquela view é carregado dentro do id "campus" desse arquivo HTML
-        }
-      })
-    }
- );
+	//popula select Campus
+	$( document ).ready(function() { //isso faz com que ao ser carregada a página execute o ajax abaixo
+	 	$.ajax({
+	        url: '/consulta_campus/', //chama a view "consulta_campus"
+	        success: function(response) { 
+	           $('#campus').html(response); //em caso de sucesso a resposta daquela view é carregado dentro do id "campus" desse arquivo HTML
+	        }
+	    })
+	});
 
-//popula select Cursos 
-$('#campus').change(function() {
-	var campusId = $(this).val();
-	console.log(renderChart)
-	renderChart(campusId);
-   
-   	$.ajax({
-        url: '/consulta_cursos/',
-        data: {
-          'campus_id' : campusId
-        },
-        success: function(response) {
-          $('#curso').html(response);
-          											//incluir aqui chamada para função habilita_grafico_tal          
-        }
-      })
-  	
-//popula select períodos junto com cursos
-	$.ajax({
-        url: '/consulta_periodos/',
-        data: {
-          'campus_id' : campusId
-        },
-        success: function(response) {
-          $('#periodo').html(response);
-        }
-      })
+	//popula select Cursos e Período
+	$('#campus').change(function() {
+		let campusId = $(this).val();
+		renderChartFormaIngressoCampus(campusId); //funções do geral.html
+		renderChartStatusDiscenteTurma(campusId);
+	   
+	   	$.ajax({
+	        url: '/consulta_cursos/',
+	        data: {
+	          'campus_id' : campusId
+	        },
+	        success: function(response) {
+	          $('#curso').html(response);
+	          								//incluir aqui chamada para função habilita_grafico_tal          
+	        }
+	    })
+	  	
+		//popula períodos junto com cursos
+		$.ajax({
+	        url: '/consulta_periodos/',
+	        data: {
+	          'campus_id' : campusId
+	        },
+	        success: function(response) {
+	          $('#periodo').html(response);
+	        }
+	    })
+	});
 
-  });
+	//detecta alteração no combo curso e chama funções do geral.html
+	$('#curso').change(function() {
+		let campusId = $("#campus").val(); 
+		let cursoId = $(this).val();
+		renderChartFormaIngressoCurso(campusId, cursoId);
+		renderChartStatusDiscenteTurma(campusId, cursoId);
+	});
 
-//popula select turmas
-$('#periodo').change(function() {
-	let campusId = $("#campus").val();   
-	let periodo = $(this).val();
-	let arrayString = periodo.split("/");
-	let ano = arrayString[0];
-	let semestre = arrayString[1];
+	//popula select turmas
+	$('#periodo').change(function() {
+		let campusId = $("#campus").val();
+		let cursoId = $("#curso").val();  
+		let periodo = $(this).val();
+		let arrayString = periodo.split("/");
+		let ano = arrayString[0];
+		let semestre = arrayString[1];
+		renderChartFormaIngressoPeriodo(campusId, cursoId, ano, semestre); //funções do geral.html
+		renderChartStatusDiscenteTurma(campusId, cursoId, ano, semestre);
 
+		$.ajax({
+	        url: '/consulta_turmas/',
+	        data: { //passando por ajax para a view "consulta_turmas", as variáveis definidas acima
+	          'campus_id' : campusId,
+	          'ano_turma' : ano,
+	          'semestre_turma' : semestre
+	        },
+	        success: function(response) {
+	          $('#turma').html(response);
+	          // $('#proximoID').html('<option value="">---</option>'); maneira de deixar o proximo não selecionado
+	        }
+	    })
+	});
 
-	$.ajax({
-        url: '/consulta_turmas/',
-        data: { //passando por ajax para a view "consulta_turmas", as variáveis definidas acima
-          'campus_id' : campusId,
-          'ano_turma' : ano,
-          'semestre_turma' : semestre
-        },
-        success: function(response) {
-          $('#turma').html(response);
-          // $('#proximoID').html('<option value="">---------------------</option>'); maneira de deixar o proximo não selecionado
-        }
-      })
-   
-    }
-    );
+	//detecta alteração no combo turmas e chama funções do geral.html
+	$('#turma').change(function() {
+		let campusId = $("#campus").val();
+		let cursoId = $("#curso").val();  
+		let periodo = $("#periodo").val();
+		let arrayString = periodo.split("/");
+		let ano = arrayString[0];
+		let semestre = arrayString[1];
+		let turmaId = $(this).val();
+		renderChartFormaIngressoTurma(campusId, cursoId, ano, semestre, turmaId); 
+		renderChartStatusDiscenteTurma(campusId, cursoId, ano, semestre, turmaId); 
+	});
 
-//Função para habilitar ou desabilitar graficos de acordo com seu preenchimento.
-function habilita_graficos_curso(){
-	$("#grafico_periodo_ingresso").show();	
-	$("#grafico_periodo_ingresso").hide();
-
-}	
-
+	//Função para habilitar ou desabilitar graficos de acordo com seu preenchimento.
+	function habilita_graficos_curso(){
+		$("#grafico_periodo_ingresso").show();	
+		$("#grafico_periodo_ingresso").hide();
+	}	
 </script>
 {% endblock js %}
 

@@ -2,59 +2,119 @@
 
 {% block content %}
 <script> //GRÁFICO FORMA DE INGRESSO
-              //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
-              let data_forma_ingresso
-              function renderChart(campusId){
-                    // let data_forma_ingresso;
-                     $.ajax({
-                         method: "GET",
-                         url: '/get_data_forma_ingresso/', 
-                         data: {
-                              // 'campus_id' : 31
-                              //'campus_id' : 49
-                              'campus_id' : campusId
-                         },
-                         success: function(data_from_view){
-                           data_forma_ingresso = data_from_view
-                           console.log(data_forma_ingresso)
-                            google.charts.setOnLoadCallback(function() {drawChart_forma_ingresso(data_forma_ingresso);});
-                           
-                         },
-                         error: function(error_data){
-                            console.log("error")
-                            console.log(error_data)
-                         }
-                     })
-                     }
-               
-              
 
-              // Populando o gráfico com dados
-              function drawChart_forma_ingresso(data_forma_ingresso) {
-                     data = new google.visualization.DataTable();
-                     data.addColumn('string', 'Forma de Ingresso');
-                     data.addColumn('number', 'Alunos');
+  let data_forma_ingresso
 
-                     for (let i = 0; i < data_forma_ingresso.length; i++) {
-                            data.addRows([data_forma_ingresso[i]]);
-                     }
+  function renderChartFormaIngressoCampus(campusId){
+    //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_forma_ingresso/', 
+        data: {
+          'campus_id' : campusId
+       },
+       success: function(data_from_view){
+         data_forma_ingresso = data_from_view
+         google.charts.setOnLoadCallback(function() {drawChart_forma_ingresso(data_forma_ingresso);});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
 
-                     let options = {
-                            title: 'Forma de Ingresso',
-                            backgroundColor: '#E1F0DB',
-                            chartArea: {left: 10, height: 250, width: 600},
-                            legend: {textStyle: {fontSize: 10}},
-                            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
-                            sliceVisibilityThreshold: 0,
-                     };
+  function renderChartFormaIngressoCurso(campusId, cursoId){
+    //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_forma_ingresso/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId
+       },
+       success: function(data_from_view){
+         data_forma_ingresso = data_from_view
+         google.charts.setOnLoadCallback(function() {drawChart_forma_ingresso(data_forma_ingresso);});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
 
-                     let chart = new google.visualization.PieChart(document.getElementById('piechart_forma_ingresso'));
+  function renderChartFormaIngressoPeriodo(campusId, cursoId, ano, semestre){
+    //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_forma_ingresso/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId,
+          'ano_turma' : ano,
+          'semestre_turma' : semestre
+       },
+       success: function(data_from_view){
+         data_forma_ingresso = data_from_view
+         google.charts.setOnLoadCallback(function() {drawChart_forma_ingresso(data_forma_ingresso);});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
 
-                     chart.draw(data, options);
-              }
+  function renderChartFormaIngressoTurma(campusId, cursoId, ano, semestre, turmaId){
+    //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_forma_ingresso/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId,
+          'ano_turma' : ano,
+          'semestre_turma' : semestre,
+          'turma_id': turmaId
+       },
+       success: function(data_from_view){
+         data_forma_ingresso = data_from_view
+         google.charts.setOnLoadCallback(function() {drawChart_forma_ingresso(data_forma_ingresso);});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
+
+  // Populando o gráfico com dados
+  function drawChart_forma_ingresso(data_forma_ingresso) {
+     data = new google.visualization.DataTable();
+     data.addColumn('string', 'Forma de Ingresso');
+     data.addColumn('number', 'Alunos');
+
+     for (let i = 0; i < data_forma_ingresso.length; i++) {
+            data.addRows([data_forma_ingresso[i]]);
+     }
+
+     let options = {
+            title: 'Forma de Ingresso',
+            backgroundColor: '#E1F0DB',
+            chartArea: {left: 10, height: 250, width: 600},
+            legend: {textStyle: {fontSize: 10}},
+            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+            sliceVisibilityThreshold: 0,
+     };
+
+     let chart = new google.visualization.PieChart(document.getElementById('piechart_forma_ingresso'));
+
+     chart.draw(data, options);
+  }
 </script>
 
-<script> //GRÁFICO STATUS DISCENTE
+<!-- <script> //GRÁFICO STATUS DISCENTE
               //pegando os dados da view "get_data_status_discente" para popular o gráfico
               var data_status_discente;
               $.ajax({
@@ -94,13 +154,125 @@
 
                      chart.draw(data, options);
               }
-</script>
+</script> -->
 
+<script> //GRÁFICO STATUS DISCENTE
+
+  let data_status_discente
+
+  function renderChartStatusDiscenteCampus(campusId){
+    //pegando os dados da view "get_data_status_discente" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_status_discente/', 
+        data: {
+          'campus_id' : campusId
+       },
+       success: function(data_from_view){
+         data_status_discente = data_from_view
+         google.charts.setOnLoadCallback(function() {drawChart_status_discente(data_status_discente);});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
+
+  function renderChartStatusDiscenteCurso(campusId, cursoId){
+    //pegando os dados da view "get_data_status_discente" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_status_discente/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId
+       },
+       success: function(data_from_view){
+         data_status_discente = data_from_view
+         google.charts.setOnLoadCallback(function() {drawChart_status_discente(data_status_discente);});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
+
+  function renderChartStatusDiscentePeriodo(campusId, cursoId, ano, semestre){
+    //pegando os dados da view "get_data_status_discente" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_status_discente/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId,
+          'ano_turma' : ano,
+          'semestre_turma' : semestre
+       },
+       success: function(data_from_view){
+         data_status_discente = data_from_view
+         google.charts.setOnLoadCallback(function() {drawChart_status_discente(data_status_discente);});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
+
+  function renderChartStatusDiscenteTurma(campusId, cursoId, ano, semestre, turmaId){
+    //pegando os dados da view "get_data_status_discente" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_status_discente/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId,
+          'ano_turma' : ano,
+          'semestre_turma' : semestre,
+          'turma_id': turmaId
+       },
+       success: function(data_from_view){
+         data_status_discente = data_from_view
+         google.charts.setOnLoadCallback(function() {drawChart_status_discente(data_status_discente);});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
+
+  // Populando o gráfico com dados
+  function drawChart_status_discente(data_status_discente) {
+     data = new google.visualization.DataTable();
+     data.addColumn('string', 'Status dos Discentes');
+     data.addColumn('number', 'Alunos');
+
+     for (let i = 0; i < data_status_discente.length; i++) {
+            data.addRows([data_status_discente[i]]);
+     }
+
+     let options = {
+            title: 'Status dos Discentes',
+            backgroundColor: '#E1F0DB',
+            chartArea: {left: 10, height: 250, width: 600},
+            legend: {textStyle: {fontSize: 10}},
+            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+            sliceVisibilityThreshold: 0,
+     };
+
+     let chart = new google.visualization.PieChart(document.getElementById('piechart_status_discente'));
+
+     chart.draw(data, options);
+  }
+</script>
 
 <div id="dashboards">
 	<!-- Plotagem do gráfico -->
 	<div id="piechart_forma_ingresso" style="width: 600px; height: 300px;"></div>
-       <br>
-       <div id="piechart_status_discente" style="width: 600px; height: 300px;"></div>
+  <br>
+  <div id="piechart_status_discente" style="width: 600px; height: 300px;"></div>
 </div>
 {% endblock %}

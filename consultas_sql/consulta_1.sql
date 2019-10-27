@@ -27,7 +27,8 @@ dti_ifrs.contar_forma_ingresso();
 SELECT mi.descricao, COUNT(d.*) AS total_alunos 
 FROM discente d 
 INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso
-WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) AND d.nivel NOT IN ('E', 'L')
+WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) 
+AND d.nivel NOT IN ('E', 'L')
 GROUP BY mi.id_modalidade_ingresso
 ORDER BY mi.descricao
 
@@ -71,6 +72,8 @@ AND d.nivel NOT IN ('E', 'L')
 AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
 AND d.id_curso = 509023
 
+GROUP BY mi.id_modalidade_ingresso
+ORDER BY mi.descricao
 
 -- passando o id da turma
 SELECT  mi.descricao, COUNT(distinct d.id_discente) AS total_alunos 
