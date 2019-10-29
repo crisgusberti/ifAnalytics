@@ -102,35 +102,18 @@ def get_data_status_discente(request):
         return JsonResponse(rows, safe=False) 
     if ano_turma is not None:
         with connection.cursor() as cursor:
-            cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.nivel IN ('G') AND d.nivel NOT IN ('E', 'L') AND d.ano_ingresso = %s AND d.periodo_ingresso = %s AND d.id_curso = %s GROUP BY sd.status ORDER BY sd.descricao", [ano_turma, semestre_turma, curso_id]) 
+            cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.nivel IN ('G') AND d.ano_ingresso = %s AND d.periodo_ingresso = %s AND d.id_curso = %s GROUP BY sd.status ORDER BY sd.descricao", [ano_turma, semestre_turma, curso_id]) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False) 
     if curso_id is not None:
         with connection.cursor() as cursor:
-            cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.nivel IN ('G') AND d.nivel NOT IN ('E', 'L') AND d.id_curso = %s GROUP BY sd.status ORDER BY sd.descricao", [curso_id]) 
+            cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.id_curso = %s GROUP BY sd.status ORDER BY sd.descricao", [curso_id]) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False)
     if campus_id is not None:
         with connection.cursor() as cursor:
-            cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.nivel IN ('G') AND d.nivel NOT IN ('E', 'L') AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) GROUP BY sd.status ORDER BY sd.descricao", [campus_id]) 
+            cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.nivel IN ('G') AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) GROUP BY sd.status ORDER BY sd.descricao", [campus_id]) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False)     
-
-
-
-
-
-
-
-
-#######################################
-
-# def get_data_status_discente(request):
-#     with connection.cursor() as cursor:
-#         cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.nivel IN ('G') GROUP BY sd.status ORDER BY sd.descricao")
-#         rows = cursor.fetchall();
-#     return JsonResponse(rows, safe=False)
-
-
 
 

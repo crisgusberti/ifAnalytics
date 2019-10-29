@@ -46,7 +46,7 @@ ORDER BY sd.descricao, d.nivel, c.nome, nome_pessoa
 
 -- GRADUAÇÃO
 
--- Contagem
+-- Contagem geral
 SELECT sd.descricao, COUNT(d.*) AS total_alunos 
 FROM discente d 
 INNER JOIN status_discente sd ON sd.status = d.status 
@@ -55,7 +55,64 @@ GROUP BY sd.status
 ORDER BY sd.descricao
 
 
--- considera
+--select status alunos passando campus
+
+SELECT sd.descricao, COUNT(d.*) AS total_alunos 
+FROM discente d 
+INNER JOIN status_discente sd ON sd.status = d.status 
+WHERE d.nivel IN ('G')
+AND d.id_gestora_academica IN (
+   SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz({31})
+)
+GROUP BY sd.status
+ORDER BY sd.descricao
+
+
+--select status alunos passando curso
+
+SELECT sd.descricao, COUNT(d.*) AS total_alunos 
+FROM discente d 
+INNER JOIN status_discente sd ON sd.status = d.status 
+WHERE d.id_curso = {28}
+GROUP BY sd.status
+ORDER BY sd.descricao
+
+
+--select status alunos passando ano e semestre
+
+SELECT sd.descricao, COUNT(d.*) AS total_alunos 
+FROM discente d 
+INNER JOIN status_discente sd ON sd.status = d.status 
+WHERE d.nivel IN ('G') 
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
+AND d.id_curso = 509023
+GROUP BY sd.status
+ORDER BY sd.descricao
+
+
+--select status alunos passando turma
+
+SELECT sd.descricao, COUNT(distinct d.id_discente) AS total_alunos 
+FROM discente d 
+INNER JOIN status_discente sd ON sd.status = d.status
+INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente
+WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) 
+AND mc.id_turma = {4735}
+GROUP BY sd.status
+ORDER BY sd.descricao
+
+=====================================
+-- Status que não estão sendo considerados nas consultas:
+-- 2    "CADASTRADO"
+-- 3    "CONCLUÍDO"
+-- 6    "CANCELADO"
+-- 10    "NÃO CADASTRADO"
+-- 13    "PENDENTE DE CADASTRO"
+-- 9    "FORMADO"
+-- 16    "FALECIDO"
+-- -1 	"DESCONHECIDO"
+====================================
+
 
 -- Dados detalhados
 SELECT sd.descricao, d.nivel, d.matricula, p.nome AS nome_pessoa, c.id_curso, c.nome 
