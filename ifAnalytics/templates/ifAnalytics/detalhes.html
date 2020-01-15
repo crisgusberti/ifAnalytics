@@ -1,0 +1,36 @@
+{% extends 'ifAnalytics/base.html' %}
+
+{% block content %}
+
+<script type="text/javascript">
+
+	$( document ).ready(function() { 
+
+		var json = [
+		["10 -  PORTADOR DEFICIENCIA", 9], 
+		["1 -  ACESSO UNIVERSAL", 379], 
+		["2 -  ENS. PUBLICO - RENDA INFERIOR PRETO PARDO INDIO PCD", 1], 
+		["3 -  ENS. PUBLICO - RENDA INFERIOR PRETO PARDO INDIO", 51]];
+
+		for(var i=0;i< json.length; i++){
+			var html = "<tr>";
+			html +="<td>"+json[i]+"</td>";
+			html +="<td>"+json[i]+"</td>";
+			html +="</tr>";
+			$('tbody').append(html);
+		}
+	});
+</script>
+
+<table border="1">
+	<thead>
+		<tr>
+			<th>Aluno</th>
+			<th>Curso</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody> 
+</table>
+
+{% endblock %}

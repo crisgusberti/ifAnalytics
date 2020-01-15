@@ -17,6 +17,9 @@ def frequencias(request):
 def suporte(request):
 	return render(request, 'ifAnalytics/suporte.html')
 
+def detalhes(request):
+    return render(request, 'ifAnalytics/detalhes.html')
+
 # A função namedtuplefetchall é da documentação do Django e serve
 # para consultas cruas SQL, mas retona elas em um array de tuplas (nome: valor)
 def namedtuplefetchall(cursor):

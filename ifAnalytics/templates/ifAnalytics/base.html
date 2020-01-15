@@ -35,16 +35,49 @@
 
 	<nav id="menu_direita">
 		<div class="preencher"><span class="negrito">Menu</span><img src="{% static 'images/menu_icon.PNG' %}" class="icone_menu_opaco"></div>
-		<ul style="padding-left: 2px">
-			<li><a href="{% url 'geral' %}" title="Informações Gerais">Geral</a><img src="{% static 'images/geral_icon.PNG' %}" class="icone_menu_opaco"></li>
+		<ul id="lista_menu" style="padding-left: 2px">
+			<li><a href="{% url 'geral' %}" onclick="mostrarAtivo(this);" title="Informações Gerais">Geral</a><img src="{% static 'images/geral_icon.PNG' %}" class="icone_menu_opaco"></li>
 			<li><a href="{% url 'notas' %}" title="Informações sobre notas">Notas</a><img src="{% static 'images/notas_icon.PNG' %}" class="icone_menu"></li>
 			<li><a href="{% url 'frequencias' %}" title="Informações sobre frequência">Frequência</a><img src="{% static 'images/frequencia_icon.PNG' %}" class="icone_menu"></li>
-			<li><a href="{% url 'suporte' %}" title="Suporte do sistema">Suporte</a><img src="{% static 'images/suporte_icon.PNG' %}" class="icone_menu_opaco"></li>
+			<!-- <li><a href="{% url 'suporte' %}" title="Suporte do sistema">Suporte</a><img src="{% static 'images/suporte_icon.PNG' %}" class="icone_menu_opaco"></li> --> <!-- Suporte comentado por enquanto -->
 		</ul>
 	</nav>
 
 
 	<!-- Script para indicação de menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!!-->
+
+
+	<script>   
+	   function mostrarAtivo(tag){
+	   var tag_li = document.getElementById('lista_menu');
+	   var tag_a = tag_li.getElementsByTagName('a');
+	   for (i=0; i<tag_a.length; i++ )
+	   {
+	      tag_a[i].style.color = "";
+	   }
+	      tag.style.color = "#ff0000";
+	   }
+
+	   // $(document).ready(function(){
+	   // 	$('ul li a').click(function(){
+	   // 		$('li a').removeClass("active");
+	   // 		$(this).addClass("active");
+	   // 	});
+	   // });
+
+
+	</script>
+
+
+
+
+
+
+
+
+
+
+
 	<!-- <script src="{% static '/js/MenuAtivo.js' %}"></script>  -->
 
 
@@ -90,16 +123,16 @@
 	</div>
 
 
-{% block js %}
-<script>
+	{% block js %}
+	<script>
 	//popula select Campus
 	$( document ).ready(function() { //isso faz com que ao ser carregada a página execute o ajax abaixo
-	 	$.ajax({
+		$.ajax({
 	        url: '/consulta_campus/', //chama a view "consulta_campus"
 	        success: function(response) { 
 	           $('#campus').html(response); //em caso de sucesso a resposta daquela view é carregado dentro do id "campus" desse arquivo HTML
-	        }
-	    })
+	       }
+	   })
 	});
 
 	//popula select Cursos e Período
@@ -107,28 +140,28 @@
 		let campusId = $(this).val();
 		renderChartFormaIngressoCampus(campusId); //funções do geral.html
 		renderChartStatusDiscenteTurma(campusId);
-	   
-	   	$.ajax({
-	        url: '/consulta_cursos/',
-	        data: {
-	          'campus_id' : campusId
-	        },
-	        success: function(response) {
-	          $('#curso').html(response);
+
+		$.ajax({
+			url: '/consulta_cursos/',
+			data: {
+				'campus_id' : campusId
+			},
+			success: function(response) {
+				$('#curso').html(response);
 	          								//incluir aqui chamada para função habilita_grafico_tal          
-	        }
-	    })
-	  	
+	          							}
+	          						})
+
 		//popula períodos junto com cursos
 		$.ajax({
-	        url: '/consulta_periodos/',
-	        data: {
-	          'campus_id' : campusId
-	        },
-	        success: function(response) {
-	          $('#periodo').html(response);
-	        }
-	    })
+			url: '/consulta_periodos/',
+			data: {
+				'campus_id' : campusId
+			},
+			success: function(response) {
+				$('#periodo').html(response);
+			}
+		})
 	});
 
 	//detecta alteração no combo curso e chama funções do geral.html
@@ -151,17 +184,17 @@
 		renderChartStatusDiscenteTurma(campusId, cursoId, ano, semestre);
 
 		$.ajax({
-	        url: '/consulta_turmas/',
+			url: '/consulta_turmas/',
 	        data: { //passando por ajax para a view "consulta_turmas", as variáveis definidas acima
-	          'campus_id' : campusId,
-	          'ano_turma' : ano,
-	          'semestre_turma' : semestre
-	        },
-	        success: function(response) {
-	          $('#turma').html(response);
+	        'campus_id' : campusId,
+	        'ano_turma' : ano,
+	        'semestre_turma' : semestre
+	    },
+	    success: function(response) {
+	    	$('#turma').html(response);
 	          // $('#proximoID').html('<option value="">---</option>'); maneira de deixar o proximo não selecionado
-	        }
-	    })
+	      }
+	  })
 	});
 
 	//detecta alteração no combo turmas e chama funções do geral.html

@@ -70,7 +70,7 @@ nav#menu_direita a:hover{
 	color: white;
 }
 .active{								/*classe usada para estilizar menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!*/
-	color: white !important;
+	color: red !important;
 	text-decoration: none;
 	cursor: default;
 	background-color: #606060;
