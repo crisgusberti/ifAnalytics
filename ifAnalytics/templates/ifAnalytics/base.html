@@ -140,6 +140,7 @@
 		let campusId = $(this).val();
 		renderChartFormaIngressoCampus(campusId); //funções do geral.html
 		renderChartStatusDiscenteTurma(campusId);
+		renderChartTotalMatriculasCampus(campusId);
 
 		$.ajax({
 			url: '/consulta_cursos/',
@@ -170,6 +171,7 @@
 		let cursoId = $(this).val();
 		renderChartFormaIngressoCurso(campusId, cursoId);
 		renderChartStatusDiscenteTurma(campusId, cursoId);
+		renderChartTotalMatriculasCurso(campusId, cursoId);
 	});
 
 	//popula select turmas
@@ -182,6 +184,7 @@
 		let semestre = arrayString[1];
 		renderChartFormaIngressoPeriodo(campusId, cursoId, ano, semestre); //funções do geral.html
 		renderChartStatusDiscenteTurma(campusId, cursoId, ano, semestre);
+		renderCharttotalMatriculasPeriodo(campusId, cursoId, ano, semestre);
 
 		$.ajax({
 			url: '/consulta_turmas/',
@@ -208,6 +211,7 @@
 		let turmaId = $(this).val();
 		renderChartFormaIngressoTurma(campusId, cursoId, ano, semestre, turmaId); 
 		renderChartStatusDiscenteTurma(campusId, cursoId, ano, semestre, turmaId); 
+		renderChartTotalMatriculasTurma(campusId, cursoId, ano, semestre, turmaId); 
 	});
 
 	//Função para habilitar ou desabilitar graficos de acordo com seu preenchimento.

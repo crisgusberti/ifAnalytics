@@ -119,4 +119,31 @@ def get_data_status_discente(request):
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False)     
 
+# teste grafico total matriculas
+def get_data_total_matriculas(request):
+    campus_id = request.GET.get('campus_id') 
+    curso_id  = request.GET.get('curso_id')
+    ano_turma = request.GET.get('ano_turma')
+    semestre_turma = request.GET.get('semestre_turma')
+    turma_id = request.GET.get('turma_id') 
 
+    if turma_id is not None:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT sd.descricao, COUNT(distinct d.id_discente) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status  INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) AND mc.id_turma = %s GROUP BY sd.status ORDER BY sd.descricao", [turma_id])
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False) 
+    if ano_turma is not None:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.nivel IN ('G') AND d.ano_ingresso = %s AND d.periodo_ingresso = %s AND d.id_curso = %s GROUP BY sd.status ORDER BY sd.descricao", [ano_turma, semestre_turma, curso_id]) 
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False) 
+    if curso_id is not None:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.id_curso = %s GROUP BY sd.status ORDER BY sd.descricao", [curso_id]) 
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)
+    if campus_id is not None:
+        with connection.cursor() as cursor:
+            cursor.execute("WITH q1 AS (SELECT count(mc.*) AS total_matricula_discente, mc.id_discente FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina WHERE  mc.id_situacao_matricula  NOT IN (2, 3, 6, 16, 9, 10, 13) AND cc.id_unidade  IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) GROUP BY id_discente ORDER BY total_matricula_discente) SELECT total_matricula_discente AS total_disciplinas_ano, count(*) AS total_alunos FROM q1 GROUP BY total_disciplinas_ano ORDER BY total_disciplinas_ano", [campus_id]) 
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)  
