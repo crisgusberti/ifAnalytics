@@ -1,11 +1,11 @@
 // Script para fazer funcionar a identificação de menu atual ativo
 
-$(document).ready(function(){
-	$('ul li a').click(function(){
-		$('li a').removeClass("active");
-		$(this).addClass("active");
-	});
-});
+// $(document).ready(function(){
+// 	$('ul li a').click(function(){
+// 		$('li a').removeClass("active");
+// 		$(this).addClass("active");
+// 	});
+// });
 
 
 

@@ -36,34 +36,52 @@
 	<nav id="menu_direita">
 		<div class="preencher"><span class="negrito">Menu</span><img src="{% static 'images/menu_icon.PNG' %}" class="icone_menu_opaco"></div>
 		<ul id="lista_menu" style="padding-left: 2px">
-			<li><a href="{% url 'geral' %}" onclick="mostrarAtivo(this);" title="Informações Gerais">Geral</a><img src="{% static 'images/geral_icon.PNG' %}" class="icone_menu_opaco"></li>
-			<li><a href="{% url 'notas' %}" title="Informações sobre notas">Notas</a><img src="{% static 'images/notas_icon.PNG' %}" class="icone_menu"></li>
-			<li><a href="{% url 'frequencias' %}" title="Informações sobre frequência">Frequência</a><img src="{% static 'images/frequencia_icon.PNG' %}" class="icone_menu"></li>
+			<li id="geral"><a href="{% url 'geral' %}" title="Informações Gerais">Geral</a><img src="{% static 'images/geral_icon.PNG' %}" class="icone_menu_opaco"></li>
+			<li id="notas"><a href="{% url 'notas' %}" title="Informações sobre notas">Notas</a><img src="{% static 'images/notas_icon.PNG' %}" class="icone_menu"></li>
+			<li id="frequencias"><a href="{% url 'frequencias' %}" title="Informações sobre frequência">Frequência</a><img src="{% static 'images/frequencia_icon.PNG' %}" class="icone_menu"></li>
 			<!-- <li><a href="{% url 'suporte' %}" title="Suporte do sistema">Suporte</a><img src="{% static 'images/suporte_icon.PNG' %}" class="icone_menu_opaco"></li> --> <!-- Suporte comentado por enquanto -->
 		</ul>
 	</nav>
 
 
-	<!-- Script para indicação de menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!!-->
-
 
 	<script>   
-	   function mostrarAtivo(tag){
-	   var tag_li = document.getElementById('lista_menu');
-	   var tag_a = tag_li.getElementsByTagName('a');
-	   for (i=0; i<tag_a.length; i++ )
-	   {
-	      tag_a[i].style.color = "";
-	   }
-	      tag.style.color = "#ff0000";
-	   }
+				//JOGAR PARA ARQUIVO SEPAREADO E LIMPAR ESSE SCRIPT E APLICAR NO MENU SUPERIOR.
 
-	   // $(document).ready(function(){
-	   // 	$('ul li a').click(function(){
-	   // 		$('li a').removeClass("active");
-	   // 		$(this).addClass("active");
-	   // 	});
-	   // });
+
+	   //window.onload = function(){//previne que o script seja executado apos o carregamento da página
+		/*
+		 * retorna o nome da página atual sem a extensão
+		 */
+		    function thisPage(){
+			
+		  var url = document.URL; //retorna a url da página
+
+
+		  // remove latest /
+			if (url[url.length-1] == "/"){
+				url = url.substring(0, url.length-1);
+			}
+			
+			  var urlArr = url.split("/");//retorna um array da url separado pelas barras
+			  var lastInd = urlArr.length -1;//retorna o ultimo índice do array (tamanho total menos 1, pois o array começa do zero)
+			  var thisPageExtension = urlArr[lastInd];//retorna a pagina atual + a extensão .html .php etc.
+			  var thisPageArr = thisPageExtension.split(".");//retorna outro array separando o nome da pagina da extenção
+			  var thisPage1 = thisPageArr[0];//retorna a pagina atual sem a extensão
+			  //var thisPage = thisPageExtension;//retorna a pagina atual sem a extensão
+
+			  console.log(thisPage1);
+		  
+
+		  return thisPage1;
+		  } // fim da função thisPage
+
+
+		var thisPage = thisPage();  // recebe a string da página atual
+		document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página
+
+	//	};//fim do script
+
 
 
 	</script>

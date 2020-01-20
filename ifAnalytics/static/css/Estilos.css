@@ -1,7 +1,7 @@
 /*====Estrutura Geral====*/
 html{
-/*	height: 100%;*/
-}
+/*	height: 100%;*/						/*mudar os IDs pra classes assim posso usar duas classes no mesma tag html adicionando e sobreescrevendo mais efeitos*/
+}										/*nos menus, aqui no css, os navs na frente dos ids são desnecessarios*/
 body{
 background-color: #ECFDF0;
 }
@@ -31,6 +31,7 @@ nav#menu_superior li:hover{
 nav#menu_superior a{
 	color: grey;
 	text-decoration: none;
+	cursor: default;
 }
 nav#menu_superior a:hover{
 	color: white;
@@ -62,6 +63,7 @@ nav#menu_direita li:hover{
 	background-color: #606060;
 }
 nav#menu_direita a{
+	cursor: default;
 	color: grey;
 	text-decoration: none;
 	line-height: 1.5;
@@ -69,14 +71,11 @@ nav#menu_direita a{
 nav#menu_direita a:hover{
 	color: white;
 }
-.active{								/*classe usada para estilizar menu ativo. NÃO ESTÁ FUNCIONANDO AINDA!!*/
-	color: red !important;
-	text-decoration: none;
-	cursor: default;
+.active{
 	background-color: #606060;
-	padding: 10px;
-	border-bottom: 0.5px solid  #606060;
-	border-top: 0.5px solid  #606060;
+}
+.active a{
+	color: white !important;
 }
 .preencher{
 	background-color: #B9DCBB;
@@ -163,55 +162,4 @@ div#dashboards {
 	font-size: small;
 	color: grey;
 }
-
-
-
-/*.imagemCenter {
-	margin-top: 5px;
-	float:none;
-	display:block;
-	margin-left:auto;
-	margin-right:auto;
-	margin-top: 0px;
-}*/
-
-/*form#formulario, #formularioProfessor{
-	width: 300px;
-	margin: 0 auto;
-}*/
-/*.btn-enviar {
-	border-top: 1px solid #96d1f8;
-	background: #65a9d7;
-	border-radius: 8px;
-	color: white;
-	font-family: Georgia, serif;
-	vertical-align: middle;
-}*/
-/*.btn-enviar:hover {
-	border-top-color: #28597a;
-	background: #28597a;
-	color: #ccc;
-}
-.btn-enviar:active {
-	border-top-color: #1b435e;
-	background: #1b435e;
-}*/
-/*option{
-	font-family: helvetica; 
-	text-align: center;
-}*/
-
-/*h2{
-	text-align:center;
-	font-family:verdana;
-	font-size:18px;
-}
-h3{
-	font-style: italic;
-	text-align:center;
-	font-family:verdana;
-	font-size:16px;
-	color: Maroon;
-}*/
-
 
