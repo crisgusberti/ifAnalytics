@@ -43,60 +43,8 @@
 		</ul>
 	</nav>
 
-
-
-	<script>   
-				//JOGAR PARA ARQUIVO SEPAREADO E LIMPAR ESSE SCRIPT E APLICAR NO MENU SUPERIOR.
-
-
-	   //window.onload = function(){//previne que o script seja executado apos o carregamento da página
-		/*
-		 * retorna o nome da página atual sem a extensão
-		 */
-		    function thisPage(){
-			
-		  var url = document.URL; //retorna a url da página
-
-
-		  // remove latest /
-			if (url[url.length-1] == "/"){
-				url = url.substring(0, url.length-1);
-			}
-			
-			  var urlArr = url.split("/");//retorna um array da url separado pelas barras
-			  var lastInd = urlArr.length -1;//retorna o ultimo índice do array (tamanho total menos 1, pois o array começa do zero)
-			  var thisPageExtension = urlArr[lastInd];//retorna a pagina atual + a extensão .html .php etc.
-			  var thisPageArr = thisPageExtension.split(".");//retorna outro array separando o nome da pagina da extenção
-			  var thisPage1 = thisPageArr[0];//retorna a pagina atual sem a extensão
-			  //var thisPage = thisPageExtension;//retorna a pagina atual sem a extensão
-
-			  console.log(thisPage1);
-		  
-
-		  return thisPage1;
-		  } // fim da função thisPage
-
-
-		var thisPage = thisPage();  // recebe a string da página atual
-		document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página
-
-	//	};//fim do script
-
-
-
-	</script>
-
-
-
-
-
-
-
-
-
-
-
-	<!-- <script src="{% static '/js/MenuAtivo.js' %}"></script>  -->
+	<!-- script para deixar menu ativo -->
+	<script src="{% static '/js/MenuAtivo.js' %}"></script> 
 
 
 	<div id="filtros">

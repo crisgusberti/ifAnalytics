@@ -1,5 +1,65 @@
 // Script para fazer funcionar a identificação de menu atual ativo
 
+function thisPage(){
+
+	var url = document.URL; //retorna a url da página
+
+	if (url[url.length-1] == "/"){ // remove última barra do endereço
+	  	url = url.substring(0, url.length-1);
+	}
+
+	var urlArr = url.split("/");//retorna um array da url separado pelas barras
+	var lastInd = urlArr.length -1;//retorna o ultimo índice do array (tamanho total menos 1, pois o array começa do zero)
+	var thisPageExtension = urlArr[lastInd];//retorna a pagina atual + a extensão .html .php etc.
+	var thisPageArr = thisPageExtension.split(".");//retorna outro array separando o nome da pagina da extenção
+	var thisPage = thisPageArr[0];//retorna a pagina atual sem a extensão
+
+	return thisPage;
+}
+
+var thisPage = thisPage();  // recebe a string da página atual
+document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // $(document).ready(function(){
 // 	$('ul li a').click(function(){
 // 		$('li a').removeClass("active");
