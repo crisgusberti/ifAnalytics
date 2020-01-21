@@ -104,9 +104,9 @@
 	//popula select Cursos e Período
 	$('#campus').change(function() {
 		let campusId = $(this).val();
-		renderChartFormaIngressoCampus(campusId); //funções do geral.html
-		renderChartStatusDiscenteTurma(campusId);
-		renderChartTotalMatriculasCampus(campusId);
+		renderChartFormaIngresso(campusId); //funções do geral.html
+		renderChartStatusDiscente(campusId);
+		renderChartTotalMatriculas(campusId);
 
 		$.ajax({
 			url: '/consulta_cursos/',
@@ -135,9 +135,9 @@
 	$('#curso').change(function() {
 		let campusId = $("#campus").val(); 
 		let cursoId = $(this).val();
-		renderChartFormaIngressoCurso(campusId, cursoId);
-		renderChartStatusDiscenteTurma(campusId, cursoId);
-		renderChartTotalMatriculasCurso(campusId, cursoId);
+		renderChartFormaIngresso(campusId, cursoId);
+		renderChartStatusDiscente(campusId, cursoId);
+		renderChartTotalMatriculas(campusId, cursoId);
 	});
 
 	//popula select turmas
@@ -148,9 +148,9 @@
 		let arrayString = periodo.split("/");
 		let ano = arrayString[0];
 		let semestre = arrayString[1];
-		renderChartFormaIngressoPeriodo(campusId, cursoId, ano, semestre); //funções do geral.html
-		renderChartStatusDiscenteTurma(campusId, cursoId, ano, semestre);
-		renderCharttotalMatriculasPeriodo(campusId, cursoId, ano, semestre);
+		renderChartFormaIngresso(campusId, cursoId, ano, semestre);
+		renderChartStatusDiscente(campusId, cursoId, ano, semestre);
+		renderChartTotalMatriculas(campusId, cursoId, ano, semestre);
 
 		$.ajax({
 			url: '/consulta_turmas/',
@@ -175,9 +175,9 @@
 		let ano = arrayString[0];
 		let semestre = arrayString[1];
 		let turmaId = $(this).val();
-		renderChartFormaIngressoTurma(campusId, cursoId, ano, semestre, turmaId); 
-		renderChartStatusDiscenteTurma(campusId, cursoId, ano, semestre, turmaId); 
-		renderChartTotalMatriculasTurma(campusId, cursoId, ano, semestre, turmaId); 
+		renderChartFormaIngresso(campusId, cursoId, ano, semestre, turmaId); 
+		renderChartStatusDiscente(campusId, cursoId, ano, semestre, turmaId); 
+		renderChartTotalMatriculas(campusId, cursoId, ano, semestre, turmaId); 
 	});
 
 	//Função para habilitar ou desabilitar graficos de acordo com seu preenchimento.
