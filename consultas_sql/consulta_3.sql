@@ -1,16 +1,49 @@
--- total de alunos por disciplina
+-- Consulta 3
+-- Quantidade de Matriculados
 
--- selecionando um curso graduacao
-with q1 as (
-	select count(mc.*) as total_matricula_discente, mc.id_discente from ensino.matricula_componente mc
-	inner join ensino.turma t on t.id_turma = mc.id_turma
-	inner join ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina
+
+--GRADUAÇÃO
+-- filtrando por campus e ano
+WITH q1 AS (
+	SELECT COUNT(mc.*) AS total_matricula_discente, mc.id_discente FROM ensino.matricula_componente mc
+	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+	INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina
 	
-	inner join graduacao.curriculo_componente ccu ON ccu.id_componente_curricular = cc.id_disciplina
-	inner join graduacao.curriculo cur on cur.id_curriculo = ccu.id_curriculo
-	inner join curso c ON c.id_curso = cur.id_curso
+	INNER JOIN graduacao.curriculo_componente ccu ON ccu.id_componente_curricular = cc.id_disciplina
+	INNER JOIN graduacao.curriculo cur ON cur.id_curriculo = ccu.id_curriculo
+	INNER JOIN curso c ON c.id_curso = cur.id_curso
 
-	where 
+	WHERE 
+	    -- filtra por ano 
+	    t.ano = 2019 
+	    -- alunos matriculados
+		AND mc.id_situacao_matricula IN (2, 4, 6, 7, 8, 9, 24, 25, 26, 27)
+	    -- filtra o campus
+	    AND cc.id_unidade  IN (
+  			 SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(31)
+		)
+
+	GROUP BY id_discente
+	ORDER BY total_matricula_discente
+)
+SELECT total_matricula_discente AS total_disciplinas_ano, COUNT(*) AS total_alunos
+FROM q1
+GROUP BY total_disciplinas_ano
+ORDER BY total_disciplinas_ano
+
+
+
+--filtrando por curso
+WITH q1 AS (
+	SELECT COUNT(mc.*) AS total_matricula_discente, mc.id_discente FROM ensino.matricula_componente mc
+	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+	INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina
+	
+	INNER JOIN graduacao.curriculo_componente ccu ON ccu.id_componente_curricular = cc.id_disciplina
+	INNER JOIN graduacao.curriculo cur ON cur.id_curriculo = ccu.id_curriculo
+	INNER JOIN curso c ON c.id_curso = cur.id_curso
+
+	WHERE 
 	    -- filtra por ano 
 	    t.ano = 2019 
 	    -- alunos matriculados
@@ -21,49 +54,48 @@ with q1 as (
 		)
 		-- filtra por cursos do campus
 		AND c.id_curso = {id_curso}
-		
 
-	group by id_discente
-	order by total_matricula_discente
+	GROUP BY id_discente
+	ORDER BY total_matricula_discente
 )
-select total_matricula_discente as total_disciplinas_ano, count(*) as total_alunos
-from q1
-group by total_disciplinas_ano
-order by total_disciplinas_ano
-
-----  ---------
+SELECT total_matricula_discente AS total_disciplinas_ano, COUNT(*) AS total_alunos
+FROM q1
+GROUP BY total_disciplinas_ano
+ORDER BY total_disciplinas_ano
 
 
-with q_disciplinas_curso as (
-		select cu.id_disciplina, 'G' as nivel 
-		from graduacao.curriculo cur
-		inner join graduacao.curriculo_componente cc on cc.id_curriculo = cur.id_curriculo
-		inner join ensino.componente_curricular cu ON cc.id_componente_curricular = cu.id_disciplina
-		where cur.id_curso = 379430
-		--where cur.id_curso = 379430
-		where cur.id_curso = {id_curso}
+
+-- Filtrando por turmas
+WITH q_disciplinas_curso AS (
+		SELECT cu.id_disciplina, 'G' AS nivel 
+		FROM graduacao.curriculo cur
+		INNER JOIN graduacao.curriculo_componente cc ON cc.id_curriculo = cur.id_curriculo
+		INNER JOIN ensino.componente_curricular cu ON cc.id_componente_curricular = cu.id_disciplina
+		WHERE cur.id_curso = 379430
+		--WHERE cur.id_curso = 379430
+		WHERE cur.id_curso = {id_curso}
 
 		union
 
-		select md.id_disciplina, 'T' as nivel 
-		from tecnico.modulo_curricular mc
-		inner join tecnico.estrutura_curricular_tecnica ect on ect.id_estrutura_curricular = mc.id_estrutura_curricular
-		inner join tecnico.modulo m on m.id_modulo = mc.id_modulo
-		inner join tecnico.modulo_disciplina md on md.id_modulo = m.id_modulo
-	--	where ect.id_curso = 379430
-		where cur.id_curso = {id_curso}
+		SELECT md.id_disciplina, 'T' AS nivel 
+		FROM tecnico.modulo_curricular mc
+		INNER JOIN tecnico.estrutura_curricular_tecnica ect ON ect.id_estrutura_curricular = mc.id_estrutura_curricular
+		INNER JOIN tecnico.modulo m ON m.id_modulo = mc.id_modulo
+		INNER JOIN tecnico.modulo_disciplina md ON md.id_modulo = m.id_modulo
+	--	WHERE ect.id_curso = 379430
+		WHERE cur.id_curso = {id_curso}
 
 )
-with q1 as (
-	select count(mc.*) as total_matricula_discente, mc.id_discente from ensino.matricula_componente mc
-	inner join ensino.turma t on t.id_turma = mc.id_turma
-	inner join ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina
+WITH q1 AS (
+	SELECT COUNT(mc.*) AS total_matricula_discente, mc.id_discente FROM ensino.matricula_componente mc
+	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+	INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina
 	
-	--inner join graduacao.curriculo_componente ccu ON ccu.id_componente_curricular = cc.id_disciplina
-	--inner join graduacao.curriculo cur on cur.id_curriculo = ccu.id_curriculo
-	--inner join curso c ON c.id_curso = {id_curso}
+	--INNER JOIN graduacao.curriculo_componente ccu ON ccu.id_componente_curricular = cc.id_disciplina
+	--INNER JOIN graduacao.curriculo cur ON cur.id_curriculo = ccu.id_curriculo
+	--INNER JOIN curso c ON c.id_curso = {id_curso}
 
-	where 
+	WHERE 
 	    -- filtra por ano 
 	    t.ano = 2019 
 	    -- alunos matriculados
@@ -80,10 +112,10 @@ with q1 as (
 			SELECT id_disciplina FROM q_disciplinas_curso
 		)
 
-	group by id_discente
-	order by total_matricula_discente
+	GROUP BY id_discente
+	ORDER BY total_matricula_discente
 )
-select total_matricula_discente as total_disciplinas_ano, count(*) as total_alunos
-from q1
-group by total_disciplinas_ano
-order by total_disciplinas_ano
+SELECT total_matricula_discente AS total_disciplinas_ano, COUNT(*) AS total_alunos
+FROM q1
+GROUP BY total_disciplinas_ano
+ORDER BY total_disciplinas_ano

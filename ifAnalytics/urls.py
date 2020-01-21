@@ -11,6 +11,7 @@ from ifAnalytics.views import consulta_turmas
 from ifAnalytics.views import get_data_forma_ingresso
 from ifAnalytics.views import get_data_status_discente
 from ifAnalytics.views import get_data_total_matriculas
+from ifAnalytics.views import get_data_discentes_evadidos
 
 
 urlpatterns = [
@@ -28,5 +29,6 @@ urlpatterns = [
 	path('get_data_forma_ingresso/', get_data_forma_ingresso, name='get_data_forma_ingresso'),
 	path('get_data_status_discente/', get_data_status_discente, name='get_data_status_discente'),
 	path('get_data_total_matriculas/', get_data_total_matriculas, name='get_data_total_matriculas'),
+	path('get_data_discentes_evadidos/', get_data_discentes_evadidos, name='get_data_discentes_evadidos'),
 ]
     
