@@ -1,9 +1,9 @@
 -- Consulta 3
 -- Quantidade de Matriculados
-
+--(TA MOSTRANDO QUANTIDADE NUMERO E ALUNOS QUE ESTÃO MATRICULADOS EM x DISCIPLINAS)
 
 --GRADUAÇÃO
--- filtrando por campus e ano
+-- filtrando por campus e ano (TA MOSTRANDO QUANTIDADE NUMERO E ALUNOS QUE ESTÃO MATRICULADOS EM x DISCIPLINAS)
 WITH q1 AS (
 	SELECT COUNT(mc.*) AS total_matricula_discente, mc.id_discente FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
@@ -45,7 +45,7 @@ WITH q1 AS (
 
 	WHERE 
 	    -- filtra por ano 
-	    t.ano = 2019 
+	    t.ano = 2019 and t.periodo = 1
 	    -- alunos matriculados
 		AND mc.id_situacao_matricula IN (2, 4, 6, 7, 8, 9, 24, 25, 26, 27)
 	    -- filtra o campus
@@ -75,15 +75,15 @@ WITH q_disciplinas_curso AS (
 		--WHERE cur.id_curso = 379430
 		WHERE cur.id_curso = {id_curso}
 
-		union
+		UNION
 
 		SELECT md.id_disciplina, 'T' AS nivel 
 		FROM tecnico.modulo_curricular mc
 		INNER JOIN tecnico.estrutura_curricular_tecnica ect ON ect.id_estrutura_curricular = mc.id_estrutura_curricular
 		INNER JOIN tecnico.modulo m ON m.id_modulo = mc.id_modulo
 		INNER JOIN tecnico.modulo_disciplina md ON md.id_modulo = m.id_modulo
-	--	WHERE ect.id_curso = 379430
-		WHERE cur.id_curso = {id_curso}
+		WHERE ect.id_curso = 379430
+	--	WHERE cur.id_curso = {id_curso}
 
 )
 WITH q1 AS (

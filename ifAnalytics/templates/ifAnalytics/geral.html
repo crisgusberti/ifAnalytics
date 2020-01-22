@@ -82,9 +82,9 @@
 </script>
 
 
-<script> //GRÁFICO STATUS DISCENTE
+<script> //GRÁFICO STATUS DISCENTE - Segunda versão, usando parametros para chamar a função que desenha os gráficos
 
-  let data_status_discente
+  let dados
 
   function renderChartStatusDiscente(campusId, cursoId, ano, semestre, turmaId){
     //pegando os dados da view "get_data_status_discente" para popular o gráfico
@@ -99,8 +99,8 @@
           'turma_id': turmaId
        },
        success: function(data_from_view){
-         data_status_discente = data_from_view
-         google.charts.setOnLoadCallback(function() {drawChart_status_discente(data_status_discente);});
+         dados = data_from_view
+         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Status dos Discentes', 'Alunos', 'Status dos Discentes', 'piechart_status_discente');});
        },
        error: function(error_data){
           console.log("error")
@@ -110,17 +110,17 @@
   }
 
   // Populando o gráfico com dados
-  function drawChart_status_discente(data_status_discente) {
-     data = new google.visualization.DataTable();
-     data.addColumn('string', 'Status dos Discentes');
-     data.addColumn('number', 'Alunos');
+  function drawGeralPizza(dados, coluna_string, number_string, titulo, id_div){
+      data = new google.visualization.DataTable();
+      data.addColumn('string', coluna_string);
+      data.addColumn('number', number_string);
 
-     for (let i = 0; i < data_status_discente.length; i++) {
-            data.addRows([data_status_discente[i]]);
+     for (let i = 0; i < dados.length; i++) {
+            data.addRows([dados[i]]);
      }
 
      let options = {
-            title: 'Status dos Discentes',
+            title: titulo,
             backgroundColor: '#E1F0DB',
             chartArea: {left: 10, height: 250, width: 600},
             legend: {textStyle: {fontSize: 10}},
@@ -128,7 +128,7 @@
             sliceVisibilityThreshold: 0,
      };
 
-     let chart = new google.visualization.PieChart(document.getElementById('piechart_status_discente'));
+     let chart = new google.visualization.PieChart(document.getElementById(id_div));
 
      chart.draw(data, options);
   }
@@ -165,7 +165,7 @@
   // Populando o gráfico com dados
   function drawChart_total_matriculas(data_total_matriculas) {
      data = new google.visualization.DataTable();
-     data.addColumn('number', 'Total Matriculados');
+     data.addColumn('number', 'Quantidade de Disciplinas');
      data.addColumn('number', 'Alunos');
 
      for (let i = 0; i < data_total_matriculas.length; i++) {
