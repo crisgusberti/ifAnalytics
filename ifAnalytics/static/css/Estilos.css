@@ -148,6 +148,21 @@ div#dashboards {
 	padding: 10px 10px 10px 10px;
 /*	height: 100vh;*/
 }
+.grafico{
+	width: 600px;
+	height: 300px;
+	margin-bottom: 30px;
+}
+.alinha_grafico_direita{
+	display: inline-block;
+	float: right;
+	margin-right: 85px;
+}
+.alinha_grafico_esquerda{
+	display: inline-block;
+	float: left;
+	margin-left: 85px;
+}
 
 /*====Logo IFRS====*/
 .imagem{
