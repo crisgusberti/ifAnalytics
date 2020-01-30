@@ -159,7 +159,7 @@ def get_data_discentes_evadidos(request): #esse é o grafico 7, lembrar de jogar
     semestre_turma = request.GET.get('semestre_turma')
     turma_id = request.GET.get('turma_id') 
 
-    # Não tem turma, pq ao selecionar o curso ele já traz a informação por turma!
+    #Não tem turma, pq ao selecionar o curso ele já traz a informação por turma!
     if ano_turma is not None:
         with connection.cursor() as cursor:
             sql_string="SELECT COUNT(DISTINCT mc.id_discente) AS matricula_turma, c.nome FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN curso c ON c.id_curso = d.id_curso WHERE  mc.id_situacao_matricula = 3 AND t.ano = %s AND t.periodo = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) GROUP BY c.nome"
@@ -167,11 +167,16 @@ def get_data_discentes_evadidos(request): #esse é o grafico 7, lembrar de jogar
             cursor.execute(sql_string, parametros) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False) 
+    # if ano_turma is not None and campus_id is not None:
+    #     with connection.cursor() as cursor:
+    #         cursor.execute("SELECT COUNT(DISTINCT mc.id_discente) AS matricula_turma, c.nome FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN curso c ON c.id_curso = d.id_curso WHERE  mc.id_situacao_matricula = 3 AND t.ano = %s AND t.periodo = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) GROUP BY c.nome", [ano_turma, semestre_turma, curso_id]) 
+    #         rows = cursor.fetchall();
+    #     return JsonResponse(rows, safe=False) 
     if curso_id is not None:
         with connection.cursor() as cursor:
-            sql_string = "WITH q_disciplinas_curso AS (SELECT cu.id_disciplina, 'G' AS nivel FROM graduacao.curriculo cur INNER JOIN graduacao.curriculo_componente cc ON cc.id_curriculo = cur.id_curriculo INNER JOIN ensino.componente_curricular cu ON cc.id_componente_curricular = cu.id_disciplina WHERE cur.id_curso = %s UNION SELECT md.id_disciplina, 'T' AS nivel FROM tecnico.modulo_curricular mc INNER JOIN tecnico.estrutura_curricular_tecnica ect ON ect.id_estrutura_curricular = mc.id_estrutura_curricular INNER JOIN tecnico.modulo m ON m.id_modulo = mc.id_modulo INNER JOIN tecnico.modulo_disciplina md ON md.id_modulo = m.id_modulo WHERE ect.id_curso = %s) SELECT COUNT(mc.*) AS total_cancelamento_discente, cc.codigo FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina WHERE t.ano = %s AND t.periodo = %s AND mc.id_situacao_matricula = 3 AND t.id_disciplina IN (  SELECT id_disciplina FROM q_disciplinas_curso) GROUP BY cc.codigo ORDER BY total_cancelamento_discente"
-            parametros = [id_curso, id_curso, ano_turma, semestre_turma]
-            cursor.execute("SELECT sd.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN status_discente sd ON sd.status = d.status WHERE d.id_curso = %s GROUP BY sd.status ORDER BY sd.descricao", [curso_id]) 
+            sql_string = "WITH q_disciplinas_curso AS (SELECT cu.id_disciplina, 'G' AS nivel FROM graduacao.curriculo cur INNER JOIN graduacao.curriculo_componente cc ON cc.id_curriculo = cur.id_curriculo INNER JOIN ensino.componente_curricular cu ON cc.id_componente_curricular = cu.id_disciplina WHERE cur.id_curso = %s UNION SELECT md.id_disciplina, 'T' AS nivel FROM tecnico.modulo_curricular mc INNER JOIN tecnico.estrutura_curricular_tecnica ect ON ect.id_estrutura_curricular = mc.id_estrutura_curricular INNER JOIN tecnico.modulo m ON m.id_modulo = mc.id_modulo INNER JOIN tecnico.modulo_disciplina md ON md.id_modulo = m.id_modulo WHERE ect.id_curso = %s) SELECT COUNT(mc.*) AS total_cancelamento_discente, cc.codigo FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina WHERE t.ano = %s AND t.periodo = %s AND mc.id_situacao_matricula = 3 AND t.id_disciplina IN (SELECT id_disciplina FROM q_disciplinas_curso) GROUP BY cc.codigo ORDER BY total_cancelamento_discente"
+            parametros = [curso_id, curso_id, ano_turma, semestre_turma]
+            cursor.execute(sql_string, parametros) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False)
     if campus_id is not None:
@@ -188,5 +193,49 @@ def get_data_discentes_evadidos(request): #esse é o grafico 7, lembrar de jogar
     # print now.year, now.month, now.day, now.hour, now.minute, now.second
     # 2015 5 6 8 53 40
     #####
-    # unica consulta implementada é do campus_id NÃO ESTÁ FUNCIONANDO, TRAZ MAIS QUE DUAS COLUNAS
     # campus_id e ano_turma devem ser a mesma consulta, pq preciso dos dois para realizar a consulta
+
+
+    ###############################################
+    #usar o and ou o or como foi feito na consulta do grafico assim para o caso de campus_id e ano_turma
+       #if campus_id is not None:
+        #as consultas de ano_turma e campus_id são iguais, pq eu preciso desses dois parametros pra executar a consulta
+        #então não repliquei ela aqui. O gráfico só aparece qnd o combo do curso for selecionado.
+
+#Página de notas
+def get_data_notas_parciais(request):
+    campus_id = request.GET.get('campus_id') 
+    curso_id  = request.GET.get('curso_id')
+    ano_turma = request.GET.get('ano_turma')
+    semestre_turma = request.GET.get('semestre_turma')
+    turma_id = request.GET.get('turma_id') 
+
+    if turma_id is not None:
+        with connection.cursor() as cursor:
+            sql_string="WITH Q1 AS (SELECT mc.id_matricula_componente, nu.nota, nu.unidade, mc.id_discente FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.nota_unidade nu ON nu.id_matricula_componente = mc.id_matricula_componente WHERE t.ano = %s AND mc.id_turma = %s ORDER BY mc.id_matricula_componente, nu.unidade, nu.nota) SELECT SUM (CASE WHEN q1.nota >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM(CASE WHEN q1.nota < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM q1 WHERE q1.unidade = 1 GROUP by q1.unidade"
+            parametros=[ano_turma, turma_id]
+            cursor.execute(sql_string, parametros) 
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False) 
+    if ano_turma is not None:
+        with connection.cursor() as cursor:
+            sql_string="WITH Q1 AS (SELECT mc.id_matricula_componente, nu.nota, nu.unidade, mc.id_discente FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.nota_unidade nu ON nu.id_matricula_componente = mc.id_matricula_componente WHERE t.ano = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) ORDER BY mc.id_matricula_componente, nu.unidade, nu.nota) SELECT SUM (CASE WHEN q1.nota >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM(CASE WHEN q1.nota < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM q1 WHERE q1.unidade = 1 GROUP by q1.unidade"
+            parametros=[ano_turma, campus_id]
+            cursor.execute(sql_string, parametros) 
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False) 
+    if curso_id is not None:
+        with connection.cursor() as cursor:
+            sql_string = "WITH Q1 AS (SELECT mc.id_matricula_componente, nu.nota, nu.unidade, mc.id_discente FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.nota_unidade nu ON nu.id_matricula_componente = mc.id_matricula_componente WHERE t.ano = %s AND d.id_curso = %s ORDER BY mc.id_matricula_componente, nu.unidade, nu.nota) SELECT SUM (CASE WHEN q1.nota >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM(CASE WHEN q1.nota < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM q1 WHERE q1.unidade = 1 GROUP by q1.unidade"
+            parametros = [ano_turma, curso_id]
+            cursor.execute(sql_string, parametros) 
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)
+    if campus_id is not None:
+        with connection.cursor() as cursor:
+            sql_string="WITH Q1 AS (SELECT mc.id_matricula_componente, nu.nota, nu.unidade, mc.id_discente FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.nota_unidade nu ON nu.id_matricula_componente = mc.id_matricula_componente WHERE t.ano = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) ORDER BY mc.id_matricula_componente, nu.unidade, nu.nota) SELECT SUM (CASE WHEN q1.nota >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM(CASE WHEN q1.nota < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM q1 WHERE q1.unidade = 1 GROUP by q1.unidade"
+            parametros=[ano_turma, campus_id]
+            cursor.execute(sql_string, parametros)
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)
+    #Campus e ano tem a mesma consulta pq preciso dos dois pra efetuar a consulta em si

@@ -31,14 +31,15 @@ WITH Q1 AS (
 )
 SELECT 
 		SUM (CASE WHEN q1.nota >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, 
-		SUM(CASE WHEN q1.nota < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media,
-		q1.unidade
+		SUM(CASE WHEN q1.nota < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media--,
+		--q1.unidade
 FROM q1
---WHERE q1.unidade = 1
+-- unidade = 1 ou 2
+WHERE q1.unidade = 1
 GROUP by q1.unidade
 
 
------------- MEDIAS FINAIS
+------------CONSULTA 9 - MEDIAS FINAIS
 
 SELECT 
 		SUM (CASE WHEN mc.media_final >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, 

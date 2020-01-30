@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="{% static 'css/Estilos.css' %}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>	<!-- Scripts da biblioteca Google Charts -->
-	<script>google.charts.load('current', {'packages':['corechart']});</script> <!-- Load Charts and the corechart package from Google Charts. -->
+	<script>google.charts.load('current', {'packages':['corechart', 'bar']});</script> <!-- Load Charts and the corechart and bar package from Google Charts. -->
 </head>
 
 <body>
@@ -89,8 +89,8 @@
 	</div>
 
 
-	{% block js %}
-	<script>
+{% block js %}
+<script>
 	//popula select Campus
 	$( document ).ready(function() { //isso faz com que ao ser carregada a página execute o ajax abaixo
 		$.ajax({
@@ -104,10 +104,13 @@
 	//popula select Cursos e Período
 	$('#campus').change(function() {
 		let campusId = $(this).val();
-		renderChartFormaIngresso(campusId); //funções do geral.html
-		renderChartStatusDiscente(campusId);
-		renderChartTotalMatriculas(campusId);
-		renderChartDiscentesEvadidos(campusId);
+
+		//Verifica qual é a página atual para chamar as funções pertinentes
+		var paginaAtual = thisPage();
+		if (paginaAtual == 'geral') {
+			renderChartFormaIngresso(campusId);
+			renderChartStatusDiscente(campusId);
+		}
 
 		$.ajax({
 			url: '/consulta_cursos/',
@@ -128,6 +131,21 @@
 			},
 			success: function(response) {
 				$('#periodo').html(response);
+
+				//As funções abaixo são chamadas aqui pq precisam do campusID e do ano/semestre para funcionar
+				let cursoId = $("#curso").val(); 
+				let periodo = $("#periodo").val();
+				let arrayString = periodo.split("/");
+				let ano = arrayString[0];
+				let semestre = arrayString[1];
+
+				if (paginaAtual == 'geral') {
+					renderChartTotalMatriculas(campusId, cursoId, ano, semestre);
+					renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre);
+				}else if(paginaAtual == 'notas'){
+					renderChartNotasParciais(campusId, cursoId, ano, semestre);
+				}
+				
 			}
 		})
 	});
@@ -136,10 +154,15 @@
 	$('#curso').change(function() {
 		let campusId = $("#campus").val(); 
 		let cursoId = $(this).val();
-		renderChartFormaIngresso(campusId, cursoId);
-		renderChartStatusDiscente(campusId, cursoId);
-		renderChartTotalMatriculas(campusId, cursoId);
-		renderChartDiscentesEvadidos(campusId, cursoId);
+
+		if (paginaAtual == 'geral') {
+			renderChartFormaIngresso(campusId, cursoId);
+			renderChartStatusDiscente(campusId, cursoId);
+			renderChartTotalMatriculas(campusId, cursoId);
+			renderChartDiscentesEvadidos(campusId, cursoId);
+		}else if(paginaAtual == 'notas'){
+			renderChartNotasParciais(campusId, cursoId);
+		}
 	});
 
 	//popula select turmas
@@ -150,10 +173,15 @@
 		let arrayString = periodo.split("/");
 		let ano = arrayString[0];
 		let semestre = arrayString[1];
-		renderChartFormaIngresso(campusId, cursoId, ano, semestre);
-		renderChartStatusDiscente(campusId, cursoId, ano, semestre);
-		renderChartTotalMatriculas(campusId, cursoId, ano, semestre);
-		renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre);
+
+		if (paginaAtual == 'geral') {
+			renderChartFormaIngresso(campusId, cursoId, ano, semestre);
+			renderChartStatusDiscente(campusId, cursoId, ano, semestre);
+			renderChartTotalMatriculas(campusId, cursoId, ano, semestre);
+			renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre);
+		}else if(paginaAtual == 'notas'){
+			renderChartNotasParciais(campusId, cursoId, ano, semestre);
+		}
 
 		$.ajax({
 			url: '/consulta_turmas/',
@@ -178,17 +206,40 @@
 		let ano = arrayString[0];
 		let semestre = arrayString[1];
 		let turmaId = $(this).val();
-		renderChartFormaIngresso(campusId, cursoId, ano, semestre, turmaId); 
-		renderChartStatusDiscente(campusId, cursoId, ano, semestre, turmaId); 
-		renderChartTotalMatriculas(campusId, cursoId, ano, semestre, turmaId); 
-		renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre, turmaId); 
+
+		if (paginaAtual == 'geral') {
+			renderChartFormaIngresso(campusId, cursoId, ano, semestre, turmaId); 
+			renderChartStatusDiscente(campusId, cursoId, ano, semestre, turmaId); 
+			renderChartTotalMatriculas(campusId, cursoId, ano, semestre, turmaId); 
+			renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre, turmaId); 
+		}else if(paginaAtual == 'notas'){
+			renderChartNotasParciais(campusId, cursoId, ano, semestre, turmaId);
+		}
 	});
 
 	//Função para habilitar ou desabilitar graficos de acordo com seu preenchimento.
 	function habilita_graficos_curso(){
 		$("#grafico_periodo_ingresso").show();	
 		$("#grafico_periodo_ingresso").hide();
-	}	
+	}
+
+	//função que me diz qual é a página atual (tem no menuAtivo [repetição aqui])
+	function thisPage(){
+		var url = document.URL; //retorna a url da página
+
+		if (url[url.length-1] == "/"){ // remove última barra do endereço
+		  	url = url.substring(0, url.length-1);
+		}
+
+		var urlArr = url.split("/");//retorna um array da url separado pelas barras
+		var lastInd = urlArr.length -1;//retorna o ultimo índice do array (tamanho total menos 1, pois o array começa do zero)
+		var thisPageExtension = urlArr[lastInd];//retorna a pagina atual + a extensão .html .php etc.
+		var thisPageArr = thisPageExtension.split(".");//retorna outro array separando o nome da pagina da extenção
+		var thisPage = thisPageArr[0];//retorna a pagina atual sem a extensão
+
+		return thisPage;
+	}
+
 </script>
 {% endblock js %}
 

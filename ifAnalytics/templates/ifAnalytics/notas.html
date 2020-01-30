@@ -1,38 +1,67 @@
 {% extends 'ifAnalytics/base.html' %}
 
-
 {% block content %}
-<div id="dashboards">
 
-	<!-- Scripts para criação do gráfico -->
-	<script type="text/javascript">
-		
-		google.charts.setOnLoadCallback(drawChart);
+<script> //GRÁFICO NOTAS PARCIAIS
 
-       // Populando o gráfico com dados
-       function drawChart() {
+  let dados
 
-       	var data = google.visualization.arrayToDataTable([
-       		['Situação', 'Alunos'],
-       		['Reprovado por nota',     18],
-       		['Reprovdo por faltas',      8],
-       		['Reprovado por notas e faltas',  9],
-       		['Aprovado', 50],
-       		]);
-
-       	var options = {
-       		title: 'Gráfico de notas',
-       		backgroundColor: '#E1F0DB',
-       	};
-
-       	var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-       	chart.draw(data, options);
+  function renderChartNotasParciais(campusId, cursoId, ano, semestre, turmaId){
+    //pegando os dados da view "get_data_notas_parciais" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_notas_parciais/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId,
+          'ano_turma' : ano,
+          'semestre_turma' : semestre,
+          'turma_id': turmaId
+       },
+       success: function(data_from_view){
+         dados = data_from_view
+         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Abaixo de 7', 'Acima de 7', 'Notas Parciais', 'piechart_notas_parciais');});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
        }
-	</script>
+    })
+  }
+</script>
 
-	<!-- Plotagem do gráfico -->
-	<div id="piechart" style="width: 400px; height: 300px;"></div>
+<script> //Função que desenha todos os gráficos
+  // Populando gráficos de pizza com dados
+  function drawGeralPizza(dados, coluna_1, coluna_2, titulo, id_div){
+      data = new google.visualization.DataTable();
+      data.addColumn('number', coluna_1);
+      data.addColumn('number', coluna_2);
 
+     for (let i = 0; i < dados.length; i++) {
+            data.addRows([dados[i]]);
+     }
+
+     let options = {
+            title: titulo,
+            backgroundColor: '#E1F0DB',
+            chartArea: {left: 10, height: 250, width: 600},
+            legend: {textStyle: {fontSize: 10}},
+            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+            sliceVisibilityThreshold: 0,
+     };
+
+     let chart = new google.visualization.PieChart(document.getElementById(id_div));
+
+     chart.draw(data, options);
+  }
+</script>
+
+
+
+
+
+<div id="dashboards">
+  <!-- Plotagem do gráfico -->
+  <div id="piechart_notas_parciais" class="grafico alinha_grafico_esquerda"></div>
 </div>
 {% endblock %}
