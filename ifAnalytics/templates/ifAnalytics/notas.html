@@ -20,7 +20,30 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Abaixo de 7', 'Acima de 7', 'Notas Parciais', 'piechart_notas_parciais');});
+         // console.log("esse é o retorno da consulta: "+dados);
+
+         let dadosNovo = dados[0].toString().split(",");
+         // console.log("esse é o dadosNovo0: "+dadosNovo[0]);
+         // console.log("esse é o dadosNovo1: "+dadosNovo[1]);
+
+         // let posicao1legenda = "Abaixo de 7";
+         // let posicao1valor = parseInt(dadosNovo[0]);
+         // let posicao2legenda = "Acima de 7";
+         // let posicao2valor = parseInt(dadosNovo[1]);
+         // let dadosNovoArr= [[posicao1legenda,posicao1valor], [posicao2legenda,posicao2valor]];
+
+
+
+         let posicao1 = ["Abaixo de 7",parseInt(dadosNovo[0], 10)];
+         let posicao2 = ["Acima de 7",parseInt(dadosNovo[1], 10)];
+         let dadosNovoArr= [posicao1, posicao2];
+
+
+
+         //let dadosNovoArr= [["Abaixo de 7,"+dadosNovo[0]], ["Acima de 7,"+dadosNovo[1]]];
+         //console.log("novo array de dados novos: "+dadosNovoArr);
+         // console.log(dadosNovoArr);
+         google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Notas Parciais Unidade 1', 'piechart_notas_parciais');});
        },
        error: function(error_data){
           console.log("error")
@@ -34,11 +57,16 @@
   // Populando gráficos de pizza com dados
   function drawGeralPizza(dados, coluna_1, coluna_2, titulo, id_div){
       data = new google.visualization.DataTable();
-      data.addColumn('number', coluna_1);
+      data.addColumn('string', coluna_1);
       data.addColumn('number', coluna_2);
+
+// console.log("dados na posição 0:"+dados[0]);
+// console.log("dados na posição 1:"+dados[1]);
+// console.log("tamanho dadosnovoArr: "+dados.length);
 
      for (let i = 0; i < dados.length; i++) {
             data.addRows([dados[i]]);
+            //data.addRows([dados[i]]);
      }
 
      let options = {
@@ -51,6 +79,35 @@
      };
 
      let chart = new google.visualization.PieChart(document.getElementById(id_div));
+
+     chart.draw(data, options);
+  }
+
+    // Populando gráficos de coluna com dados
+  function drawGeralColuna(dados, coluna_1, coluna_2, titulo, id_div){
+      data = new google.visualization.DataTable();
+      data.addColumn('number', coluna_1);
+      data.addColumn('number', coluna_2);
+
+     for (let i = 0; i < dados.length; i++) {
+            data.addRows([dados[i]]);
+     }
+
+     let options = {
+            title: titulo,
+            hAxis: {
+              title: 'Disciplinas'
+            },
+            vAxis: {
+              title: 'Alunos'
+            },
+            backgroundColor: '#E1F0DB',
+            chartArea: {left: 10, height: 250, width: 600},
+            legend: {textStyle: {fontSize: 10}},
+            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+     };
+
+     let chart = new google.visualization.ColumnChart(document.getElementById(id_div));
 
      chart.draw(data, options);
   }

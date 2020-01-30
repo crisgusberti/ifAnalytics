@@ -101,12 +101,14 @@
 	   })
 	});
 
+	//Verifica qual é a página atual para chamar as funções pertinentes
+	var paginaAtual = thisPage();
+
 	//popula select Cursos e Período
 	$('#campus').change(function() {
 		let campusId = $(this).val();
 
-		//Verifica qual é a página atual para chamar as funções pertinentes
-		var paginaAtual = thisPage();
+
 		if (paginaAtual == 'geral') {
 			renderChartFormaIngresso(campusId);
 			renderChartStatusDiscente(campusId);
