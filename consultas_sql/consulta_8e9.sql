@@ -1,3 +1,4 @@
+--Consulta 8
 -- Consulta notas parciais ()
 WITH Q1 AS (
 		SELECT 
@@ -14,7 +15,7 @@ WITH Q1 AS (
 	INNER JOIN ensino.nota_unidade nu ON nu.id_matricula_componente = mc.id_matricula_componente
   
     -- ano de inicio da turma
-	WHERE t.ano = 2019
+	WHERE t.ano = 2019 AND t.periodo = 2
 
     -- busca o campus
 	AND d.id_gestora_academica IN (
@@ -50,7 +51,7 @@ FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
 	INNER JOIN discente d ON d.id_discente = mc.id_discente
 	
-	WHERE t.ano = 2019
+	WHERE t.ano = 2019 AND t.periodo = 2
 
 	AND d.id_gestora_academica IN (
 		SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(31)

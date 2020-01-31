@@ -145,7 +145,9 @@
 					renderChartTotalMatriculas(campusId, cursoId, ano, semestre);
 					renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre);
 				}else if(paginaAtual == 'notas'){
-					renderChartNotasParciais(campusId, cursoId, ano, semestre);
+					renderChartNotasParciais(1, campusId, ano, semestre);
+					renderChartNotasParciais(2, campusId, ano, semestre);
+					renderChartMediasFinais(campusId, ano, semestre);
 				}
 				
 			}
@@ -156,6 +158,10 @@
 	$('#curso').change(function() {
 		let campusId = $("#campus").val(); 
 		let cursoId = $(this).val();
+		let periodo = $("#periodo").val(); // repetição de variaveis. elas poderiam ser criadas só uma vez no inicio?
+		let arrayString = periodo.split("/");
+		let ano = arrayString[0];
+		let semestre = arrayString[1];
 
 		if (paginaAtual == 'geral') {
 			renderChartFormaIngresso(campusId, cursoId);
@@ -163,7 +169,9 @@
 			renderChartTotalMatriculas(campusId, cursoId);
 			renderChartDiscentesEvadidos(campusId, cursoId);
 		}else if(paginaAtual == 'notas'){
-			renderChartNotasParciais(campusId, cursoId);
+			renderChartNotasParciais(1, campusId, ano, semestre, cursoId);
+			renderChartNotasParciais(2, campusId, ano, semestre, cursoId);
+			renderChartMediasFinais(campusId, ano, semestre, cursoId);
 		}
 	});
 
@@ -182,7 +190,9 @@
 			renderChartTotalMatriculas(campusId, cursoId, ano, semestre);
 			renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre);
 		}else if(paginaAtual == 'notas'){
-			renderChartNotasParciais(campusId, cursoId, ano, semestre);
+			renderChartNotasParciais(1, campusId, ano, semestre);
+			renderChartNotasParciais(2, campusId, ano, semestre);
+			renderChartMediasFinais(campusId, ano, semestre);
 		}
 
 		$.ajax({
@@ -215,7 +225,9 @@
 			renderChartTotalMatriculas(campusId, cursoId, ano, semestre, turmaId); 
 			renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre, turmaId); 
 		}else if(paginaAtual == 'notas'){
-			renderChartNotasParciais(campusId, cursoId, ano, semestre, turmaId);
+			renderChartNotasParciais(1, campusId, ano, semestre, cursoId, turmaId);
+			renderChartNotasParciais(2, campusId, ano, semestre, cursoId, turmaId);
+			renderChartMediasFinais(campusId, ano, semestre, cursoId, turmaId);
 		}
 	});
 
