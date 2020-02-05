@@ -5,7 +5,7 @@
 
   let data_forma_ingresso
 
-  function renderChartFormaIngresso(campusId, cursoId, ano, semestre, turmaId){
+  function renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId, turmaId){
     //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
     $.ajax({
         method: "GET",
@@ -15,7 +15,8 @@
           'curso_id' : cursoId,
           'ano_turma' : ano,
           'semestre_turma' : semestre,
-          'turma_id': turmaId
+          'turma_id': turmaId,
+          'querySelector' : querySelector
        },
        success: function(data_from_view){
          data_forma_ingresso = data_from_view
@@ -86,7 +87,7 @@
 
   let dados
 
-  function renderChartStatusDiscente(campusId, cursoId, ano, semestre, turmaId){
+  function renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId, turmaId){
     //pegando os dados da view "get_data_status_discente" para popular o gráfico
     $.ajax({
         method: "GET",
@@ -96,7 +97,8 @@
           'curso_id' : cursoId,
           'ano_turma' : ano,
           'semestre_turma' : semestre,
-          'turma_id': turmaId
+          'turma_id': turmaId,
+          'querySelector' : querySelector
        },
        success: function(data_from_view){
          dados = data_from_view

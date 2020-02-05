@@ -32,7 +32,7 @@ AND d.nivel NOT IN ('E', 'L')
 GROUP BY mi.id_modalidade_ingresso
 ORDER BY mi.descricao
 
--- passando o campus
+-- passando o campus e ano
 
 SELECT mi.descricao, COUNT(d.*) AS total_alunos 
 FROM discente d 
@@ -43,24 +43,23 @@ AND d.nivel NOT IN ('E', 'L')
 AND d.id_gestora_academica IN (
    SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz({31})
 )
-
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
 GROUP BY mi.id_modalidade_ingresso
 ORDER BY mi.descricao
 
--- passando o curso
+-- passando o curso e ano
 
 SELECT mi.descricao, COUNT(d.*) AS total_alunos 
 FROM discente d 
 INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso
 WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) 
 AND d.nivel NOT IN ('E', 'L')
-
 AND d.id_curso = {28}
-
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
 GROUP BY mi.id_modalidade_ingresso
 ORDER BY mi.descricao
 
--- passando um período (ano/semestre)
+-- passando um período (ano/semestre) e campus
 
 SELECT  mi.descricao, COUNT(d.*) AS total_alunos 
 FROM discente d 
@@ -69,8 +68,11 @@ INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_mod
 WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) 
 AND d.nivel NOT IN ('E', 'L')
 
+AND d.id_gestora_academica IN (
+   SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz({31})
+)
+
 AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
-AND d.id_curso = 509023
 
 GROUP BY mi.id_modalidade_ingresso
 ORDER BY mi.descricao

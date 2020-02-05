@@ -55,7 +55,7 @@ GROUP BY sd.status
 ORDER BY sd.descricao
 
 
---select status alunos passando campus
+--select status alunos passando campus e ano
 
 SELECT sd.descricao, COUNT(d.*) AS total_alunos 
 FROM discente d 
@@ -64,28 +64,32 @@ WHERE d.nivel IN ('G')
 AND d.id_gestora_academica IN (
    SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz({31})
 )
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
 GROUP BY sd.status
 ORDER BY sd.descricao
 
 
---select status alunos passando curso
+--select status alunos passando curso e ano
 
 SELECT sd.descricao, COUNT(d.*) AS total_alunos 
 FROM discente d 
 INNER JOIN status_discente sd ON sd.status = d.status 
 WHERE d.id_curso = {28}
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
 GROUP BY sd.status
 ORDER BY sd.descricao
 
 
---select status alunos passando ano e semestre
+--select status alunos passando ano e semestre e campus
 
 SELECT sd.descricao, COUNT(d.*) AS total_alunos 
 FROM discente d 
 INNER JOIN status_discente sd ON sd.status = d.status 
 WHERE d.nivel IN ('G') 
+AND d.id_gestora_academica IN (
+   SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz({31})
+)
 AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
-AND d.id_curso = 509023
 GROUP BY sd.status
 ORDER BY sd.descricao
 
