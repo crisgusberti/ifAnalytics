@@ -43,14 +43,13 @@
 		</ul>
 	</nav>
 
-	<!-- script para deixar menu ativo -->
-	<script src="{% static '/js/MenuAtivo.js' %}"></script> 
+	
+	<script src="{% static '/js/MenuAtivo.js' %}"></script> <!-- script para deixar menu ativo -->
 
 
 	<div id="filtros">
 		<form id="filtros_selecao" method="GET">
 			<select id="campus" name="campus" class="combobox"> <!-- select populado pelo ajax abaixo -->
-				<!-- <option value="">SELECIONE</option> -->
 			</select>
 
 			<select id="periodo" name="periodo" class="combobox">
@@ -64,15 +63,6 @@
 			<select id="turma" name="turma" class="combobox">
 				<option value="">Turma</option>
 			</select><br><br>
-
-			<!-- <select id="aluno" name="aluno" class="combobox"> COMBO DOS ALUNOS NÃO TEM NA PÁGINA GERAL
-				<option value="" hidden disabled selected>Aluno</option>
-				<option value="Aluno1">Aluno1</option>
-				<option value="Aluno2">Aluno2</option>
-				<option value="Aluno3">Aluno3</option>
-				<option value="Aluno4">Aluno4</option>
-				<option value="...">...</option>
-			</select><br> -->
 		</form>
 	</div>
 
@@ -100,7 +90,7 @@
 	});
 
 	var paginaAtual = thisPage(); //Verifica qual é a página atual para chamar as funções pertinentes
-	var passaCurso; //Define se o campus é passado ao alterar ano/período, dependendo de quais combos já foram selecionados
+	var passaCurso; //Define se o curso é passado ao alterar ano/período, dependendo de quais combos já foram selecionados
 	var querySelector; //Identifica qual query deverá ser executada na views.py
 
 	//popula select Período e Curso
@@ -128,16 +118,15 @@
 				if (paginaAtual == 'geral') {
 					renderChartFormaIngresso(querySelector, campusId, ano, semestre);
 					renderChartStatusDiscente(querySelector, campusId, ano, semestre);
-					//renderChartTotalMatriculas(campusId, cursoId, ano, semestre);
-					//renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre);
+					renderChartTotalMatriculas(querySelector, campusId, ano, semestre);
+					renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre);
 				}else if(paginaAtual == 'notas'){
-					///renderChartNotasParciais(1, campusId, ano, semestre);
-					//renderChartNotasParciais(2, campusId, ano, semestre);
-					//renderChartMediasFinais(campusId, ano, semestre);
+					renderChartNotasParciais(1, querySelector, campusId, ano, semestre);
+					renderChartNotasParciais(2, querySelector, campusId, ano, semestre);
+					renderChartMediasFinais(querySelector, campusId, ano, semestre);
 				}
 			}
 		})
-
 		//popula cursos
 		$.ajax({
 			url: '/consulta_cursos/',
@@ -147,35 +136,11 @@
 			success: function(response) {
 				$('#curso').html(response);
 	          	//incluir aqui chamada para função habilita_grafico_tal          
-	        }
-	    })
+	          }
+	      })
 	});
 
-	//detecta alteração no combo curso e chama funções do geral.html
-	$('#curso').change(function() {
-		passaCurso = true;
-		let campusId = $("#campus").val(); 
-		let cursoId = $(this).val();
-		let periodo = $("#periodo").val(); 
-		let arrayString = periodo.split("/");
-		let ano = arrayString[0];
-		let semestre = arrayString[1];
-
-		querySelector = 'curso';
-
-		if (paginaAtual == 'geral') {
-			renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId);
-			renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId);
-			//renderChartTotalMatriculas(campusId, cursoId);
-			//renderChartDiscentesEvadidos(campusId, cursoId);
-		}else if(paginaAtual == 'notas'){
-			//renderChartNotasParciais(1, campusId, ano, semestre, cursoId);
-			//renderChartNotasParciais(2, campusId, ano, semestre, cursoId);
-			//renderChartMediasFinais(campusId, ano, semestre, cursoId);
-		}
-	});
-
-	//popula select turmas
+	//popula select turma
 	$('#periodo').change(function() {
 		let campusId = $("#campus").val();
 		let cursoId = $("#curso").val();  
@@ -191,33 +156,71 @@
 				//se entrar aqui quer dizer que está sendo alterado ano/semestre para o campus
 				renderChartFormaIngresso(querySelector, campusId, ano, semestre);
 				renderChartStatusDiscente(querySelector, campusId, ano, semestre);
+				renderChartTotalMatriculas(querySelector, campusId, ano, semestre);
+				renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre);
 			} else {
 				//se entrar aqui quer dizer que está sendo alterado o ano/semestre para o curso
 				querySelector = "curso";
 				renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId);
 				renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId);
+				renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId,);
+				renderChartDiscentesEvadidos(querySelector, null, ano, semestre, cursoId);
 			}
 		}else if(paginaAtual == 'notas'){
-			//renderChartNotasParciais(1, campusId, ano, semestre);
-			//renderChartNotasParciais(2, campusId, ano, semestre);
-			//renderChartMediasFinais(campusId, ano, semestre);
+			if (!passaCurso) {
+				//se entrar aqui quer dizer que está sendo alterado ano/semestre para o campus
+				renderChartNotasParciais(1, querySelector, campusId, ano, semestre);
+				renderChartNotasParciais(2, querySelector, campusId, ano, semestre);
+				renderChartMediasFinais(querySelector, campusId, ano, semestre);
+			} else {
+				//se entrar aqui quer dizer que está sendo alterado o ano/semestre para o curso
+				querySelector = "curso";
+				renderChartNotasParciais(1, querySelector, null, ano, semestre, cursoId);
+				renderChartNotasParciais(2, querySelector, null, ano, semestre, cursoId);
+				renderChartMediasFinais(querySelector, null, ano, semestre, cursoId);
+			}
 		}
 
+		//popula turmas
 		$.ajax({
 			url: '/consulta_turmas/',
 	        data: { //passando por ajax para a view "consulta_turmas", as variáveis definidas acima
 	        'campus_id' : campusId,
-	        'ano_turma' : ano,
-	        'semestre_turma' : semestre
-	    },
-	    success: function(response) {
+	        'ano' : ano,
+	        'semestre' : semestre
+	    	},
+	    	success: function(response) {
 	    	$('#turma').html(response);
 	          // $('#proximoID').html('<option value="">---</option>'); maneira de deixar o proximo não selecionado
-	      }
+	      	}
 	  })
 	});
 
-	//detecta alteração no combo turmas e chama funções do geral.html
+	//detecta alteração no combo curso e chama funções do geral/notas.html
+	$('#curso').change(function() {
+		passaCurso = true;
+		let campusId = $("#campus").val(); 
+		let cursoId = $(this).val();
+		let periodo = $("#periodo").val(); 
+		let arrayString = periodo.split("/");
+		let ano = arrayString[0];
+		let semestre = arrayString[1];
+
+		querySelector = 'curso';
+
+		if (paginaAtual == 'geral') {
+			renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId);
+			renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId);
+			renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId);
+			renderChartDiscentesEvadidos(querySelector, null, ano, semestre, cursoId);
+		}else if(paginaAtual == 'notas'){
+			renderChartNotasParciais(1, querySelector, null, ano, semestre, cursoId);
+			renderChartNotasParciais(2, querySelector, null, ano, semestre, cursoId);
+			renderChartMediasFinais(querySelector, null, ano, semestre, cursoId);
+		}
+	});
+
+	//detecta alteração no combo turmas e chama funções do geral/notas.html
 	$('#turma').change(function() {
 		let campusId = $("#campus").val();
 		let cursoId = $("#curso").val();  
@@ -232,12 +235,12 @@
 		if (paginaAtual == 'geral') {
 			renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId, turmaId); 
 			renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId, turmaId); 
-			//renderChartTotalMatriculas(campusId, cursoId, ano, semestre, turmaId); 
-			//renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre, turmaId); 
+			renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId, turmaId); 
+			//renderChartDiscentesEvadidos(Não é executado para turma); 
 		}else if(paginaAtual == 'notas'){
-			//renderChartNotasParciais(1, campusId, ano, semestre, cursoId, turmaId);
-			//renderChartNotasParciais(2, campusId, ano, semestre, cursoId, turmaId);
-			//renderChartMediasFinais(campusId, ano, semestre, cursoId, turmaId);
+			renderChartNotasParciais(1, querySelector, null, ano, semestre, null, turmaId);
+			renderChartNotasParciais(2, querySelector, null, ano, semestre, null, turmaId);
+			renderChartMediasFinais(querySelector, null, ano, semestre, null, turmaId);
 		}
 	});
 

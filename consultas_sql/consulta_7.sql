@@ -4,19 +4,22 @@
 
 -- GRADUAÇÃO
 -- filtrando por campus e ano (vai mostrar x cancelados por curso)
-SELECT COUNT(DISTINCT mc.id_discente) AS matricula_turma, c.nome --, cc.codigo, cc.nivel 
-	--SELECT mc.id_matricula_componente, mc.id_turma, mc.id_discente, c.id_curso
-FROM ensino.matricula_componente mc 
+SELECT c.nome AS curso, COUNT(DISTINCT mc.id_discente) AS discentes_evadidos
+FROM ensino.matricula_componente mc
+	
 INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma 
---INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina 
-INNER JOIN discente d ON d.id_discente = mc.id_discente
-INNER JOIN curso c ON c.id_curso = d.id_curso	
-WHERE  mc.id_situacao_matricula = 3 
-	AND t.ano = 2019 AND t.periodo = 2
-	--AND cc.id_unidade IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(31)) 
-	AND d.id_gestora_academica 	IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(31)) 
-
-GROUP BY c.nome 
+INNER JOIN discente d ON d.id_discente = mc.id_discente 
+INNER JOIN curso c ON c.id_curso = d.id_curso
+	
+	WHERE  mc.id_situacao_matricula = 3 
+	
+	AND t.ano = 2019 AND t.periodo = 1 
+	
+	AND d.id_gestora_academica IN (
+		SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(49)
+	) 
+	
+GROUP BY c.nome
 
 
 --filtrando por curso (vai mostrar X cancelados por disciplina)
@@ -62,7 +65,7 @@ WITH q_disciplinas_curso AS (
 		WHERE ect.id_curso = 216925
 
 )
-	SELECT COUNT(mc.*) AS total_cancelamento_discente, cc.codigo 
+	SELECT cc.codigo, COUNT(mc.*) AS total_cancelamento_discente
 	FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
 	INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina

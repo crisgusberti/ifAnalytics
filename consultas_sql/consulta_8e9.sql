@@ -53,11 +53,15 @@ FROM ensino.matricula_componente mc
 	
 	WHERE t.ano = 2019 AND t.periodo = 2
 
+	--passando o campus
 	AND d.id_gestora_academica IN (
-		SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(31)
+		SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(56)
 	)
 	
-    AND d.id_curso = {ID_CURSO}
-	AND mc.id_turma = 5012
+	--passando o curso
+    AND d.id_curso = 194730
+
+    --passando a turma
+	AND mc.id_turma = 3402
 
 

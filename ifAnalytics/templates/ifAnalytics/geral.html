@@ -1,7 +1,7 @@
 {% extends 'ifAnalytics/base.html' %}
 
 {% block content %}
-<script> //GRÁFICO FORMA DE INGRESSO
+<script> //GRÁFICO 1: FORMA DE INGRESSO - Primeira versão (original)
 
   let data_forma_ingresso
 
@@ -13,8 +13,8 @@
         data: {
           'campus_id' : campusId,
           'curso_id' : cursoId,
-          'ano_turma' : ano,
-          'semestre_turma' : semestre,
+          'ano' : ano,
+          'semestre' : semestre,
           'turma_id': turmaId,
           'querySelector' : querySelector
        },
@@ -51,7 +51,7 @@
      let chart = new google.visualization.PieChart(document.getElementById('piechart_forma_ingresso'));
 
 
-/////////////////////////////////////////////////////////////// testes de interatividade!!!
+  /////////////////////////////////////////////////////////////// testes de interatividade!!!
               function selectHandler() {
                   var selectedItem = chart.getSelection()[0];
                   if (selectedItem) {
@@ -76,14 +76,14 @@
                 // Listen for the 'select' event, and call my function selectHandler() when
                 // the user selects something on the chart.
                 google.visualization.events.addListener(chart, 'select', selectHandler);
-///////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////
 
      chart.draw(data, options);
   }
 </script>
 
 
-<script> //GRÁFICO STATUS DISCENTE - Segunda versão, usando parametros para chamar a função que desenha os gráficos
+<script> //GRÁFICO 2: STATUS DISCENTE - Segunda versão, usando parametros para chamar a função que desenha os gráficos
 
   let dados
 
@@ -95,8 +95,8 @@
         data: {
           'campus_id' : campusId,
           'curso_id' : cursoId,
-          'ano_turma' : ano,
-          'semestre_turma' : semestre,
+          'ano' : ano,
+          'semestre' : semestre,
           'turma_id': turmaId,
           'querySelector' : querySelector
        },
@@ -110,8 +110,97 @@
        }
     })
   }
+</script>
+
+
+<script> //GRÁFICO 3: TOTAL MATRICULAS (EM COLUNAS)
+
+  let data_total_matriculas
+
+  function renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //pegando os dados da view "get_data_total_matriculas" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_total_matriculas/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId,
+          'ano' : ano,
+          'semestre' : semestre,
+          'turma_id': turmaId,
+          'querySelector' : querySelector
+       },
+       success: function(data_from_view){
+         data_total_matriculas = data_from_view
+         google.charts.setOnLoadCallback(function() {drawChart_total_matriculas(data_total_matriculas);});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
 
   // Populando o gráfico com dados
+  function drawChart_total_matriculas(data_total_matriculas) {
+     data = new google.visualization.DataTable();
+     data.addColumn('number', 'Disciplinas');
+     data.addColumn('number', 'Alunos');
+
+     for (let i = 0; i < data_total_matriculas.length; i++) {
+            data.addRows([data_total_matriculas[i]]);
+     }
+
+     let options = {
+            title: 'Quantidade de alunos matriculados em um total de X disciplinas',
+            hAxis: {
+              title: 'Disciplinas'
+            },
+            vAxis: {
+              title: 'Alunos'
+            },
+            backgroundColor: '#E1F0DB',
+            chartArea: {left: 10, height: 250, width: 600},
+            legend: {textStyle: {fontSize: 10}},
+            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+     };
+
+     let chart = new google.visualization.ColumnChart(document.getElementById('piechart_total_matriculas'));
+
+     chart.draw(data, options);
+  }
+</script>
+
+
+<script> //GRÁFICO 7: DISCENTES EVADIDOS
+  function renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //pegando os dados da view "get_data_discentes_evadidos" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_discentes_evadidos/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId,
+          'ano' : ano,
+          'semestre' : semestre,
+          'turma_id': turmaId,
+          'querySelector' : querySelector
+       },
+       success: function(data_from_view){
+         dados = data_from_view
+         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Discentes Evadidos', 'Alunos', 'Discentes Evadidos', 'piechart_discentes_evadidos');});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
+</script>
+
+
+<script> //POPULANDO OS GRÁFICOS!
+  // Função que populando os gráficos com dados
   function drawGeralPizza(dados, coluna_string, number_string, titulo, id_div){
       data = new google.visualization.DataTable();
       data.addColumn('string', coluna_string);
@@ -136,120 +225,7 @@
   }
 </script>
 
-
-<script> //GRÁFICO TOTAL MATRICULAS
-
-  let data_total_matriculas
-
-  function renderChartTotalMatriculas(campusId, cursoId, ano, semestre, turmaId){
-    //pegando os dados da view "get_data_total_matriculas" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_total_matriculas/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano_turma' : ano,
-          'semestre_turma' : semestre,
-          'turma_id': turmaId
-       },
-       success: function(data_from_view){
-         data_total_matriculas = data_from_view
-         google.charts.setOnLoadCallback(function() {drawChart_total_matriculas(data_total_matriculas);});
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-       }
-    })
-  }
-
-  // Populando o gráfico com dados
-  function drawChart_total_matriculas(data_total_matriculas) {
-     data = new google.visualization.DataTable();
-     data.addColumn('number', 'Disciplinas');
-     data.addColumn('number', 'Alunos');
-
-     for (let i = 0; i < data_total_matriculas.length; i++) {
-            data.addRows([data_total_matriculas[i]]);
-     }
-
-     let options = {
-            title: 'Quantidade de alunos matriculados em X disciplinas',
-            hAxis: {
-              title: 'Disciplinas'
-            },
-            vAxis: {
-              title: 'Alunos'
-            },
-            backgroundColor: '#E1F0DB',
-            chartArea: {left: 10, height: 250, width: 600},
-            legend: {textStyle: {fontSize: 10}},
-            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
-     };
-
-     let chart = new google.visualization.ColumnChart(document.getElementById('piechart_total_matriculas'));
-
-     chart.draw(data, options);
-  }
-</script>
-
-<script> //GRÁFICO DISCENTES EVADIDOS
-
-  let data_discentes_evadidos
-
-  function renderChartDiscentesEvadidos(campusId, cursoId, ano, semestre, turmaId){
-    //pegando os dados da view "get_data_discentes_evadidos" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_discentes_evadidos/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano_turma' : ano,
-          'semestre_turma' : semestre,
-          'turma_id': turmaId
-       },
-       success: function(data_from_view){
-         data_discentes_evadidos = data_from_view
-         console.log("data from view: ");
-         console.log(data_from_view);
-         google.charts.setOnLoadCallback(function() {drawChart_discentes_evadidos(data_discentes_evadidos);});
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-       }
-    })
-  }
-
-  // Populando o gráfico com dados
-  function drawChart_discentes_evadidos(data_discentes_evadidos) {
-     data = new google.visualization.DataTable();
-     data.addColumn('string', 'Discentes Evadidos');
-     data.addColumn('number', 'Alunos');
-
-     for (let i = 0; i < data_discentes_evadidos.length; i++) {
-            data.addRows([data_discentes_evadidos[i]]);
-     }
-
-     let options = {
-            title: 'Discentes Evadidos',
-            backgroundColor: '#E1F0DB',
-            chartArea: {left: 10, height: 250, width: 600},
-            legend: {textStyle: {fontSize: 10}},
-            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
-            sliceVisibilityThreshold: 0,
-     };
-
-     let chart = new google.visualization.PieChart(document.getElementById('piechart_discentes_evadidos'));
-
-     chart.draw(data, options);
-  }
-</script>
-
-<div id="dashboards">
-	<!-- Plotagem do gráfico -->
+<div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
 	<div id="piechart_forma_ingresso" class="grafico alinha_grafico_esquerda"></div>
   <div id="piechart_status_discente" class="grafico alinha_grafico_direita"></div>
   <div id="piechart_total_matriculas" class="grafico alinha_grafico_esquerda"></div>

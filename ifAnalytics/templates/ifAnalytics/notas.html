@@ -4,76 +4,76 @@
 
 <script>
 
-  let dados
+       let dados
 
-  function renderChartNotasParciais(unidade, campusId, ano, semestre, cursoId, turmaId){
-    //pegando os dados da view "get_data_notas_parciais" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_notas_parciais/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano_turma' : ano,
-          'semestre_turma' : semestre,
-          'turma_id': turmaId,
-          'unidade' : unidade
-       },
-       success: function(data_from_view){
-         dados = data_from_view
+       function renderChartNotasParciais(unidade, querySelector, campusId, ano, semestre, cursoId, turmaId){
+         //pegando os dados da view "get_data_notas_parciais" para popular o gráfico
+              $.ajax({
+                     method: "GET",
+                     url: '/get_data_notas_parciais/', 
+                     data: {
+                     'campus_id' : campusId,
+                     'curso_id' : cursoId,
+                     'ano' : ano,
+                     'semestre' : semestre,
+                     'turma_id': turmaId,
+                     'unidade' : unidade,
+                     'querySelector' : querySelector
+                     },
+              success: function(data_from_view){
+                     dados = data_from_view
 
-         //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
-         let dadosNovo = dados[0].toString().split(",");
-         let posicao1 = ["Acima de 7",parseInt(dadosNovo[0], 10)];
-         let posicao2 = ["Abaixo de 7",parseInt(dadosNovo[1], 10)];
-         let dadosNovoArr= [posicao1, posicao2];
+                     //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
+                     let dadosNovo = dados[0].toString().split(",");
+                     let posicao1 = ["Acima de 7",parseInt(dadosNovo[0], 10)];
+                     let posicao2 = ["Abaixo de 7",parseInt(dadosNovo[1], 10)];
+                     let dadosNovoArr= [posicao1, posicao2];
 
-         if (unidade == 1) {
-              google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Notas Parciais Unidade 1', 'piechart_notas_parciais_unidade1');});
-         } else {
-              google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Notas Parciais Unidade 2', 'piechart_notas_parciais_unidade2');});
-         }
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
+                     if (unidade == 1) {
+                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Notas Parciais Unidade 1', 'piechart_notas_parciais_unidade1');});
+                     } else {
+                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Notas Parciais Unidade 2', 'piechart_notas_parciais_unidade2');});
+                     }
+              },
+              error: function(error_data){
+                     console.log("error")
+                     console.log(error_data)
+              }
+              })
        }
-    })
-  }
 
-  function renderChartMediasFinais(campusId, ano, semestre, cursoId, turmaId){
-    //pegando os dados da view "get_data_medias_finais" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_medias_finais/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano_turma' : ano,
-          'semestre_turma' : semestre,
-          'turma_id': turmaId
-       },
-       success: function(data_from_view){
-         dados = data_from_view
+       function renderChartMediasFinais(querySelector, campusId, ano, semestre, cursoId, turmaId){
+              //pegando os dados da view "get_data_medias_finais" para popular o gráfico
+              $.ajax({
+                     method: "GET",
+                     url: '/get_data_medias_finais/', 
+                     data: {
+                     'campus_id' : campusId,
+                     'curso_id' : cursoId,
+                     'ano' : ano,
+                     'semestre' : semestre,
+                     'turma_id': turmaId,
+                     'querySelector' : querySelector
+              },
+              success: function(data_from_view){
+                     dados = data_from_view
 
-         //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
-         let dadosNovo = dados[0].toString().split(",");
-         let posicao1 = ["Acima de 7",parseInt(dadosNovo[0], 10)];
-         let posicao2 = ["Abaixo de 7",parseInt(dadosNovo[1], 10)];
-         let dadosNovoArr= [posicao1, posicao2];
+                     //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
+                     let dadosNovo = dados[0].toString().split(",");
+                     let posicao1 = ["Acima de 7",parseInt(dadosNovo[0], 10)];
+                     let posicao2 = ["Abaixo de 7",parseInt(dadosNovo[1], 10)];
+                     let dadosNovoArr= [posicao1, posicao2];
 
-         google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Médias Finais', 'piechart_medias_finais');});
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
+                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Médias Finais', 'piechart_medias_finais');});
+              },
+                     error: function(error_data){
+                     console.log("error")
+                     console.log(error_data)
+              }
+              })
        }
-    })
-  }
 
-
-       //Função que desenha todos os gráficos
-       // Populando gráficos de pizza com dados
+       //Funções que desenham todos os gráficos
        function drawGeralPizza(dados, coluna_1, coluna_2, titulo, id_div){
               data = new google.visualization.DataTable();
               data.addColumn('string', coluna_1);
@@ -97,7 +97,6 @@
               chart.draw(data, options);
        }
 
-    // Populando gráficos de coluna com dados
        function drawGeralColuna(dados, coluna_1, coluna_2, titulo, id_div){
               data = new google.visualization.DataTable();
               data.addColumn('number', coluna_1);
@@ -127,8 +126,7 @@
        }
 </script>
 
-<div id="dashboards">
-  <!-- Plotagem do gráfico -->
+<div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
   <div id="piechart_notas_parciais_unidade1" class="grafico alinha_grafico_esquerda"></div>
   <div id="piechart_notas_parciais_unidade2" class="grafico alinha_grafico_direita"></div>
   <div id="piechart_medias_finais" class="grafico alinha_grafico_esquerda"></div>

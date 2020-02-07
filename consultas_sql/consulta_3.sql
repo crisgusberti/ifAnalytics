@@ -72,8 +72,6 @@ WITH q_disciplinas_curso AS (
 		INNER JOIN graduacao.curriculo_componente cc ON cc.id_curriculo = cur.id_curriculo
 		INNER JOIN ensino.componente_curricular cu ON cc.id_componente_curricular = cu.id_disciplina
 		WHERE cur.id_curso = 379430
-		--WHERE cur.id_curso = 379430
-		WHERE cur.id_curso = {id_curso}
 
 		UNION
 
@@ -83,21 +81,15 @@ WITH q_disciplinas_curso AS (
 		INNER JOIN tecnico.modulo m ON m.id_modulo = mc.id_modulo
 		INNER JOIN tecnico.modulo_disciplina md ON md.id_modulo = m.id_modulo
 		WHERE ect.id_curso = 379430
-	--	WHERE cur.id_curso = {id_curso}
-
 )
-WITH q1 AS (
+, q1 AS (
 	SELECT COUNT(mc.*) AS total_matricula_discente, mc.id_discente FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
 	INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina
 	
-	--INNER JOIN graduacao.curriculo_componente ccu ON ccu.id_componente_curricular = cc.id_disciplina
-	--INNER JOIN graduacao.curriculo cur ON cur.id_curriculo = ccu.id_curriculo
-	--INNER JOIN curso c ON c.id_curso = {id_curso}
-
 	WHERE 
 	    -- filtra por ano 
-	    t.ano = 2019 
+	    t.ano = 2019 AND t.periodo = 1
 	    -- alunos matriculados
 		AND mc.id_situacao_matricula IN (2, 4, 6, 7, 8, 9, 24, 25, 26, 27)
 	    -- filtra o campus
@@ -111,7 +103,6 @@ WITH q1 AS (
 		AND t.id_disciplina IN (
 			SELECT id_disciplina FROM q_disciplinas_curso
 		)
-
 	GROUP BY id_discente
 	ORDER BY total_matricula_discente
 )
