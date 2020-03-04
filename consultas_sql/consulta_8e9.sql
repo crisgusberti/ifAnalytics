@@ -3,7 +3,7 @@
 WITH Q1 AS (
 		SELECT 
 			mc.id_matricula_componente,
-			nu.nota,
+			nu.nota_final_unidade,
 			nu.unidade,
 			mc.id_discente
 
@@ -28,11 +28,11 @@ WITH Q1 AS (
     -- turma específica
 	AND mc.id_turma = {ID_TURMA}
 	
-	ORDER BY mc.id_matricula_componente, nu.unidade, nu.nota
+	ORDER BY mc.id_matricula_componente, nu.unidade, nu.nota_final_unidade
 )
 SELECT 
-		SUM (CASE WHEN q1.nota >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, 
-		SUM(CASE WHEN q1.nota < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media--,
+		SUM (CASE WHEN q1.nota_final_unidade >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, 
+		SUM(CASE WHEN q1.nota_final_unidade < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media--,
 		--q1.unidade
 FROM q1
 -- unidade = 1 ou 2
