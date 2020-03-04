@@ -213,21 +213,21 @@ def get_data_medias_finais(request):
 
     if query_selector == "turma":
         with connection.cursor() as cursor:
-            sql_string="SELECT SUM (CASE WHEN mc.media_final >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM (CASE WHEN mc.media_final < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE t.ano = %s AND t.periodo = %s AND mc.id_turma = %s"
+            sql_string="SELECT SUM (CASE WHEN mc.media_final >= 5 THEN 1 ELSE 0 END) AS notas_acima_media, SUM (CASE WHEN mc.media_final < 5 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE t.ano = %s AND t.periodo = %s AND mc.id_turma = %s"
             parametros=[ano, semestre, turma_id]
             cursor.execute(sql_string, parametros) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False)
     if query_selector == "curso":
         with connection.cursor() as cursor:
-            sql_string = "SELECT SUM (CASE WHEN mc.media_final >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM (CASE WHEN mc.media_final < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE t.ano = %s AND t.periodo = %s AND d.id_curso = %s"
+            sql_string = "SELECT SUM (CASE WHEN mc.media_final >= 5 THEN 1 ELSE 0 END) AS notas_acima_media, SUM (CASE WHEN mc.media_final < 5 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE t.ano = %s AND t.periodo = %s AND d.id_curso = %s"
             parametros = [ano, semestre, curso_id]
             cursor.execute(sql_string, parametros) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False)
     if query_selector == "campus" or query_selector == "periodo":
         with connection.cursor() as cursor:
-            sql_string="SELECT SUM (CASE WHEN mc.media_final >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM (CASE WHEN mc.media_final < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE t.ano = %s AND t.periodo = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s))"
+            sql_string="SELECT SUM (CASE WHEN mc.media_final >= 5 THEN 1 ELSE 0 END) AS notas_acima_media, SUM (CASE WHEN mc.media_final < 5 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE t.ano = %s AND t.periodo = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s))"
             parametros=[ano, semestre, campus_id]
             cursor.execute(sql_string, parametros) 
             rows = cursor.fetchall();

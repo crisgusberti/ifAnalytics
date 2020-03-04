@@ -43,8 +43,9 @@ GROUP by q1.unidade
 ------------CONSULTA 9 - MEDIAS FINAIS
 
 SELECT 
-		SUM (CASE WHEN mc.media_final >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, 
-		SUM (CASE WHEN mc.media_final < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media
+		SUM (CASE WHEN mc.media_final >= 5 THEN 1 ELSE 0 END) AS notas_acima_media, 
+		SUM (CASE WHEN mc.media_final < 5 THEN 1 ELSE 0 END) AS notas_abaixo_media
+		--OBS: a média final é 7 se vc passar direto, mas se vc fizer o exame a média pra aprovação é 5
 		
 FROM ensino.matricula_componente mc
 
