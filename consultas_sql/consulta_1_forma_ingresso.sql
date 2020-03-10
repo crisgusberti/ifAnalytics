@@ -1,5 +1,4 @@
--- IfAnalytics
--- CONSULTA 1 - FORMA DE INGRESSO
+-- CONSULTA GRÁFICO 1: FORMA DE INGRESSO
 
 -- criar duas funções futuramente
 dti_ifrs.contar_modo_ingresso();

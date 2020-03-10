@@ -1,5 +1,4 @@
--- Consulta 3
--- Quantidade de Matriculados
+-- Consulta gráfico 3: Quantidade de Matriculados
 --(TA MOSTRANDO QUANTIDADE NUMERO E ALUNOS QUE ESTÃO MATRICULADOS EM x DISCIPLINAS)
 
 --GRADUAÇÃO

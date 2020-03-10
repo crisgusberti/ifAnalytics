@@ -1,5 +1,4 @@
--- consulta_2
--- CONSULTA 2 - STATUS DO DISCENTE
+-- CONSULTA GRÁFICO 2: STATUS DO DISCENTE
 
 -- Contagem geral (não considera nível de ensino)
 SELECT sd.descricao, COUNT(d.*) AS total_alunos 

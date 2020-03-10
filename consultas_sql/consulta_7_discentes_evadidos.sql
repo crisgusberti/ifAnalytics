@@ -1,5 +1,4 @@
--- Consulta 7
--- Discentes Evadidos 
+-- Consulta Gráfico 7: Discentes Evadidos 
 
 
 -- GRADUAÇÃO
