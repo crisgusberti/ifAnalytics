@@ -36,7 +36,7 @@ SELECT
 FROM q1
 -- unidade = 1 ou 2
 WHERE q1.unidade = 1
-GROUP by q1.unidade
+GROUP BY q1.unidade
 
 
 ------------CONSULTA 9 - MEDIAS FINAIS

@@ -31,10 +31,10 @@ WHERE mc.ano= 2019 AND mc.periodo = 2
     -- turma específica
 	--AND mc.id_turma = 4673 --ingles instrumental --2900 -- Algoritmos e programação I
 
-GROUP by mc.id_matricula_componente, mc.id_discente, mc.id_turma, mc.id_situacao_matricula, ccd.nome
+GROUP BY mc.id_matricula_componente, mc.id_discente, mc.id_turma, mc.id_situacao_matricula, ccd.nome
 )
 SELECT
-	nome as disciplina,
+	nome AS disciplina,
 	COUNT(id_discente) AS total_matriculados
 FROM q1
 GROUP BY disciplina, id_turma
