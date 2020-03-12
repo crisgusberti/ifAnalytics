@@ -14,7 +14,7 @@ WITH q1 AS (
 
 	WHERE 
 	    -- filtra por ano 
-	    t.ano = 2019 
+	    t.ano = 2019 AND t.periodo = 1
 	    -- alunos matriculados
 		AND mc.id_situacao_matricula IN (2, 4, 6, 7, 8, 9, 24, 25, 26, 27)
 	    -- filtra o campus
