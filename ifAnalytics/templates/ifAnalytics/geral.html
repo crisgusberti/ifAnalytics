@@ -115,9 +115,7 @@
 
 <script> //GRÁFICO 3: TOTAL MATRICULAS (EM COLUNAS)
 
-  let data_total_matriculas
-
-  function renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId, turmaId){
+   function renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId, turmaId){
     //pegando os dados da view "get_data_total_matriculas" para popular o gráfico
     $.ajax({
         method: "GET",
@@ -131,43 +129,14 @@
           'querySelector' : querySelector
        },
        success: function(data_from_view){
-         data_total_matriculas = data_from_view
-         google.charts.setOnLoadCallback(function() {drawChart_total_matriculas(data_total_matriculas);});
+         dados = data_from_view
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'Disciplinas', 'Alunos', 'Quantidade de alunos matriculados em um total de X disciplinas', 'piechart_total_matriculas');});
        },
        error: function(error_data){
           console.log("error")
           console.log(error_data)
        }
     })
-  }
-
-  // Populando o gráfico com dados
-  function drawChart_total_matriculas(data_total_matriculas) {
-     data = new google.visualization.DataTable();
-     data.addColumn('number', 'Disciplinas');
-     data.addColumn('number', 'Alunos');
-
-     for (let i = 0; i < data_total_matriculas.length; i++) {
-            data.addRows([data_total_matriculas[i]]);
-     }
-
-     let options = {
-            title: 'Quantidade de alunos matriculados em um total de X disciplinas',
-            hAxis: {
-              title: 'Disciplinas'
-            },
-            vAxis: {
-              title: 'Alunos'
-            },
-            backgroundColor: '#E1F0DB',
-            chartArea: {left: 10, height: 250, width: 600},
-            legend: {textStyle: {fontSize: 10}},
-            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
-     };
-
-     let chart = new google.visualization.ColumnChart(document.getElementById('piechart_total_matriculas'));
-
-     chart.draw(data, options);
   }
 </script>
 
@@ -200,7 +169,8 @@
 
 
 <script> //POPULANDO OS GRÁFICOS!
-  // Função que populando os gráficos com dados
+  // Funções que populam os gráficos com dados
+
   function drawGeralPizza(dados, coluna_string, number_string, titulo, id_div){
       data = new google.visualization.DataTable();
       data.addColumn('string', coluna_string);
@@ -220,6 +190,35 @@
      };
 
      let chart = new google.visualization.PieChart(document.getElementById(id_div));
+
+     chart.draw(data, options);
+  }
+
+
+  function drawGeralColuna(dados, coluna_1, coluna_2, titulo, id_div) {
+     data = new google.visualization.DataTable();
+     data.addColumn('number', coluna_1);
+     data.addColumn('number', coluna_2);
+
+     for (let i = 0; i < dados.length; i++) {
+            data.addRows([dados[i]]);
+     }
+
+     let options = {
+            title: titulo,
+            hAxis: {
+              title: 'Disciplinas'
+            },
+            vAxis: {
+              title: 'Alunos'
+            },
+            backgroundColor: '#E1F0DB',
+            chartArea: {left: 10, height: 250, width: 600},
+            legend: {textStyle: {fontSize: 10}},
+            titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+     };
+
+     let chart = new google.visualization.ColumnChart(document.getElementById(id_div));
 
      chart.draw(data, options);
   }
