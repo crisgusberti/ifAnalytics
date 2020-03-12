@@ -119,6 +119,7 @@
 					renderChartFormaIngresso(querySelector, campusId, ano, semestre);
 					renderChartStatusDiscente(querySelector, campusId, ano, semestre);
 					renderChartTotalMatriculas(querySelector, campusId, ano, semestre);
+					renderChartTamanhoTurmas(querySelector, campusId, ano, semestre);
 					renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre);
 				}else if(paginaAtual == 'notas'){
 					renderChartNotasParciais(1, querySelector, campusId, ano, semestre);
@@ -157,13 +158,15 @@
 				renderChartFormaIngresso(querySelector, campusId, ano, semestre);
 				renderChartStatusDiscente(querySelector, campusId, ano, semestre);
 				renderChartTotalMatriculas(querySelector, campusId, ano, semestre);
+				renderChartTamanhoTurmas(querySelector, campusId, ano, semestre);
 				renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre);
 			} else {
 				//se entrar aqui quer dizer que está sendo alterado o ano/semestre para o curso
 				querySelector = "curso";
 				renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId);
 				renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId);
-				renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId,);
+				renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId);
+				renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId);
 				renderChartDiscentesEvadidos(querySelector, null, ano, semestre, cursoId);
 			}
 		}else if(paginaAtual == 'notas'){
@@ -212,6 +215,7 @@
 			renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId);
 			renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId);
 			renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId);
+			renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId);
 			renderChartDiscentesEvadidos(querySelector, null, ano, semestre, cursoId);
 		}else if(paginaAtual == 'notas'){
 			renderChartNotasParciais(1, querySelector, null, ano, semestre, cursoId);
@@ -236,6 +240,7 @@
 			renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId, turmaId); 
 			renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId, turmaId); 
 			renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId, turmaId); 
+			renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId, turmaId); 
 			//renderChartDiscentesEvadidos(Não é executado para turma); 
 		}else if(paginaAtual == 'notas'){
 			renderChartNotasParciais(1, querySelector, null, ano, semestre, null, turmaId);

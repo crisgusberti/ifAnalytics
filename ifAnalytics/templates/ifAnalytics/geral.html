@@ -86,6 +86,8 @@
 <script> //GRÁFICO 2: STATUS DISCENTE - Segunda versão, usando parametros para chamar a função que desenha os gráficos
 
   let dados
+  let tipo_coluna1
+  let tipo_coluna2
 
   function renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId, turmaId){
     //pegando os dados da view "get_data_status_discente" para popular o gráfico
@@ -130,7 +132,39 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'Disciplinas', 'Alunos', 'Quantidade de alunos matriculados em um total de X disciplinas', 'piechart_total_matriculas');});
+         tipo_coluna1 = 'number'
+         tipo_coluna2 = 'number'
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplinas', tipo_coluna2, 'Alunos', 'Quantidade de alunos matriculados em um total de X disciplinas', 'columnchart_total_matriculas');});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
+</script>
+
+
+<script> //GRÁFICO 6: TAMANHO DAS TURMAS (EM COLUNAS)
+
+   function renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //pegando os dados da view "get_data_tamanho_turmas" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_tamanho_turmas/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId,
+          'ano' : ano,
+          'semestre' : semestre,
+          'turma_id': turmaId,
+          'querySelector' : querySelector
+       },
+       success: function(data_from_view){
+         dados = data_from_view
+         tipo_coluna1 = 'string'
+         tipo_coluna2 = 'number'
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplina', tipo_coluna2, 'Alunos_matriculados', 'Tamanho da(s) Turma(s)', 'columnchart_tamanho_turmas');});
        },
        error: function(error_data){
           console.log("error")
@@ -195,10 +229,10 @@
   }
 
 
-  function drawGeralColuna(dados, coluna_1, coluna_2, titulo, id_div) {
+  function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo, id_div) {
      data = new google.visualization.DataTable();
-     data.addColumn('number', coluna_1);
-     data.addColumn('number', coluna_2);
+     data.addColumn(tipo_coluna1, coluna_1);
+     data.addColumn(tipo_coluna2, coluna_2);
 
      for (let i = 0; i < dados.length; i++) {
             data.addRows([dados[i]]);
@@ -227,7 +261,8 @@
 <div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
 	<div id="piechart_forma_ingresso" class="grafico alinha_grafico_esquerda"></div>
   <div id="piechart_status_discente" class="grafico alinha_grafico_direita"></div>
-  <div id="piechart_total_matriculas" class="grafico alinha_grafico_esquerda"></div>
-  <div id="piechart_discentes_evadidos" class="grafico alinha_grafico_direita"></div>
+  <div id="columnchart_total_matriculas" class="grafico alinha_grafico_esquerda"></div>
+  <div id="columnchart_tamanho_turmas" class="grafico alinha_grafico_direita"></div>
+  <div id="piechart_discentes_evadidos" class="grafico alinha_grafico_esquerda"></div>
 </div>
 {% endblock %}
