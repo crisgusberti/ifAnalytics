@@ -126,6 +126,7 @@
 					renderChartNotasParciais(1, querySelector, campusId, ano, semestre);
 					renderChartNotasParciais(2, querySelector, campusId, ano, semestre);
 					renderChartMediasFinais(querySelector, campusId, ano, semestre);
+					renderChartDiscenteExame(querySelector, campusId, ano, semestre);
 				}
 			}
 		})
@@ -178,12 +179,14 @@
 				renderChartNotasParciais(1, querySelector, campusId, ano, semestre);
 				renderChartNotasParciais(2, querySelector, campusId, ano, semestre);
 				renderChartMediasFinais(querySelector, campusId, ano, semestre);
+				renderChartDiscenteExame(querySelector, campusId, ano, semestre);
 			} else {
 				//se entrar aqui quer dizer que está sendo alterado o ano/semestre para o curso
 				querySelector = "curso";
 				renderChartNotasParciais(1, querySelector, null, ano, semestre, cursoId);
 				renderChartNotasParciais(2, querySelector, null, ano, semestre, cursoId);
 				renderChartMediasFinais(querySelector, null, ano, semestre, cursoId);
+				renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId);
 			}
 		}
 
@@ -218,13 +221,14 @@
 			renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId);
 			renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId);
 			renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId);
-			renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId);
 			renderChartConcluintes(querySelector, campusId, ano, semestre, cursoId);
+			renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId);
 			renderChartDiscentesEvadidos(querySelector, null, ano, semestre, cursoId);
 		}else if(paginaAtual == 'notas'){
 			renderChartNotasParciais(1, querySelector, null, ano, semestre, cursoId);
 			renderChartNotasParciais(2, querySelector, null, ano, semestre, cursoId);
 			renderChartMediasFinais(querySelector, null, ano, semestre, cursoId);
+			renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId);
 		}
 	});
 
@@ -251,6 +255,7 @@
 			renderChartNotasParciais(1, querySelector, null, ano, semestre, null, turmaId);
 			renderChartNotasParciais(2, querySelector, null, ano, semestre, null, turmaId);
 			renderChartMediasFinais(querySelector, null, ano, semestre, null, turmaId);
+			renderChartDiscenteExame(querySelector, null, ano, semestre, null, turmaId);
 		}
 	});
 

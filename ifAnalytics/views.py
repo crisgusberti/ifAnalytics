@@ -291,4 +291,33 @@ def get_data_medias_finais(request): #Gráfico 9
             cursor.execute(sql_string, parametros) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False) 
-    
+ 
+def get_data_discentes_exame(request): #Gráfico 10
+    campus_id = request.GET.get('campus_id') 
+    curso_id  = request.GET.get('curso_id')
+    ano = request.GET.get('ano')
+    semestre = request.GET.get('semestre')
+    turma_id = request.GET.get('turma_id')
+    query_selector = request.GET.get('querySelector')
+
+    if query_selector == "turma":
+        with connection.cursor() as cursor:
+            sql_string="WITH Q1 AS (SELECT mc.id_matricula_componente, SUM(nu.nota_final_unidade) / 2 AS media_parcial FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.nota_unidade nu ON nu.id_matricula_componente = mc.id_matricula_componente WHERE nu.nota_final_unidade IS NOT NULL AND t.ano = %s AND t.periodo = %s AND d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_turma = %s GROUP BY mc.id_matricula_componente) SELECT SUM (CASE WHEN q1.media_parcial >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM (CASE WHEN q1.media_parcial < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM q1"
+            parametros=[ano, semestre, turma_id]
+            cursor.execute(sql_string, parametros) 
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)
+    if query_selector == "curso":
+        with connection.cursor() as cursor:
+            sql_string = "WITH Q1 AS (SELECT mc.id_matricula_componente, SUM(nu.nota_final_unidade) / 2 AS media_parcial FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.nota_unidade nu ON nu.id_matricula_componente = mc.id_matricula_componente WHERE nu.nota_final_unidade IS NOT NULL AND t.ano = %s AND t.periodo = %s AND d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.id_curso = %s GROUP BY mc.id_matricula_componente) SELECT SUM (CASE WHEN q1.media_parcial >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM (CASE WHEN q1.media_parcial < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM q1"
+            parametros = [ano, semestre, campus_id, curso_id]
+            cursor.execute(sql_string, parametros) 
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)
+    if query_selector == "campus" or query_selector == "periodo":
+        with connection.cursor() as cursor:
+            sql_string="WITH Q1 AS (SELECT mc.id_matricula_componente, SUM(nu.nota_final_unidade) / 2 AS media_parcial  FROM ensino.matricula_componente mc INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.nota_unidade nu ON nu.id_matricula_componente = mc.id_matricula_componente WHERE nu.nota_final_unidade IS NOT NULL  AND t.ano = %s AND t.periodo = %s AND d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) GROUP BY mc.id_matricula_componente) SELECT SUM (CASE WHEN q1.media_parcial >= 7 THEN 1 ELSE 0 END) AS notas_acima_media, SUM (CASE WHEN q1.media_parcial < 7 THEN 1 ELSE 0 END) AS notas_abaixo_media FROM q1"
+            parametros=[ano, semestre, campus_id]
+            cursor.execute(sql_string, parametros) 
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)    

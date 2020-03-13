@@ -104,7 +104,12 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Status dos Discentes', 'Alunos', 'Status dos Discentes', 'pieChart_status_discente');});
+         tipo_coluna1 = 'string'
+         tipo_coluna2 = 'number'
+         coluna_1 = 'Status dos Discentes'
+         coluna_2 = 'Quantidade de Alunos'
+         titulo_grafico = 'Status dos Discentes'
+         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_status_discente');});
        },
        error: function(error_data){
           console.log("error")
@@ -201,7 +206,7 @@
          tipo_coluna2 = 'number'
          titulo_grafico = 'Tamanho da(s) Turma(s)'
          titulo_hAxis = 'Disciplinas'
-         titulo_vAxis = 'Alunos'
+         titulo_vAxis = 'Alunos Matriculados'
          google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplina', tipo_coluna2, 'Alunos_matriculados', titulo_grafico, titulo_hAxis, titulo_vAxis, 'columnChart_tamanho_turmas');});
        },
        error: function(error_data){
@@ -229,7 +234,12 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Discentes Evadidos', 'Alunos', 'Discentes Evadidos', 'pieChart_discentes_evadidos');});
+         tipo_coluna1 = 'string'
+         tipo_coluna2 = 'number'
+         coluna_1 = 'Discentes Evadidos'
+         coluna_2 = 'Quantidade de Alunos'
+         titulo_grafico = 'Discentes Evadidos'
+         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_discentes_evadidos');});
        },
        error: function(error_data){
           console.log("error")
@@ -243,17 +253,17 @@
 <script> //POPULANDO OS GRÁFICOS!
   // Funções que populam os gráficos com dados
 
-  function drawGeralPizza(dados, coluna_string, number_string, titulo, id_div){
+  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, id_div){
       data = new google.visualization.DataTable();
-      data.addColumn('string', coluna_string);
-      data.addColumn('number', number_string);
+      data.addColumn(tipo_coluna1, coluna_1);
+      data.addColumn(tipo_coluna2, coluna_2);
 
      for (let i = 0; i < dados.length; i++) {
             data.addRows([dados[i]]);
      }
 
      let options = {
-            title: titulo,
+            title: titulo_grafico,
             backgroundColor: '#E1F0DB',
             chartArea: {left: 10, height: 250, width: 600},
             legend: {textStyle: {fontSize: 10}},

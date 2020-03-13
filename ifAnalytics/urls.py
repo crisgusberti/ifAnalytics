@@ -16,6 +16,7 @@ from ifAnalytics.views import get_data_tamanho_turmas
 from ifAnalytics.views import get_data_discentes_evadidos
 from ifAnalytics.views import get_data_notas_parciais
 from ifAnalytics.views import get_data_medias_finais
+from ifAnalytics.views import get_data_discentes_exame
 
 
 urlpatterns = [
@@ -38,5 +39,6 @@ urlpatterns = [
 	path('get_data_discentes_evadidos/', get_data_discentes_evadidos, name='get_data_discentes_evadidos'),
 	path('get_data_notas_parciais/', get_data_notas_parciais, name='get_data_notas_parciais'),
 	path('get_data_medias_finais/', get_data_medias_finais, name='get_data_medias_finais'),
+	path('get_data_discentes_exame/', get_data_discentes_exame, name='get_data_discentes_exame'),
 ]
     

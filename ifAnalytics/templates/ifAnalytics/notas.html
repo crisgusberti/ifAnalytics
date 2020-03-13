@@ -31,9 +31,9 @@
                      let dadosNovoArray= [posicao1, posicao2];
 
                      if (unidade == 1) {
-                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'Situação', 'Alunos', 'Notas Parciais Unidade 1', 'pieChart_notas_parciais_unidade1');});
+                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', 'Notas Parciais Unidade 1', 'pieChart_notas_parciais_unidade1');});
                      } else {
-                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'Situação', 'Alunos', 'Notas Parciais Unidade 2', 'pieChart_notas_parciais_unidade2');});
+                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', 'Notas Parciais Unidade 2', 'pieChart_notas_parciais_unidade2');});
                      }
               },
               error: function(error_data){
@@ -58,8 +58,47 @@
               },
               success: function(data_from_view){
                      dados = data_from_view
-                     let dadosNovoArray = formataRetorno(dados, "Acima de 5", "Abaixo de 5");
-                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'Situação', 'Alunos', 'Médias Finais', 'pieChart_medias_finais');});
+                     label_linha_1 = "Acima de 5"
+                     label_linha_2 = "Abaixo de 5"
+                     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
+                     tipo_coluna1 = 'string'
+                     tipo_coluna2 = 'number'
+                     coluna_1 = 'Situação'
+                     coluna_2 = 'Quantidade de Alunos'
+                     titulo_grafico = 'Médias Finais'
+                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_medias_finais');});
+              },
+                     error: function(error_data){
+                     console.log("error")
+                     console.log(error_data)
+              }
+              })
+       }
+
+       function renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId, turmaId){
+              //pegando os dados da view "get_data_discentes_exame" para popular o gráfico
+              $.ajax({
+                     method: "GET",
+                     url: '/get_data_discentes_exame/', 
+                     data: {
+                     'campus_id' : campusId,
+                     'curso_id' : cursoId,
+                     'ano' : ano,
+                     'semestre' : semestre,
+                     'turma_id': turmaId,
+                     'querySelector' : querySelector
+              },
+              success: function(data_from_view){
+                     dados = data_from_view
+                     label_linha_1 = "Discentes que não estão em exame"
+                     label_linha_2 = "Discentes em exame"
+                     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
+                     tipo_coluna1 = 'string'
+                     tipo_coluna2 = 'number'
+                     coluna_1 = 'Discentes que não estão em exame'
+                     coluna_2 = 'Discentes em exame'
+                     titulo_grafico = 'Discentes em Exame'
+                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_discentes_exame');});
               },
                      error: function(error_data){
                      console.log("error")
@@ -69,17 +108,17 @@
        }
 
        //Funções que desenham todos os gráficos
-       function drawGeralPizza(dados, coluna_1, coluna_2, titulo, id_div){
+       function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, id_div){
               data = new google.visualization.DataTable();
-              data.addColumn('string', coluna_1);
-              data.addColumn('number', coluna_2);
+              data.addColumn(tipo_coluna1, coluna_1);
+              data.addColumn(tipo_coluna2, coluna_2);
 
               for (let i = 0; i < dados.length; i++) {
                    data.addRows([dados[i]]);
               }
 
               let options = {
-                   title: titulo,
+                   title: titulo_grafico,
                    backgroundColor: '#E1F0DB',
                    chartArea: {left: 10, height: 250, width: 600},
                    legend: {textStyle: {fontSize: 10}},
@@ -134,5 +173,6 @@
   <div id="pieChart_notas_parciais_unidade1" class="grafico alinha_grafico_esquerda"></div>
   <div id="pieChart_notas_parciais_unidade2" class="grafico alinha_grafico_direita"></div>
   <div id="pieChart_medias_finais" class="grafico alinha_grafico_esquerda"></div>
+  <div id="pieChart_discentes_exame" class="grafico alinha_grafico_direita"></div>
 </div>
 {% endblock %}
