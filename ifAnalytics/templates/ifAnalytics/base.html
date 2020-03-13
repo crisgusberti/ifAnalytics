@@ -127,6 +127,7 @@
 					renderChartNotasParciais(2, querySelector, campusId, ano, semestre);
 					renderChartMediasFinais(querySelector, campusId, ano, semestre);
 					renderChartDiscenteExame(querySelector, campusId, ano, semestre);
+					renderChartAprovadosReprovados(querySelector, campusId, ano, semestre);
 				}
 			}
 		})
@@ -180,6 +181,7 @@
 				renderChartNotasParciais(2, querySelector, campusId, ano, semestre);
 				renderChartMediasFinais(querySelector, campusId, ano, semestre);
 				renderChartDiscenteExame(querySelector, campusId, ano, semestre);
+				renderChartAprovadosReprovados(querySelector, campusId, ano, semestre);
 			} else {
 				//se entrar aqui quer dizer que está sendo alterado o ano/semestre para o curso
 				querySelector = "curso";
@@ -187,6 +189,7 @@
 				renderChartNotasParciais(2, querySelector, null, ano, semestre, cursoId);
 				renderChartMediasFinais(querySelector, null, ano, semestre, cursoId);
 				renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId);
+				renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId);
 			}
 		}
 
@@ -229,6 +232,7 @@
 			renderChartNotasParciais(2, querySelector, null, ano, semestre, cursoId);
 			renderChartMediasFinais(querySelector, null, ano, semestre, cursoId);
 			renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId);
+			renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId);
 		}
 	});
 
@@ -256,6 +260,7 @@
 			renderChartNotasParciais(2, querySelector, null, ano, semestre, null, turmaId);
 			renderChartMediasFinais(querySelector, null, ano, semestre, null, turmaId);
 			renderChartDiscenteExame(querySelector, null, ano, semestre, null, turmaId);
+			renderChartAprovadosReprovados(querySelector, null, ano, semestre, null, turmaId);
 		}
 	});
 

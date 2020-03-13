@@ -107,6 +107,38 @@
               })
        }
 
+       function renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId, turmaId){
+              //pegando os dados da view "get_data_aprovados_reprovados" para popular o gráfico
+              $.ajax({
+                     method: "GET",
+                     url: '/get_data_aprovados_reprovados/', 
+                     data: {
+                     'campus_id' : campusId,
+                     'curso_id' : cursoId,
+                     'ano' : ano,
+                     'semestre' : semestre,
+                     'turma_id': turmaId,
+                     'querySelector' : querySelector
+              },
+              success: function(data_from_view){
+                     dados = data_from_view
+                     label_linha_1 = "Discentes Aprovados"
+                     label_linha_2 = "Discentes Reprovados"
+                     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
+                     tipo_coluna1 = 'string'
+                     tipo_coluna2 = 'number'
+                     coluna_1 = 'Discentes Aprovados'
+                     coluna_2 = 'Discentes Reprovados'
+                     titulo_grafico = 'Aprovados e Reprovados'
+                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_aprovados_reprovados');});
+              },
+                     error: function(error_data){
+                     console.log("error")
+                     console.log(error_data)
+              }
+              })
+       }
+
        //Funções que desenham todos os gráficos
        function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, id_div){
               data = new google.visualization.DataTable();
@@ -174,5 +206,6 @@
   <div id="pieChart_notas_parciais_unidade2" class="grafico alinha_grafico_direita"></div>
   <div id="pieChart_medias_finais" class="grafico alinha_grafico_esquerda"></div>
   <div id="pieChart_discentes_exame" class="grafico alinha_grafico_direita"></div>
+  <div id="pieChart_aprovados_reprovados" class="grafico alinha_grafico_esquerda"></div>
 </div>
 {% endblock %}
