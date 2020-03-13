@@ -26,6 +26,6 @@ WHERE mc.ano= 2019 AND mc.periodo =1
 	--AND mc.id_turma = 3466 --ingles instrumental --2900 -- Algoritmos e programação I
 )
 SELECT 
-	COUNT (q1.status_disciplina) AS total, q1.status_disciplina
+	q1.status_disciplina, COUNT (q1.status_disciplina) AS total_alunos
 FROM q1
 GROUP BY q1.status_disciplina
