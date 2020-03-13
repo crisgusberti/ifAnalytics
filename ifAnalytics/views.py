@@ -147,6 +147,35 @@ def get_data_total_matriculas(request): #Gráfico 3
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False)
 
+def get_data_concluintes(request): #Gráfico 4 e 5
+    campus_id = request.GET.get('campus_id') 
+    curso_id  = request.GET.get('curso_id')
+    anoSemestre = request.GET.get('ano')+request.GET.get('semestre') #foi concatenado pq no banco o prazo de conclusão é assim
+    turma_id = request.GET.get('turma_id')
+    query_selector = request.GET.get('querySelector')
+
+    if query_selector == "turma":
+        with connection.cursor() as cursor:
+            sql_string = "SELECT SUM (CASE WHEN d.prazo_conclusao < %s AND d.status != 8 THEN 1 ELSE 0 END) AS alunos_passaram_prazo_conclusao, SUM (CASE WHEN d.status = 8 THEN 1 ELSE 0 END) AS alunos_formandos_este_ano FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.prazo_conclusao < %s AND d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_turma = %s"
+            parametros = [anoSemestre, anoSemestre, turma_id]
+            cursor.execute(sql_string, parametros)
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False) 
+    if query_selector == "campus" or query_selector == "periodo":
+        with connection.cursor() as cursor:
+            sql_string = "SELECT SUM (CASE WHEN d.prazo_conclusao < %s AND d.status != 8 THEN 1 ELSE 0 END) AS alunos_passaram_prazo_conclusao, SUM (CASE WHEN d.status = 8 THEN 1 ELSE 0 END) AS alunos_formandos_este_ano FROM discente d WHERE d.prazo_conclusao < %s AND d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN ( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s))"
+            parametros = [anoSemestre, anoSemestre, campus_id]
+            cursor.execute(sql_string, parametros)
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False) 
+    if query_selector == "curso":
+        with connection.cursor() as cursor:
+            sql_string = "SELECT SUM (CASE WHEN d.prazo_conclusao < %s AND d.status != 8 THEN 1 ELSE 0 END) AS alunos_passaram_prazo_conclusao, SUM (CASE WHEN d.status = 8 THEN 1 ELSE 0 END) AS alunos_formandos_este_ano FROM discente d WHERE d.prazo_conclusao < %s AND d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN ( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.id_curso = %s "
+            parametros = [anoSemestre, anoSemestre, campus_id, curso_id]
+            cursor.execute(sql_string, parametros)
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)
+
 def get_data_tamanho_turmas(request): #Gráfico 6
     campus_id = request.GET.get('campus_id') 
     curso_id  = request.GET.get('curso_id')

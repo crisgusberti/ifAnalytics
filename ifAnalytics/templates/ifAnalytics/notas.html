@@ -24,15 +24,16 @@
                      dados = data_from_view
 
                      //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
+                     //exemplo original, nos demais foi utilizada a função formataRetorno();
                      let dadosNovo = dados[0].toString().split(",");
                      let posicao1 = ["Acima de 7",parseInt(dadosNovo[0], 10)];
                      let posicao2 = ["Abaixo de 7",parseInt(dadosNovo[1], 10)];
-                     let dadosNovoArr= [posicao1, posicao2];
+                     let dadosNovoArray= [posicao1, posicao2];
 
                      if (unidade == 1) {
-                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Notas Parciais Unidade 1', 'piechart_notas_parciais_unidade1');});
+                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'Situação', 'Alunos', 'Notas Parciais Unidade 1', 'pieChart_notas_parciais_unidade1');});
                      } else {
-                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Notas Parciais Unidade 2', 'piechart_notas_parciais_unidade2');});
+                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'Situação', 'Alunos', 'Notas Parciais Unidade 2', 'pieChart_notas_parciais_unidade2');});
                      }
               },
               error: function(error_data){
@@ -57,14 +58,8 @@
               },
               success: function(data_from_view){
                      dados = data_from_view
-
-                     //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
-                     let dadosNovo = dados[0].toString().split(",");
-                     let posicao1 = ["Acima de 7",parseInt(dadosNovo[0], 10)];
-                     let posicao2 = ["Abaixo de 7",parseInt(dadosNovo[1], 10)];
-                     let dadosNovoArr= [posicao1, posicao2];
-
-                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArr, 'Situação', 'Alunos', 'Médias Finais', 'piechart_medias_finais');});
+                     let dadosNovoArray = formataRetorno(dados, "Acima de 5", "Abaixo de 5");
+                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'Situação', 'Alunos', 'Médias Finais', 'pieChart_medias_finais');});
               },
                      error: function(error_data){
                      console.log("error")
@@ -97,22 +92,22 @@
               chart.draw(data, options);
        }
 
-       function drawGeralColuna(dados, coluna_1, coluna_2, titulo, id_div){
+       function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, titulo_hAxis, titulo_vAxis, id_div) {
               data = new google.visualization.DataTable();
-              data.addColumn('number', coluna_1);
-              data.addColumn('number', coluna_2);
+              data.addColumn(tipo_coluna1, coluna_1);
+              data.addColumn(tipo_coluna2, coluna_2);
 
               for (let i = 0; i < dados.length; i++) {
-                   data.addRows([dados[i]]);
+                     data.addRows([dados[i]]);
               }
 
               let options = {
-                   title: titulo,
+                   title: titulo_grafico,
                    hAxis: {
-                     title: 'Disciplinas'
+                     title: titulo_hAxis
                    },
                    vAxis: {
-                     title: 'Alunos'
+                     title: titulo_vAxis
                    },
                    backgroundColor: '#E1F0DB',
                    chartArea: {left: 10, height: 250, width: 600},
@@ -124,11 +119,20 @@
 
               chart.draw(data, options);
        }
+
+       function formataRetorno(dados, label_linha_1, label_linha_2){
+              //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
+              let dadosNovo = dados[0].toString().split(",");
+              let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
+              let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
+              let dadosNovoArray= [posicao1, posicao2];
+              return dadosNovoArray;
+       }
 </script>
 
 <div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
-  <div id="piechart_notas_parciais_unidade1" class="grafico alinha_grafico_esquerda"></div>
-  <div id="piechart_notas_parciais_unidade2" class="grafico alinha_grafico_direita"></div>
-  <div id="piechart_medias_finais" class="grafico alinha_grafico_esquerda"></div>
+  <div id="pieChart_notas_parciais_unidade1" class="grafico alinha_grafico_esquerda"></div>
+  <div id="pieChart_notas_parciais_unidade2" class="grafico alinha_grafico_direita"></div>
+  <div id="pieChart_medias_finais" class="grafico alinha_grafico_esquerda"></div>
 </div>
 {% endblock %}

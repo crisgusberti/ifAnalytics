@@ -48,7 +48,7 @@
             sliceVisibilityThreshold: 0,
      };
 
-     let chart = new google.visualization.PieChart(document.getElementById('piechart_forma_ingresso'));
+     let chart = new google.visualization.PieChart(document.getElementById('pieChart_forma_ingresso'));
 
 
   /////////////////////////////////////////////////////////////// testes de interatividade!!!
@@ -104,7 +104,7 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Status dos Discentes', 'Alunos', 'Status dos Discentes', 'piechart_status_discente');});
+         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Status dos Discentes', 'Alunos', 'Status dos Discentes', 'pieChart_status_discente');});
        },
        error: function(error_data){
           console.log("error")
@@ -134,7 +134,10 @@
          dados = data_from_view
          tipo_coluna1 = 'number'
          tipo_coluna2 = 'number'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplinas', tipo_coluna2, 'Alunos', 'Quantidade de alunos matriculados em um total de X disciplinas', 'columnchart_total_matriculas');});
+         titulo_grafico = 'Quantidade de alunos matriculados em um total de X disciplinas'
+         titulo_hAxis = 'Disciplinas'
+         titulo_vAxis = 'Alunos'
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplinas', tipo_coluna2, 'Alunos', titulo_grafico, titulo_hAxis, titulo_vAxis, 'columnChart_total_matriculas');});
        },
        error: function(error_data){
           console.log("error")
@@ -144,6 +147,38 @@
   }
 </script>
 
+<script> //GRÁFICO 4 e 5: CONCLUÍNTES E NÃO CONCLUÍNTES (EM COLUNAS)
+
+   function renderChartConcluintes(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //pegando os dados da view "get_data_concluintes" para popular o gráfico
+    $.ajax({
+        method: "GET",
+        url: '/get_data_concluintes/', 
+        data: {
+          'campus_id' : campusId,
+          'curso_id' : cursoId,
+          'ano' : ano,
+          'semestre' : semestre,
+          'turma_id': turmaId,
+          'querySelector' : querySelector
+       },
+       success: function(data_from_view){
+         dados = data_from_view
+         let dadosNovoArray = formataRetorno(dados, "Alunos que Passaram do Prazo de Conclusao", "Alunos Formandos");
+         tipo_coluna1 = 'string'
+         tipo_coluna2 = 'number'
+         titulo_grafico = 'Não Concluíntes e Formandos'
+         titulo_hAxis = 'Não Concluíntes e Formandos'
+         titulo_vAxis = ''
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, tipo_coluna1, 'Situação', tipo_coluna2, 'Quantidade', titulo_grafico, titulo_hAxis, titulo_vAxis, 'columnChart_concluintes');});
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
+  }
+</script>
 
 <script> //GRÁFICO 6: TAMANHO DAS TURMAS (EM COLUNAS)
 
@@ -164,7 +199,10 @@
          dados = data_from_view
          tipo_coluna1 = 'string'
          tipo_coluna2 = 'number'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplina', tipo_coluna2, 'Alunos_matriculados', 'Tamanho da(s) Turma(s)', 'columnchart_tamanho_turmas');});
+         titulo_grafico = 'Tamanho da(s) Turma(s)'
+         titulo_hAxis = 'Disciplinas'
+         titulo_vAxis = 'Alunos'
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplina', tipo_coluna2, 'Alunos_matriculados', titulo_grafico, titulo_hAxis, titulo_vAxis, 'columnChart_tamanho_turmas');});
        },
        error: function(error_data){
           console.log("error")
@@ -191,7 +229,7 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Discentes Evadidos', 'Alunos', 'Discentes Evadidos', 'piechart_discentes_evadidos');});
+         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'Discentes Evadidos', 'Alunos', 'Discentes Evadidos', 'pieChart_discentes_evadidos');});
        },
        error: function(error_data){
           console.log("error")
@@ -229,7 +267,7 @@
   }
 
 
-  function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo, id_div) {
+  function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, titulo_hAxis, titulo_vAxis, id_div) {
      data = new google.visualization.DataTable();
      data.addColumn(tipo_coluna1, coluna_1);
      data.addColumn(tipo_coluna2, coluna_2);
@@ -239,12 +277,12 @@
      }
 
      let options = {
-            title: titulo,
+            title: titulo_grafico,
             hAxis: {
-              title: 'Disciplinas'
+              title: titulo_hAxis
             },
             vAxis: {
-              title: 'Alunos'
+              title: titulo_vAxis
             },
             backgroundColor: '#E1F0DB',
             chartArea: {left: 10, height: 250, width: 600},
@@ -258,11 +296,24 @@
   }
 </script>
 
+<script> //FUNÇÕES GERIAS
+
+   function formataRetorno(dados, label_linha_1, label_linha_2){
+        //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
+        let dadosNovo = dados[0].toString().split(",");
+        let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
+        let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
+        let dadosNovoArray= [posicao1, posicao2];
+        return dadosNovoArray;
+  }
+</script>
+
 <div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
-	<div id="piechart_forma_ingresso" class="grafico alinha_grafico_esquerda"></div>
-  <div id="piechart_status_discente" class="grafico alinha_grafico_direita"></div>
-  <div id="columnchart_total_matriculas" class="grafico alinha_grafico_esquerda"></div>
-  <div id="columnchart_tamanho_turmas" class="grafico alinha_grafico_direita"></div>
-  <div id="piechart_discentes_evadidos" class="grafico alinha_grafico_esquerda"></div>
+	<div id="pieChart_forma_ingresso" class="grafico alinha_grafico_esquerda"></div>
+  <div id="pieChart_status_discente" class="grafico alinha_grafico_direita"></div>
+  <div id="columnChart_total_matriculas" class="grafico alinha_grafico_esquerda"></div>
+  <div id="columnChart_concluintes" class="grafico alinha_grafico_direita"></div>
+  <div id="columnChart_tamanho_turmas" class="grafico alinha_grafico_esquerda"></div>
+  <div id="pieChart_discentes_evadidos" class="grafico alinha_grafico_direita"></div>
 </div>
 {% endblock %}
