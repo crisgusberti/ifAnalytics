@@ -19,6 +19,7 @@ from ifAnalytics.views import get_data_medias_finais
 from ifAnalytics.views import get_data_discentes_exame
 from ifAnalytics.views import get_data_aprovados_reprovados
 from ifAnalytics.views import get_data_status_disciplina
+from ifAnalytics.views import get_data_percentuais_frequencia
 
 
 urlpatterns = [
@@ -44,5 +45,6 @@ urlpatterns = [
 	path('get_data_discentes_exame/', get_data_discentes_exame, name='get_data_discentes_exame'),
 	path('get_data_aprovados_reprovados/', get_data_aprovados_reprovados, name='get_data_aprovados_reprovados'),
 	path('get_data_status_disciplina/', get_data_status_disciplina, name='get_data_status_disciplina'),
+	path('get_data_percentuais_frequencia/', get_data_percentuais_frequencia, name='get_data_percentuais_frequencia'),
 ]
     

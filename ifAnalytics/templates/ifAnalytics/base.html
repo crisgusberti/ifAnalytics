@@ -129,6 +129,8 @@
 					renderChartDiscenteExame(querySelector, campusId, ano, semestre);
 					renderChartAprovadosReprovados(querySelector, campusId, ano, semestre);
 					renderChartStatusDisciplinas(querySelector, campusId, ano, semestre);
+				}else if(paginaAtual == 'frequencias'){
+					renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre);
 				}
 			}
 		})
@@ -194,6 +196,15 @@
 				renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId);
 				renderChartStatusDisciplinas(querySelector, campusId, ano, semestre, cursoId);
 			}
+		}else if(paginaAtual == 'frequencias'){
+			if (!passaCurso) {
+				//se entrar aqui quer dizer que está sendo alterado ano/semestre para o campus
+				renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre);
+			} else {
+				//se entrar aqui quer dizer que está sendo alterado o ano/semestre para o curso
+				querySelector = "curso";
+				renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId);
+			}
 		}
 
 		//popula turmas
@@ -237,6 +248,8 @@
 			renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId);
 			renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId);
 			renderChartStatusDisciplinas(querySelector, campusId, ano, semestre, cursoId);
+		}else if(paginaAtual == 'frequencias'){
+			renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId);
 		}
 	});
 
@@ -266,6 +279,8 @@
 			renderChartDiscenteExame(querySelector, null, ano, semestre, null, turmaId);
 			renderChartAprovadosReprovados(querySelector, null, ano, semestre, null, turmaId);
 			renderChartStatusDisciplinas(querySelector, null, ano, semestre, null, turmaId);
+		}else if(paginaAtual == 'frequencias'){
+			renderChartPercentuaisFrequencia(querySelector, null, ano, semestre, null, turmaId);
 		}
 	});
 

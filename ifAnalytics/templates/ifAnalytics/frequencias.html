@@ -1,37 +1,90 @@
 {% extends 'ifAnalytics/base.html' %}
 
-
 {% block content %}
-<div id="dashboards">
 
-	<!-- Scripts para criação do gráfico -->
-	<script type="text/javascript">
-		
-		google.charts.setOnLoadCallback(drawChart);
+<script>
 
-       // Populando o gráfico com dados
-       function drawChart() {
+       let dados
 
-       	var data = google.visualization.arrayToDataTable([
-       		['Faltas', 'Alunos'],
-       		['Abaixo de 20%',     5],
-       		['Entre 21% e 25%',      15],
-       		['Acima de 25%',  9],
-       		]);
-
-       	var options = {
-       		title: 'Gráfico de Frequencias',
-       		backgroundColor: '#E1F0DB',
-       	};
-
-       	var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-       	chart.draw(data, options);
+       function renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId, turmaId){
+              //pegando os dados da view "get_data_percentuais_frequencia" para popular o gráfico
+              $.ajax({
+                     method: "GET",
+                     url: '/get_data_percentuais_frequencia/', 
+                     data: {
+                     'campus_id' : campusId,
+                     'curso_id' : cursoId,
+                     'ano' : ano,
+                     'semestre' : semestre,
+                     'turma_id': turmaId,
+                     'querySelector' : querySelector
+              },
+              success: function(data_from_view){
+                     dados = data_from_view
+                     label_linha_1 = "100% de frequência"
+                     label_linha_2 = "95% a 100% de frequência"
+                     label_linha_3 = "90% a 95% de frequência"
+                     label_linha_4 = "85% a 90% de frequência"
+                     label_linha_5 = "80% a 85% de frequência"
+                     label_linha_6 = "75% a 80% de frequência"
+                     label_linha_7 = "Menos de 75% de frequência"
+                     label_linha_8 = "Alunos sem frequencia"
+                     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2, label_linha_3, label_linha_4, label_linha_5, label_linha_6, label_linha_7, label_linha_8);
+                     tipo_coluna1 = 'string'
+                     tipo_coluna2 = 'number'
+                     coluna_1 = 'Percentual'
+                     coluna_2 = 'Quantidade de Alunos'
+                     titulo_grafico = 'Percentuais de Frequência'
+                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_percentuais_frequencia');});
+              },
+                     error: function(error_data){
+                     console.log("error")
+                     console.log(error_data)
+              }
+              })
        }
-	</script>
 
-	<!-- Plotagem do gráfico -->
-	<div id="piechart" style="width: 400px; height: 300px;"></div>
+       //Funções que desenham todos os gráficos
+       function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, id_div){
+              data = new google.visualization.DataTable();
+              data.addColumn(tipo_coluna1, coluna_1);
+              data.addColumn(tipo_coluna2, coluna_2);
 
+              for (let i = 0; i < dados.length; i++) {
+                   data.addRows([dados[i]]);
+              }
+
+              let options = {
+                   title: titulo_grafico,
+                   backgroundColor: '#E1F0DB',
+                   chartArea: {left: 10, height: 250, width: 600},
+                   legend: {textStyle: {fontSize: 10}},
+                   titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+                   sliceVisibilityThreshold: 0,
+              };
+
+              let chart = new google.visualization.PieChart(document.getElementById(id_div));
+
+              chart.draw(data, options);
+       }
+
+       function formataRetorno(dados, label_linha_1, label_linha_2, label_linha_3, label_linha_4, label_linha_5, label_linha_6, label_linha_7, label_linha_8){
+              //pega o retorno da consulta (que vem em uma linha) e quebra em duas colunas e varias linhas, adicionando o label da linha para poder gerar o grafico
+              let dadosNovo = dados[0].toString().split(",");
+              let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
+              let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
+              let posicao3 = [label_linha_3,parseInt(dadosNovo[2], 10)];
+              let posicao4 = [label_linha_4,parseInt(dadosNovo[3], 10)];
+              let posicao5 = [label_linha_5,parseInt(dadosNovo[4], 10)];
+              let posicao6 = [label_linha_6,parseInt(dadosNovo[5], 10)];
+              let posicao7 = [label_linha_7,parseInt(dadosNovo[6], 10)];
+              let posicao8 = [label_linha_8,parseInt(dadosNovo[7], 10)];
+              let dadosNovoArray= [posicao1, posicao2, posicao3, posicao4, posicao5, posicao6, posicao7, posicao8];
+              return dadosNovoArray;
+       }
+</script>
+
+<div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
+  <div id="pieChart_percentuais_frequencia" class="grafico alinha_grafico_esquerda"></div>
 </div>
 {% endblock %}
