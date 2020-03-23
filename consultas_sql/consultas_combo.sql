@@ -10,6 +10,7 @@ ORDER BY nome
 SELECT id_curso, id_unidade, nome 
 FROM curso 
 WHERE ativo IS TRUE
+AND nivel = 'G'
 AND id_unidade IN
 (
   SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(31)

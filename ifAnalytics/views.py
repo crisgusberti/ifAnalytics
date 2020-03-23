@@ -39,7 +39,7 @@ def consulta_campus(request):
 def consulta_cursos(request):
     campus_id = request.GET.get('campus_id') # aqui eu pego o campus_ID que vem da base.html na função Jquery/ajax que chama a URL "consulta_cursos" 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT id_curso, nome FROM curso WHERE ativo IS TRUE AND id_unidade IN( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s))", [campus_id]) # o campus_id pego na variavel acima serve de parametro para a consulta SQL e é substituído em "%s"
+        cursor.execute("SELECT id_curso, nome FROM curso WHERE ativo IS TRUE AND nivel = 'G' AND id_unidade IN( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s))", [campus_id]) # o campus_id pego na variavel acima serve de parametro para a consulta SQL e é substituído em "%s"
         rows = namedtuplefetchall(cursor);
         context = {'cursos': rows}
     return render(request, 'ifAnalytics/consulta_cursos.html', context)
