@@ -213,13 +213,14 @@
 	        data: { //passando por ajax para a view "consulta_turmas", as variáveis definidas acima
 	        'campus_id' : campusId,
 	        'ano' : ano,
-	        'semestre' : semestre
+	        'semestre' : semestre,
+	        'curso_id' : cursoId
 	    	},
 	    	success: function(response) {
 	    	$('#turma').html(response);
 	          // $('#proximoID').html('<option value="">---</option>'); maneira de deixar o proximo não selecionado
 	      	}
-	  })
+	  	})
 	});
 
 	//detecta alteração no combo curso e chama funções do geral/notas.html
@@ -251,6 +252,21 @@
 		}else if(paginaAtual == 'frequencias'){
 			renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId);
 		}
+
+		//popula turmas
+		$.ajax({
+			url: '/consulta_turmas/',
+	        data: { //passando por ajax para a view "consulta_turmas", as variáveis definidas acima
+	        'campus_id' : campusId,
+	        'ano' : ano,
+	        'semestre' : semestre,
+	        'curso_id' : cursoId
+	    	},
+	    	success: function(response) {
+	    	$('#turma').html(response);
+	          // $('#proximoID').html('<option value="">---</option>'); maneira de deixar o proximo não selecionado
+	      	}
+	  	})
 	});
 
 	//detecta alteração no combo turmas e chama funções do geral/notas.html
