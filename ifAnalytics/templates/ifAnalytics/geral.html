@@ -139,10 +139,10 @@
          dados = data_from_view
          tipo_coluna1 = 'number'
          tipo_coluna2 = 'number'
-         titulo_grafico = 'Quantidade de alunos matriculados em um total de X disciplinas'
+         titulo_grafico = 'Quantidade de disciplinas pela respectiva quantidade de alunos' //'Quantidade de alunos matriculados em um total de X disciplinas'
          titulo_hAxis = 'Disciplinas'
          titulo_vAxis = 'Alunos'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplinas', tipo_coluna2, 'Alunos', titulo_grafico, titulo_hAxis, titulo_vAxis, 'columnChart_total_matriculas');});
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplinas', tipo_coluna2, 'Quantidade_Alunos', titulo_grafico, titulo_hAxis, titulo_vAxis, 'columnChart_total_matriculas');});
        },
        error: function(error_data){
           console.log("error")
