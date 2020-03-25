@@ -22,23 +22,23 @@
                      },
               success: function(data_from_view){
                      dados = data_from_view
-
-                     //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
-                     //exemplo original, nos demais foi utilizada a função formataRetorno();
-                     let dadosNovo = dados[0].toString().split(",");
-                     let posicao1 = ["Acima de 7",parseInt(dadosNovo[0], 10)];
-                     let posicao2 = ["Abaixo de 7",parseInt(dadosNovo[1], 10)];
-                     let dadosNovoArray= [posicao1, posicao2];
-
+                     label_linha_1 = "ACIMA DE 7"
+                     label_linha_2 = "ABAIXO DE 7"
+                     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
+                     tipo_coluna1 = 'string'
+                     tipo_coluna2 = 'number'
+                     coluna_1 = 'Situação'
+                     coluna_2 = 'Quantidade de Alunos'
+                     
                      if (unidade == 1) {
-                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', 'Notas Parciais Unidade 1', 'pieChart_notas_parciais_unidade1');});
+                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, 'Notas Parciais Unidade 1', 'pieChart_notas_parciais_unidade1');});
                      } else {
-                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', 'Notas Parciais Unidade 2', 'pieChart_notas_parciais_unidade2');});
+                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray,  tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, 'Notas Parciais Unidade 2', 'pieChart_notas_parciais_unidade2');});
                      }
               },
-              error: function(error_data){
-                     console.log("error")
-                     console.log(error_data)
+                    error: function(error_data){
+                    console.log("error")
+                    console.log(error_data)
               }
               })
        }
@@ -58,8 +58,8 @@
               },
               success: function(data_from_view){
                      dados = data_from_view
-                     label_linha_1 = "Acima de 5"
-                     label_linha_2 = "Abaixo de 5"
+                     label_linha_1 = "ACIMA DE 5"
+                     label_linha_2 = "ABAIXO DE 5"
                      let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
                      tipo_coluna1 = 'string'
                      tipo_coluna2 = 'number'
@@ -90,8 +90,8 @@
               },
               success: function(data_from_view){
                      dados = data_from_view
-                     label_linha_1 = "Discentes que não estão em exame"
-                     label_linha_2 = "Discentes em exame"
+                     label_linha_1 = "DISCENTES QUE NÃO ESTÃO EM EXAME"
+                     label_linha_2 = "DISCENTES EM EXAME"
                      let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
                      tipo_coluna1 = 'string'
                      tipo_coluna2 = 'number'
@@ -122,8 +122,8 @@
               },
               success: function(data_from_view){
                      dados = data_from_view
-                     label_linha_1 = "Discentes Aprovados"
-                     label_linha_2 = "Discentes Reprovados"
+                     label_linha_1 = "DISCENTES APROVADOS"
+                     label_linha_2 = "DISCENTES REPROVADOS"
                      let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
                      tipo_coluna1 = 'string'
                      tipo_coluna2 = 'number'
@@ -222,11 +222,21 @@
 
        function formataRetorno(dados, label_linha_1, label_linha_2){
               //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
-              let dadosNovo = dados[0].toString().split(",");
-              let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
-              let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
-              let dadosNovoArray= [posicao1, posicao2];
-              return dadosNovoArray;
+
+              //dependendo do que foi selecionados nos combos, a consulta pode retornar vazia
+              //esse if/else faz uma verificação para evitar erros no console.
+              if(dados == null || dados.length == 0){ //Se o retorno da consulta for vazio 
+                let posicao1 = [label_linha_1,0];     //o vetor é preenchido com label da linha e valor 0
+                let posicao2 = [label_linha_2,0];    
+                let dadosNovoArray= [posicao1, posicao2];
+                return dadosNovoArray;               
+              }else{                    //senão faz o tratamento normal dos dados que retornaram da consulta
+                let dadosNovo = dados[0].toString().split(",");
+                let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
+                let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
+                let dadosNovoArray= [posicao1, posicao2];
+                return dadosNovoArray;
+              }
        }
 </script>
 
