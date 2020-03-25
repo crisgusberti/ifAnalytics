@@ -236,10 +236,10 @@
          dados = data_from_view
          tipo_coluna1 = 'string'
          tipo_coluna2 = 'number'
-         coluna_1 = 'Discentes Evadidos'
-         coluna_2 = 'Quantidade de Alunos'
          titulo_grafico = 'Discentes Evadidos'
-         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_discentes_evadidos');});
+         titulo_hAxis = 'Disciplinas'
+         titulo_vAxis = 'Alunos Evadidos'
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Discentes Evadidos', tipo_coluna2, 'Alunos_evadidos', titulo_grafico, titulo_hAxis, titulo_vAxis, 'columnChart_discentes_evadidos');});
        },
        error: function(error_data){
           console.log("error")
@@ -324,6 +324,6 @@
   <div id="columnChart_total_matriculas" class="grafico alinha_grafico_esquerda"></div>
   <div id="columnChart_concluintes" class="grafico alinha_grafico_direita"></div>
   <div id="columnChart_tamanho_turmas" class="grafico alinha_grafico_esquerda"></div>
-  <div id="pieChart_discentes_evadidos" class="grafico alinha_grafico_direita"></div>
+  <div id="columnChart_discentes_evadidos" class="grafico alinha_grafico_direita"></div>
 </div>
 {% endblock %}

@@ -24,10 +24,10 @@
 	<nav id="menu_superior">
 		<ul>
 			<li><a href="#" title="Página inicial/login">Home</a></li>
-			<li><a href="#" title="Cursos Integrados">Integrado</a></li>
-			<li><a href="#" title="Cursos Técnicos">Técnico</a></li>
+			<li><a href="#" onclick="alert('Até o momento apenas o menu Superior está implementado')" title="Cursos Integrados">Integrado</a></li>
+			<li><a href="#" onclick="alert('Até o momento apenas o menu Superior está implementado')" title="Cursos Técnicos">Técnico</a></li>
 			<li class="active"><a href="#" title="Cursos Superiores">Superior</a></li>
-			<li><a href="#" title="Cursos Pós-Graduação">Pós-Graduação</a></li>
+			<li><a href="#" onclick="alert('Até o momento apenas o menu Superior está implementado')" title="Cursos Pós-Graduação">Pós-Graduação</a></li>
 			<li class="alinhaDireita" ><a href="#" title="Sair do sistema">Sair</a></li>
 		</ul>
 	</nav><br>
@@ -175,7 +175,7 @@
 				renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId);
 				renderChartConcluintes(querySelector, campusId, ano, semestre, cursoId);
 				renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId);
-				renderChartDiscentesEvadidos(querySelector, null, ano, semestre, cursoId);
+				renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre, cursoId);
 			}
 		}else if(paginaAtual == 'notas'){
 			if (!passaCurso) {
@@ -241,7 +241,7 @@
 			renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId);
 			renderChartConcluintes(querySelector, campusId, ano, semestre, cursoId);
 			renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId);
-			renderChartDiscentesEvadidos(querySelector, null, ano, semestre, cursoId);
+			renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre, cursoId);
 		}else if(paginaAtual == 'notas'){
 			renderChartNotasParciais(1, querySelector, null, ano, semestre, cursoId);
 			renderChartNotasParciais(2, querySelector, null, ano, semestre, cursoId);
@@ -287,7 +287,7 @@
 			renderChartTotalMatriculas(querySelector, null, ano, semestre, null, turmaId); 
 			renderChartConcluintes(querySelector, null, ano, semestre, null, turmaId); 
 			renderChartTamanhoTurmas(querySelector, null, ano, semestre, null, turmaId); 
-			//renderChartDiscentesEvadidos(Não é executado para turma); 
+			renderChartDiscentesEvadidos(querySelector, null, ano, semestre, null, turmaId); 
 		}else if(paginaAtual == 'notas'){
 			renderChartNotasParciais(1, querySelector, null, ano, semestre, null, turmaId);
 			renderChartNotasParciais(2, querySelector, null, ano, semestre, null, turmaId);

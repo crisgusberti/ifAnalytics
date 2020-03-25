@@ -21,7 +21,7 @@ INNER JOIN curso c ON c.id_curso = d.id_curso
 GROUP BY c.nome
 
 
---filtrando por curso (vai mostrar X cancelados por disciplina)
+--filtrando por curso (vai mostrar X cancelados por disciplina) --VERSÃO ANTIGA BRYAN
 SELECT COUNT(mc.*) AS total_cancelamento_discente, cc.codigo FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
 	INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina
@@ -45,25 +45,24 @@ SELECT COUNT(mc.*) AS total_cancelamento_discente, cc.codigo FROM ensino.matricu
 	GROUP BY cc.codigo
 	ORDER BY total_cancelamento_discente
 
--- nova versao por curso (falta colocar integrado/lato/strictu)
 
+-- outra versao por curso (falta colocar integrado/lato/strictu) --VERSÃO ANTIGA BRYAN
 WITH q_disciplinas_curso AS (
-		SELECT cu.id_disciplina, 'G' AS nivel 
-		FROM graduacao.curriculo cur
-		INNER JOIN graduacao.curriculo_componente cc ON cc.id_curriculo = cur.id_curriculo
-		INNER JOIN ensino.componente_curricular cu ON cc.id_componente_curricular = cu.id_disciplina
-		WHERE cur.id_curso = 216925
+	SELECT cu.id_disciplina, 'G' AS nivel 
+	FROM graduacao.curriculo cur
+	INNER JOIN graduacao.curriculo_componente cc ON cc.id_curriculo = cur.id_curriculo
+	INNER JOIN ensino.componente_curricular cu ON cc.id_componente_curricular = cu.id_disciplina
+	WHERE cur.id_curso = 216925
 
-		UNION
+	UNION
 
-		SELECT md.id_disciplina, 'T' AS nivel 
-		FROM tecnico.modulo_curricular mc
-		INNER JOIN tecnico.estrutura_curricular_tecnica ect ON ect.id_estrutura_curricular = mc.id_estrutura_curricular
-		INNER JOIN tecnico.modulo m ON m.id_modulo = mc.id_modulo
-		INNER JOIN tecnico.modulo_disciplina md ON md.id_modulo = m.id_modulo
-		WHERE ect.id_curso = 216925
-
-)
+	SELECT md.id_disciplina, 'T' AS nivel 
+	FROM tecnico.modulo_curricular mc
+	INNER JOIN tecnico.estrutura_curricular_tecnica ect ON ect.id_estrutura_curricular = mc.id_estrutura_curricular
+	INNER JOIN tecnico.modulo m ON m.id_modulo = mc.id_modulo
+	INNER JOIN tecnico.modulo_disciplina md ON md.id_modulo = m.id_modulo
+	WHERE ect.id_curso = 216925
+	)
 	SELECT cc.codigo, COUNT(mc.*) AS total_cancelamento_discente
 	FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
@@ -78,7 +77,47 @@ WITH q_disciplinas_curso AS (
 	    AND t.id_disciplina IN (
 			SELECT id_disciplina FROM q_disciplinas_curso	
 		)	
-		GROUP BY cc.codigo
+	GROUP BY cc.codigo
 	ORDER BY total_cancelamento_discente
 
---não tem filtro por turma pq essa informação não seria relevante. Esse gráfico para no curso que mostra as informações já por disciplina
+
+
+======================
+--nova versão feita por mim para CURSO e para TURMA --É ESSA QUE ESTÁ SENDO USADA NO SISTEMA
+WITH q1 AS(
+SELECT 
+	mc.id_matricula_componente,
+	mc.id_discente,
+	mc.id_turma,
+	mc.id_situacao_matricula,
+	ccd.nome
+
+FROM ensino.matricula_componente mc
+	INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula
+	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+	INNER JOIN discente d ON d.id_discente = mc.id_discente
+	INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina
+	INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = cc.id_detalhe
+	
+WHERE mc.ano= 2019 AND mc.periodo = 1
+	AND d.nivel = 'G'
+	AND mc.id_situacao_matricula IN (3) -- CANCELADO
+	
+    -- busca o campus
+	AND d.id_gestora_academica IN (
+		SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(56) --vera
+	)
+	
+    -- curso
+	AND d.id_curso =  197350 --ads
+	
+    -- turma específica (para a consulta de turma, descomentar essa e comentar a busca por campus e por curso.)
+	--AND mc.id_turma = 2900 --Algoritmos e programação I
+
+GROUP BY mc.id_matricula_componente, mc.id_discente, mc.id_turma, mc.id_situacao_matricula, ccd.nome
+)
+SELECT
+	nome AS disciplina,
+	COUNT(id_discente) AS total_matriculados
+FROM q1
+GROUP BY disciplina, id_turma
