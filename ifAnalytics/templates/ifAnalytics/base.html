@@ -93,26 +93,25 @@
 	var passaCurso; //Define se o curso é passado ao alterar ano/período, dependendo de quais combos já foram selecionados
 	var querySelector; //Identifica qual query deverá ser executada na views.py
 
-	//popula select Período e Curso
+	//detecta alteração no combo campus e chama funções do geral/notas/frequencias.html
 	$('#campus').change(function() {
 		let campusId = $("#campus").val();
 		passaCurso = false;
-		//popula períodos junto com cursos
+
+		//popula select Período
 		$.ajax({
-			url: '/consulta_periodos/',
+			url: '/consulta_periodos/', 
 			data: {
 				'campus_id' : campusId
 			},
 			success: function(response) {
 				$('#periodo').html(response);
-
 				let campusId = $("#campus").val();
 				let cursoId = $("#curso").val(); 
 				let periodo = $("#periodo").val();
 				let arrayString = periodo.split("/");
 				let ano = arrayString[0];
 				let semestre = arrayString[1];
-
 				querySelector = 'campus';
 
 				if (paginaAtual == 'geral') {
@@ -134,7 +133,19 @@
 				}
 			}
 		})
-		//popula cursos
+	});
+
+	//detecta alteração no combo periodo e chama funções do geral/notas/frequencias.html
+	$('#periodo').change(function() {
+		let campusId = $("#campus").val();
+		let cursoId = $("#curso").val();  
+		let periodo = $(this).val();
+		let arrayString = periodo.split("/");
+		let ano = arrayString[0];
+		let semestre = arrayString[1];
+		querySelector = 'periodo';
+
+		//popula select Cursos
 		$.ajax({
 			url: '/consulta_cursos/',
 			data: {
@@ -143,20 +154,8 @@
 			success: function(response) {
 				$('#curso').html(response);
 	          	//incluir aqui chamada para função habilita_grafico_tal          
-	          }
-	      })
-	});
-
-	//popula select turma
-	$('#periodo').change(function() {
-		let campusId = $("#campus").val();
-		let cursoId = $("#curso").val();  
-		let periodo = $(this).val();
-		let arrayString = periodo.split("/");
-		let ano = arrayString[0];
-		let semestre = arrayString[1];
-
-		querySelector = 'periodo';
+	        }
+	    })
 
 		if (paginaAtual == 'geral') {
 			if (!passaCurso) {
@@ -206,6 +205,18 @@
 				renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId);
 			}
 		}
+	});
+
+	//detecta alteração no combo curso e chama funções do geral/notas/frequencias.html além de popular turmas
+	$('#curso').change(function() {
+		let campusId = $("#campus").val(); 
+		let cursoId = $(this).val();
+		let periodo = $("#periodo").val(); 
+		let arrayString = periodo.split("/");
+		let ano = arrayString[0];
+		let semestre = arrayString[1];
+		querySelector = 'curso';
+		passaCurso = true;
 
 		//popula turmas
 		$.ajax({
@@ -221,19 +232,6 @@
 	          // $('#proximoID').html('<option value="">---</option>'); maneira de deixar o proximo não selecionado
 	      	}
 	  	})
-	});
-
-	//detecta alteração no combo curso e chama funções do geral/notas.html
-	$('#curso').change(function() {
-		passaCurso = true;
-		let campusId = $("#campus").val(); 
-		let cursoId = $(this).val();
-		let periodo = $("#periodo").val(); 
-		let arrayString = periodo.split("/");
-		let ano = arrayString[0];
-		let semestre = arrayString[1];
-
-		querySelector = 'curso';
 
 		if (paginaAtual == 'geral') {
 			renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId);
@@ -252,24 +250,9 @@
 		}else if(paginaAtual == 'frequencias'){
 			renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId);
 		}
-
-		//popula turmas
-		$.ajax({
-			url: '/consulta_turmas/',
-	        data: { //passando por ajax para a view "consulta_turmas", as variáveis definidas acima
-	        'campus_id' : campusId,
-	        'ano' : ano,
-	        'semestre' : semestre,
-	        'curso_id' : cursoId
-	    	},
-	    	success: function(response) {
-	    	$('#turma').html(response);
-	          // $('#proximoID').html('<option value="">---</option>'); maneira de deixar o proximo não selecionado
-	      	}
-	  	})
 	});
 
-	//detecta alteração no combo turmas e chama funções do geral/notas.html
+	//detecta alteração no combo turmas e chama funções do geral/notas/frequencias.html
 	$('#turma').change(function() {
 		let campusId = $("#campus").val();
 		let cursoId = $("#curso").val();  
@@ -278,7 +261,6 @@
 		let ano = arrayString[0];
 		let semestre = arrayString[1];
 		let turmaId = $(this).val();
-
 		querySelector = 'turma';
 
 		if (paginaAtual == 'geral') {
