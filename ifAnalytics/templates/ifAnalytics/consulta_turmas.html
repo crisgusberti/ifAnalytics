@@ -1,5 +1,6 @@
 
+<option value="000000">Turma</option> <!-- deixa a primeira opção sempre neutra -->
 {% for turma in turmas %}
    <option value="{{ turma.id_turma }}">{{ turma.codigo_turma}} - {{ turma.codigo_disciplina}} - {{ turma.nome}}</option>
- {% endfor %}
+{% endfor %}
 

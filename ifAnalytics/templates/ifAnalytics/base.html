@@ -90,10 +90,9 @@
 	});
 
 	var paginaAtual = thisPage(); //Verifica qual é a página atual para chamar as funções pertinentes
-	var passaCurso; //Define se o curso é passado ao alterar ano/período, dependendo de quais combos já foram selecionados
 	var querySelector; //Identifica qual query deverá ser executada na views.py
 
-	//detecta alteração no combo campus e chama funções do geral/notas/frequencias.html
+	//detecta alteração no combo campus e chama funções do geral/notas/frequencias.html além de popular periodos
 	$('#campus').change(function() {
 		let campusId = $("#campus").val();
 		passaCurso = false;
@@ -106,6 +105,8 @@
 			},
 			success: function(response) {
 				$('#periodo').html(response);
+				$('#turma').html('<option value="000000">Turma</option>'); //limpa combo turma ao alterar campus
+				$('#curso').html('<option value="000000">Curso</option>'); //limpa combo curso ao alterar campus
 				let campusId = $("#campus").val();
 				let cursoId = $("#curso").val(); 
 				let periodo = $("#periodo").val();
@@ -135,7 +136,7 @@
 		})
 	});
 
-	//detecta alteração no combo periodo e chama funções do geral/notas/frequencias.html
+	//detecta alteração no combo periodo e chama funções do geral/notas/frequencias.html além de popular cursos
 	$('#periodo').change(function() {
 		let campusId = $("#campus").val();
 		let cursoId = $("#curso").val();  
@@ -153,57 +154,26 @@
 			},
 			success: function(response) {
 				$('#curso').html(response);
-	          	//incluir aqui chamada para função habilita_grafico_tal          
+				$('#turma').html('<option value="000000">Turma</option>'); //limpa combo turma ao alterar período
 	        }
 	    })
 
 		if (paginaAtual == 'geral') {
-			if (!passaCurso) {
-				//se entrar aqui quer dizer que está sendo alterado ano/semestre para o campus
 				renderChartFormaIngresso(querySelector, campusId, ano, semestre);
 				renderChartStatusDiscente(querySelector, campusId, ano, semestre);
 				renderChartTotalMatriculas(querySelector, campusId, ano, semestre);
 				renderChartConcluintes(querySelector, campusId, ano, semestre);
 				renderChartTamanhoTurmas(querySelector, campusId, ano, semestre);
 				renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre);
-			} else {
-				//se entrar aqui quer dizer que está sendo alterado o ano/semestre para o curso
-				querySelector = "curso";
-				renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId);
-				renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId);
-				renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId);
-				renderChartConcluintes(querySelector, campusId, ano, semestre, cursoId);
-				renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId);
-				renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre, cursoId);
-			}
 		}else if(paginaAtual == 'notas'){
-			if (!passaCurso) {
-				//se entrar aqui quer dizer que está sendo alterado ano/semestre para o campus
 				renderChartNotasParciais(1, querySelector, campusId, ano, semestre);
 				renderChartNotasParciais(2, querySelector, campusId, ano, semestre);
 				renderChartMediasFinais(querySelector, campusId, ano, semestre);
 				renderChartDiscenteExame(querySelector, campusId, ano, semestre);
 				renderChartAprovadosReprovados(querySelector, campusId, ano, semestre);
 				renderChartStatusDisciplinas(querySelector, campusId, ano, semestre);
-			} else {
-				//se entrar aqui quer dizer que está sendo alterado o ano/semestre para o curso
-				querySelector = "curso";
-				renderChartNotasParciais(1, querySelector, null, ano, semestre, cursoId);
-				renderChartNotasParciais(2, querySelector, null, ano, semestre, cursoId);
-				renderChartMediasFinais(querySelector, null, ano, semestre, cursoId);
-				renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId);
-				renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId);
-				renderChartStatusDisciplinas(querySelector, campusId, ano, semestre, cursoId);
-			}
 		}else if(paginaAtual == 'frequencias'){
-			if (!passaCurso) {
-				//se entrar aqui quer dizer que está sendo alterado ano/semestre para o campus
 				renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre);
-			} else {
-				//se entrar aqui quer dizer que está sendo alterado o ano/semestre para o curso
-				querySelector = "curso";
-				renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId);
-			}
 		}
 	});
 
@@ -229,7 +199,6 @@
 	    	},
 	    	success: function(response) {
 	    	$('#turma').html(response);
-	          // $('#proximoID').html('<option value="">---</option>'); maneira de deixar o proximo não selecionado
 	      	}
 	  	})
 
@@ -281,12 +250,6 @@
 			renderChartPercentuaisFrequencia(querySelector, null, ano, semestre, null, turmaId);
 		}
 	});
-
-	//Função para habilitar ou desabilitar graficos de acordo com seu preenchimento. (NÃO IMPLEMENTADA AINDA)
-	function habilita_graficos_curso(){
-		$("#grafico_periodo_ingresso").show();	
-		$("#grafico_periodo_ingresso").hide();
-	}
 
 	//função que me diz qual é a página atual
 	function thisPage(){

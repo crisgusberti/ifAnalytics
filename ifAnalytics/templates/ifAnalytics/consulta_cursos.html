@@ -1,5 +1,6 @@
 
+<option value="000000">Curso</option> <!-- deixa a primeira opção sempre neutra -->
 {% for curso in cursos %}
    <option value="{{ curso.id_curso }}">{{ curso.nome }}</option>
- {% endfor %}
+{% endfor %}
 

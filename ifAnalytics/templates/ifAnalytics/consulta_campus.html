@@ -1,4 +1,4 @@
-
+<option value="000000">Campus</option> <!-- deixa a primeira opção sempre neutra -->
 {% for campus in campus %} <!-- como na view essa pagina foi carrega com o conteúdo de "context" agora eu consigo iteirar o vetor "campus" acessando as tuplas nomeadas em cada linha por esse for, construindo o combobox (select) com as opções retornadas pela consulta SQL -->
    <option value="{{ campus.id_unidade }}">{{ campus.nome }}</option>
  {% endfor %}
