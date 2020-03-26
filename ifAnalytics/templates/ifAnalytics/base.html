@@ -3,10 +3,10 @@
 <html lang="pt-br">
 <head>
 	<meta charset="UTF-8">
-	<meta name="description" content="Geral - IfAnalytics">
+	<meta name="description" content="IfAnalytics">
 	<meta name="keywwords" content="IFRS, Analytics, SIGAA">
 	<meta name="author" content="Crístian Gusberti">
-	<title>Geral - IfAnalytics</title>
+	<!-- <title>IfAnalytics</title> --> <!-- está sendo alterado dinamicamente pela função thisPage() abaixo -->
 	<link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
 	<link rel="stylesheet" href="{% static 'css/Estilos.css' %}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -79,6 +79,10 @@
 
 {% block js %}
 <script>
+	var paginaAtual = thisPage(); //Verifica qual é a página atual para chamar as funções pertinentes
+	var querySelector; //Identifica qual query deverá ser executada na views.py
+	document.title = paginaAtual.charAt(0).toUpperCase() + paginaAtual.substr(1).toLowerCase() + " - IfAnalytics"; //Altera o title da página dinamicamente de acordo com a página atual, deixando a primeira letra em maiúscula
+
 	//popula select Campus
 	$( document ).ready(function() { //isso faz com que ao ser carregada a página execute o ajax abaixo
 		$.ajax({
@@ -88,9 +92,6 @@
 	       }
 	   })
 	});
-
-	var paginaAtual = thisPage(); //Verifica qual é a página atual para chamar as funções pertinentes
-	var querySelector; //Identifica qual query deverá ser executada na views.py
 
 	//detecta alteração no combo campus e chama funções do geral/notas/frequencias.html além de popular periodos
 	$('#campus').change(function() {
