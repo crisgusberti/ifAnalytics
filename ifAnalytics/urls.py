@@ -20,6 +20,8 @@ from ifAnalytics.views import get_data_discentes_exame
 from ifAnalytics.views import get_data_aprovados_reprovados
 from ifAnalytics.views import get_data_status_disciplina
 from ifAnalytics.views import get_data_percentuais_frequencia
+#inicio dos testes com interatividade
+from ifAnalytics.views import get_consulta_forma_ingresso_detalhes
 
 
 urlpatterns = [
@@ -46,5 +48,7 @@ urlpatterns = [
 	path('get_data_aprovados_reprovados/', get_data_aprovados_reprovados, name='get_data_aprovados_reprovados'),
 	path('get_data_status_disciplina/', get_data_status_disciplina, name='get_data_status_disciplina'),
 	path('get_data_percentuais_frequencia/', get_data_percentuais_frequencia, name='get_data_percentuais_frequencia'),
+	#inicio dos testes com interatividade
+	path('get_consulta_forma_ingresso_detalhes/', get_consulta_forma_ingresso_detalhes, name='get_consulta_forma_ingresso_detalhes'),
 ]
     
