@@ -5,20 +5,27 @@ function thisPage(){
 	var url = document.URL; //retorna a url da página
 
 	if (url[url.length-1] == "/"){ // remove última barra do endereço
-	  	url = url.substring(0, url.length-1);
+		url = url.substring(0, url.length-1);
 	}
 
 	var urlArr = url.split("/");//retorna um array da url separado pelas barras
-	var lastInd = urlArr.length -1;//retorna o ultimo índice do array (tamanho total menos 1, pois o array começa do zero)
-	var thisPageExtension = urlArr[lastInd];//retorna a pagina atual + a extensão .html .php etc.
-	var thisPageArr = thisPageExtension.split(".");//retorna outro array separando o nome da pagina da extenção
-	var thisPage = thisPageArr[0];//retorna a pagina atual sem a extensão
+	var thisPage = urlArr[3]; //armazena em thisPage a posição 3 do array que é a posição ref. ao nome da página. Pq ele conta as barras do http:// na hora de splitar
+	if (thisPage == "frequencias") { //Correção do acento da palavra
+		thisPage = "Frequências";
+	}
+	//nada do que vem abaixo foi utilizado dps da implementação de tela de detalhes.
+	//var lastInd = urlArr.length -1;//retorna o ultimo índice do array (tamanho total menos 1, pois o array começa do zero)
+	//var thisPageExtension = urlArr[lastInd];//retorna a pagina atual + a extensão .html .php etc.
+	//var thisPageArr = thisPageExtension.split(".");//retorna outro array separando o nome da pagina da extenção
+	//var thisPage = thisPageArr[0];//retorna a pagina atual sem a extensão
 
 	return thisPage;
 }
 
-var thisPage = thisPage();  // recebe a string da página atual
-document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página
+	var thisPage = thisPage();  // recebe a string da página atual
+	if (thisPage == "geral" || thisPage == "notas" || thisPage == "Frequências") {
+		document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página
+	}
 
 
 

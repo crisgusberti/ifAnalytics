@@ -4,70 +4,60 @@
 
 <script>
 
-		$.ajax({
-	        method: "GET",
-	        url: '/get_consulta_forma_ingresso_detalhes/', //mudar para a view que já existe!
-	        data: {
-	          'campus_id' : 56,
-	          'curso_id' : 197350,
-	          'ano' : 2019,
-	          'semestre' : 1,
-	          'turma_id': 2892,
-	          'querySelector' : "campus_detalhes",
-	          'parametro_detalhe' : "1 -  ACESSO UNIVERSAL"
-	       },
-	       success: function(data_from_view){
-	         //chama a função que monta a tabela
-	         gerarTabela(data_from_view);
-	       },
-	       error: function(error_data){
-	          console.log("error")
-	          console.log(error_data)
-	       }
-	    })
+	$.ajax({
+        method: "GET",
+        url: '/get_consulta_forma_ingresso_detalhes/', //mudar para a view que já existe!
+        data: {
+          'campus_id' : 56,
+          'curso_id' : 197350,
+          'ano' : 2019,
+          'semestre' : 1,
+          'turma_id': 2892,
+          'querySelector' : "campus_detalhes",
+          'parametro_detalhe' : "1 -  ACESSO UNIVERSAL"
+       },
+       success: function(data_from_view){
+         //chama a função que monta a tabela
+         gerarTabela(data_from_view);
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
 
 
 
-		function gerarTabela(data_from_view){
+	function gerarTabela(data_from_view){
+		//cabeçalho
+		let array_cabecalho = ["Forma ingresso", "Matricula", "Nome", "Curso", "E-mail"];
 
-			for (let i = 0; i < data_from_view.length; i++) {
-	            var html = "<tr>";
-				html +="<td>"+data_from_view[i]+"</td>";
-				html +="<td>"+data_from_view[i]+"</td>";
-				html +="</tr>";
-				$('tbody').append(html);
-     		}
-
+		let cabecalho_tabela = "<tr>";//adiciona uma linha de cabeçalho
+		for (let i = 0; i < array_cabecalho.length; i++) { 
+			cabecalho_tabela += "<th>"+array_cabecalho[i] +"</th>"; //percorre o array de cabeçalho e para cada item cria uma célula (coluna)
 		}
-
-
-
-	// $( document ).ready(function() { 
-
-	// 	var json = [
-	// 	["10 -  PORTADOR DEFICIENCIA", 9], 
-	// 	["1 -  ACESSO UNIVERSAL", 379], 
-	// 	["2 -  ENS. PUBLICO - RENDA INFERIOR PRETO PARDO INDIO PCD", 1], 
-	// 	["3 -  ENS. PUBLICO - RENDA INFERIOR PRETO PARDO INDIO", 51]];
-
-	// 	for(var i=0;i< json.length; i++){
-	// 		var html = "<tr>";
-	// 		html +="<td>"+json[i]+"</td>";
-	// 		html +="<td>"+json[i]+"</td>";
-	// 		html +="</tr>";
-	// 		$('tbody').append(html);
-	// 	}
-	// });
+		cabecalho_tabela += "</tr>";
+		$('thead').append(cabecalho_tabela); //popula cabeçalho da tabela dinamicamente
+		
+		//corpo
+		for (let i = 0; i < data_from_view.length; i++) { //for que adiciona uma linha da tabela
+			let corpo_tabela = "<tr>"; //adiciona linha em <tr> e abaixo adiciona célula (coluna) em <td>
+			for(let j = 0; j < data_from_view[i].length; j++){ //pega a quantidade de itens (tamanho) da linha i do array
+				corpo_tabela +="<td>"+data_from_view[i][j]+"</td>"; //enquanto nessa linha i, percorre cada posição da linha i como sendo j
+			}
+			corpo_tabela +="</tr>";
+			$('tbody').append(corpo_tabela); //popula o corpo da tabela dinamicamente
+ 		}
+	}
 </script>
 
+<!-- Plotagem da tabela -->
 <table border="1">
 	<thead>
-		<tr>
-			<th>Aluno</th>
-			<th>Curso</th>
-		</tr>
+		<!-- insere aqui o append do thead -->
 	</thead>
 	<tbody>
+		<!-- insere aqui o append do tbody -->
 	</tbody> 
 </table>
 

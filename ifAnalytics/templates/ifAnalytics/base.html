@@ -38,13 +38,14 @@
 		<ul id="lista_menu" style="padding-left: 2px">
 			<li id="geral"><a href="{% url 'geral' %}" title="Informações Gerais">Geral</a><img src="{% static 'images/geral_icon.PNG' %}" class="icone_menu_opaco"></li>
 			<li id="notas"><a href="{% url 'notas' %}" title="Informações sobre notas">Notas</a><img src="{% static 'images/notas_icon.PNG' %}" class="icone_menu"></li>
-			<li id="frequencias"><a href="{% url 'frequencias' %}" title="Informações sobre frequência">Frequência</a><img src="{% static 'images/frequencia_icon.PNG' %}" class="icone_menu"></li>
+			<li id="Frequências"><a href="{% url 'frequencias' %}" title="Informações sobre frequência">Frequência</a><img src="{% static 'images/frequencia_icon.PNG' %}" class="icone_menu"></li>
+			
 			<!-- <li><a href="{% url 'suporte' %}" title="Suporte do sistema">Suporte</a><img src="{% static 'images/suporte_icon.PNG' %}" class="icone_menu_opaco"></li> --> <!-- Suporte comentado por enquanto -->
 		</ul>
 	</nav>
 
 	
-	<script src="{% static '/js/MenuAtivo.js' %}"></script> <!-- script para deixar menu ativo -->
+	<!-- <script src="{% static '/js/MenuAtivo.js' %}"></script> --> <!-- script para deixar menu ativo SUBSTITUIDO PELA FUNÇÃO thisPage() -->
 
 
 	<div id="filtros">
@@ -130,7 +131,7 @@
 					renderChartDiscenteExame(querySelector, campusId, ano, semestre);
 					renderChartAprovadosReprovados(querySelector, campusId, ano, semestre);
 					renderChartStatusDisciplinas(querySelector, campusId, ano, semestre);
-				}else if(paginaAtual == 'frequencias'){
+				}else if(paginaAtual == 'Frequências'){
 					renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre);
 				}
 			}
@@ -173,7 +174,7 @@
 				renderChartDiscenteExame(querySelector, campusId, ano, semestre);
 				renderChartAprovadosReprovados(querySelector, campusId, ano, semestre);
 				renderChartStatusDisciplinas(querySelector, campusId, ano, semestre);
-		}else if(paginaAtual == 'frequencias'){
+		}else if(paginaAtual == 'Frequências'){
 				renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre);
 		}
 	});
@@ -217,7 +218,7 @@
 			renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId);
 			renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId);
 			renderChartStatusDisciplinas(querySelector, campusId, ano, semestre, cursoId);
-		}else if(paginaAtual == 'frequencias'){
+		}else if(paginaAtual == 'Frequências'){
 			renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId);
 		}
 	});
@@ -247,13 +248,14 @@
 			renderChartDiscenteExame(querySelector, null, ano, semestre, null, turmaId);
 			renderChartAprovadosReprovados(querySelector, null, ano, semestre, null, turmaId);
 			renderChartStatusDisciplinas(querySelector, null, ano, semestre, null, turmaId);
-		}else if(paginaAtual == 'frequencias'){
+		}else if(paginaAtual == 'Frequências'){
 			renderChartPercentuaisFrequencia(querySelector, null, ano, semestre, null, turmaId);
 		}
 	});
 
 	//função que me diz qual é a página atual
 	function thisPage(){
+
 		var url = document.URL; //retorna a url da página
 
 		if (url[url.length-1] == "/"){ // remove última barra do endereço
@@ -261,12 +263,16 @@
 		}
 
 		var urlArr = url.split("/");//retorna um array da url separado pelas barras
-		var lastInd = urlArr.length -1;//retorna o ultimo índice do array (tamanho total menos 1, pois o array começa do zero)
-		var thisPageExtension = urlArr[lastInd];//retorna a pagina atual + a extensão .html .php etc.
-		var thisPageArr = thisPageExtension.split(".");//retorna outro array separando o nome da pagina da extenção
-		var thisPage = thisPageArr[0];//retorna a pagina atual sem a extensão
-
+		var thisPage = urlArr[3]; //armazena em thisPage a posição 3 do array que é a posição ref. ao nome da página. Pq ele conta as barras do http:// na hora de splitar
+		if (thisPage == "frequencias") { //Correção do acento da palavra
+			thisPage = "Frequências";
+		}
 		return thisPage;
+	}
+
+	var thisPage = thisPage();  // recebe a string da página atual
+	if (thisPage == "geral" || thisPage == "notas" || thisPage == "Frequências") { //não considera a página de detalhes pq ela não tem menu
+		document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página
 	}
 
 </script>
