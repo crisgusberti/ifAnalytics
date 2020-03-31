@@ -425,6 +425,7 @@ def get_data_percentuais_frequencia(request): #Gráfico 14 e 15 e 16
 
 #essa view é um teste. Depois que eu conseguir resolver todos os problemas anteriores, 
 #verificar como posso utilizar a view que já existe sem ter q criar uma nova
+#lembrar de revisar se as consultas anteriores daqui permanecem iguais lá em cima
 def get_consulta_forma_ingresso_detalhes(request):
     campus_id = request.GET.get('campus_id') 
     curso_id  = request.GET.get('curso_id')
@@ -432,7 +433,7 @@ def get_consulta_forma_ingresso_detalhes(request):
     semestre = request.GET.get('semestre')
     turma_id = request.GET.get('turma_id')
     query_selector = request.GET.get('querySelector')
-    parametro_detalhe = request.GET.get('parametro_detalhe')
+    parametro_detalhe = request.GET.get('parametroDetalhes')
 
     if query_selector == "turma":
         with connection.cursor() as cursor:
@@ -449,7 +450,7 @@ def get_consulta_forma_ingresso_detalhes(request):
             cursor.execute("SELECT  mi.descricao, COUNT(d.*) AS total_alunos FROM discente d INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.ano_ingresso = %s AND d.periodo_ingresso = %s GROUP BY mi.id_modalidade_ingresso ORDER BY mi.descricao", [campus_id, ano, semestre]) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False)
-    if query_selector == "campus_detalhes":
+    if query_selector == "campus_detalhes" or query_selector == "periodo_detalhes":
         with connection.cursor() as cursor:
             cursor.execute("SELECT mi.descricao AS forma_ingresso, d.matricula, p.nome AS discente, c.nome AS curso, p.email AS contato FROM discente d INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso INNER JOIN curso c ON c.id_curso = d.id_curso INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.ano_ingresso = %s AND d.periodo_ingresso = %s AND mi.descricao = %s ORDER BY mi.descricao, p.nome, c.nome", [campus_id, ano, semestre, parametro_detalhe]) 
             rows = cursor.fetchall();

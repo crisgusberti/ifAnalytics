@@ -6,6 +6,13 @@
   let data_forma_ingresso
 
   function renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    persistirParametros("querySelector", querySelector); 
+    persistirParametros("campusId", campusId); 
+    persistirParametros("ano", ano); 
+    persistirParametros("semestre", semestre); 
+    persistirParametros("cursoId", cursoId); 
+    persistirParametros("turmaId", turmaId); 
+
     //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
     $.ajax({
         method: "GET",
@@ -55,15 +62,25 @@
     function selectHandler() {
       var selectedItem = chart.getSelection()[0];
       if (selectedItem) {
-        var value = data.getValue(selectedItem.row, 0);
+        var parametroDetalhes = data.getValue(selectedItem.row, 0);
+        persistirParametros("parametroDetalhes", parametroDetalhes);
+
+
+
+        if (sessionStorage.getItem("querySelector") == "campus"){
+          persistirParametros("querySelector", "campus_detalhes");
+        } else if (sessionStorage.getItem("querySelector") == "periodo"){
+          persistirParametros("querySelector", "periodo_detalhes");
+        } else if(sessionStorage.getItem("querySelector") == "curso"){
+          persistirParametros("querySelector", "curso_detalhes");
+        } else if(sessionStorage.getItem("querySelector") == "turma"){
+          persistirParametros("querySelector", "turma_detalhes");
+        }
+        
         //var value = data.getValue(selectedItem.row, selectedItem.column); //como estava no exemplo
         //alert('The user selected ' + value);
 
-        // o que eu quero aqui é que passe pra uma view o parametro da consulta que será executada
-        //para que o resultado dessa consulta preencha a tabela
-          
-        window.location.href="{% url 'detalhes' %}?detalhe="+ value;
-       
+        window.location.href="{% url 'detalhes' %}";
       }
     }
 
@@ -74,6 +91,8 @@
 
     chart.draw(data, options);
   }
+
+
 </script>
 
 
@@ -302,13 +321,19 @@
 
 <script> //FUNÇÕES GERIAS
 
-   function formataRetorno(dados, label_linha_1, label_linha_2){
-        //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
-        let dadosNovo = dados[0].toString().split(",");
-        let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
-        let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
-        let dadosNovoArray= [posicao1, posicao2];
-        return dadosNovoArray;
+  function formataRetorno(dados, label_linha_1, label_linha_2){
+    //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
+    let dadosNovo = dados[0].toString().split(",");
+    let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
+    let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
+    let dadosNovoArray= [posicao1, posicao2];
+    return dadosNovoArray;
+  }
+
+  function persistirParametros(chave, valor){
+    //persiste na seção os valores do parametros utilizados nas consultas da página de detalhes
+    sessionStorage.removeItem(chave);
+    sessionStorage.setItem(chave, valor);
   }
 </script>
 
