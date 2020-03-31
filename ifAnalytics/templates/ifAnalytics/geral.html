@@ -6,6 +6,7 @@
   let data_forma_ingresso
 
   function renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //salvando os parametros na sessionStorage para ser possível acessa-los da página de detalhes
     persistirParametros("querySelector", querySelector); 
     persistirParametros("campusId", campusId); 
     persistirParametros("ano", ano); 
@@ -57,17 +58,14 @@
 
      let chart = new google.visualization.PieChart(document.getElementById('pieChart_forma_ingresso'));
 
-
-  /////////////////////////////////////////////////////////////// testes de interatividade!!!
+    // Função que permite a interatividade com o gráfico
     function selectHandler() {
       var selectedItem = chart.getSelection()[0];
       if (selectedItem) {
         var parametroDetalhes = data.getValue(selectedItem.row, 0);
-        persistirParametros("parametroDetalhes", parametroDetalhes);
+        persistirParametros("parametroDetalhes", parametroDetalhes); //persiste aqui o parametro selecionado no gráfico
 
-
-
-        if (sessionStorage.getItem("querySelector") == "campus"){
+        if (sessionStorage.getItem("querySelector") == "campus"){ //altera o querySelector para executar a consulta de detalhes correspondente 
           persistirParametros("querySelector", "campus_detalhes");
         } else if (sessionStorage.getItem("querySelector") == "periodo"){
           persistirParametros("querySelector", "periodo_detalhes");
@@ -76,20 +74,15 @@
         } else if(sessionStorage.getItem("querySelector") == "turma"){
           persistirParametros("querySelector", "turma_detalhes");
         }
-        
-        //var value = data.getValue(selectedItem.row, selectedItem.column); //como estava no exemplo
-        //alert('The user selected ' + value);
 
-        window.location.href="{% url 'detalhes' %}";
+        window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
       }
     }
 
-    // Listen for the 'select' event, and call my function selectHandler() when
-    // the user selects something on the chart.
+    //Listen for the 'select' event, and call my function selectHandler() when the user selects something on the chart.
     google.visualization.events.addListener(chart, 'select', selectHandler);
-  ///////////////////////////////////////////////////////////////
 
-    chart.draw(data, options);
+    chart.draw(data, options); //Desenha o gráfico (função original do charts antes da interatividade)
   }
 
 

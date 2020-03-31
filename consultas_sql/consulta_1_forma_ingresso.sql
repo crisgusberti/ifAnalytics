@@ -21,7 +21,7 @@ dti_ifrs.contar_forma_ingresso();
    -- F: Formação complementar
 
 
-
+============================
 --VERSÃO DA CONSULTA QUE EU FIZ E QUE ESTÁ IMPLEMENTADA NO SISTEMA
 --SERVE PARA CAMPUS/CURSO/TURMA -só precisa descomentar a cláusula pertiente.
 
@@ -47,8 +47,38 @@ GROUP BY mi.id_modalidade_ingresso
 ORDER BY mi.descricao
 
 
+===============
+--CONSULTA PRA TELA DE DETALHES:
 
------------------------------------------
+SELECT mi.descricao AS forma_ingresso, d.matricula, p.nome AS discente, c.nome AS curso, p.email AS contato
+
+FROM discente d 
+
+INNER JOIN ensino.modalidade_ingresso mi ON mi.id_modalidade_ingresso = d.id_modalidade_ingresso
+INNER JOIN curso c ON c.id_curso = d.id_curso
+INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa
+--INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente --somente para turma preciso de um join com MC
+
+WHERE d.nivel = 'G'
+
+AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) --só está considerando status 1 (ativo) e 8 (formando)
+
+--passando campi
+AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(56))
+
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1 --para turma decidi não usar ANO e periodo
+
+--passando curo
+AND d.id_curso =  197350
+
+--passando turma
+--AND mc.id_turma = 2889
+
+AND mi.descricao = '1 -  ACESSO UNIVERSAL'
+
+ORDER BY forma_ingresso, discente, curso
+
+==========================================
 
 
 

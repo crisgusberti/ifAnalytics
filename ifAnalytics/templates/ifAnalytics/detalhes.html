@@ -4,62 +4,27 @@
 
 <script>
 
-		//quem sabe não precise declarar as variáveis, posso colocar direto o getItem no data do ajax
-		//implementar a  consulta de campus e turma na view
-		campusId = sessionStorage.getItem("campusId");
-		cursoId= sessionStorage.getItem("cursoId");
-		ano = sessionStorage.getItem("ano");
-		semestre = sessionStorage.getItem("semestre");
-		turmaId= sessionStorage.getItem("turmaId");
-		querySelector = sessionStorage.getItem("querySelector");
-		parametroDetalhes = sessionStorage.getItem("parametroDetalhes");
-		
-
-		console.log("camupusId é "+ campusId);
-		console.log("cursoId é "+ cursoId);
-		console.log("ano é "+ ano);
-		console.log("semestre é "+ semestre);
-		console.log("turmaId é "+ turmaId);
-		console.log("querySelector é "+ querySelector);
-		console.log("parametroDetalhes é "+ parametroDetalhes);
-
-		$.ajax({
-	        method: "GET",
-	        url: '/get_consulta_forma_ingresso_detalhes/', //mudar para a view que já existe!
-	        data: {
-	          'campus_id' : campusId,
-	          'curso_id' : cursoId,
-	          'ano' : ano,
-	          'semestre' : semestre,
-	          'turma_id': turmaId,
-	          'querySelector' : querySelector,
-	          'parametroDetalhes' : parametroDetalhes
-	          // 'campus_id' : sessionStorage.getItem("campusId"),
-	          // 'curso_id' : sessionStorage.getItem("cursoId"),
-	          // 'ano' : sessionStorage.getItem("ano"),
-	          // 'semestre' : sessionStorage.getItem("semestre"),
-	          // 'turma_id': sessionStorage.getItem("turmaId"),
-	          // 'querySelector' : sessionStorage.getItem("querySelector"),
-	          // 'parametroDetalhes' : sessionStorage.getItem("parametroDetalhes")
-	          // 'campus_id' : 56,
-	          // 'curso_id' : 197350,
-	          // 'ano' : 2019,
-	          // 'semestre' : 1,
-	          // 'turma_id': 2892,
-	          // 'querySelector' : "campus_detalhes",
-	          // 'parametro_detalhe' : "1 -  ACESSO UNIVERSAL"
-	       },
-	       success: function(data_from_view){
-	       	console.log("data form view é "+data_from_view);
-	         //função que monta a tabela
-	         gerarTabela(data_from_view);
-	       },
-	       error: function(error_data){
-	          console.log("error")
-	          console.log(error_data)
-	       }
-	    })
-
+	$.ajax({
+        method: "GET",
+        url: '/get_data_forma_ingresso/', //envia os dados abaixo para essa view 
+        data: { //resgatando os parametros que foram salvos no sessionStorage pelas páginas geral/notas/frequencia
+          'campus_id' : sessionStorage.getItem("campusId"),
+          'curso_id' : sessionStorage.getItem("cursoId"),
+          'ano' : sessionStorage.getItem("ano"),
+          'semestre' : sessionStorage.getItem("semestre"),
+          'turma_id': sessionStorage.getItem("turmaId"),
+          'querySelector' : sessionStorage.getItem("querySelector"),
+          'parametroDetalhes' : sessionStorage.getItem("parametroDetalhes")
+       },
+       success: function(data_from_view){ //retorno da view
+         //função que monta a tabela
+         gerarTabela(data_from_view);
+       },
+       error: function(error_data){
+          console.log("error")
+          console.log(error_data)
+       }
+    })
 
 	function gerarTabela(data_from_view){
 		//cabeçalho
