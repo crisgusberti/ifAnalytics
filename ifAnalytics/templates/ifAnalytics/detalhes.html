@@ -6,7 +6,7 @@
 
 	$.ajax({
         method: "GET",
-        url: '/get_data_forma_ingresso/', //envia os dados abaixo para essa view 
+        url: sessionStorage.getItem("url_consulta"), //URL da view da consulta do sessionStorage salvo nos handlers das páginas geral/notas/frequencia
         data: { //resgatando os parametros que foram salvos no sessionStorage pelas páginas geral/notas/frequencia
           'campus_id' : sessionStorage.getItem("campusId"),
           'curso_id' : sessionStorage.getItem("cursoId"),
