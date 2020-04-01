@@ -76,7 +76,7 @@ AND d.id_curso =  197350
 
 AND mi.descricao = '1 -  ACESSO UNIVERSAL'
 
-ORDER BY forma_ingresso, discente, curso
+ORDER BY discente
 
 ==========================================
 

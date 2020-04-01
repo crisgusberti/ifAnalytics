@@ -28,7 +28,7 @@
 
 	function gerarTabela(data_from_view){
 		//cabeçalho
-		let array_cabecalho = ["Forma ingresso", "Matricula", "Nome", "Curso", "E-mail"];
+		let array_cabecalho = sessionStorage.getItem("array_cabecalho").split(","); //sessionStorage armazenou como string unica por isso splitei aqui
 
 		let cabecalho_tabela = "<tr>";//adiciona uma linha de cabeçalho
 		for (let i = 0; i < array_cabecalho.length; i++) { 

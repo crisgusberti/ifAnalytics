@@ -163,3 +163,33 @@ INNER JOIN curso c ON c.id_curso = d.id_curso
 INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa
 WHERE d.nivel IN ('E')
 ORDER BY sd.descricao, d.nivel, c.nome, nome_pessoa
+
+
+=====================================================
+--CONSULTA DETALHES STATUS DOS ALUNOS, FEITA POR MIM!
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, sd.descricao AS status, p.email AS contato
+FROM discente d
+INNER JOIN status_discente sd ON sd.status = d.status 
+INNER JOIN curso c ON c.id_curso = d.id_curso
+INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa
+--para a consulta da turma, decomentar o join abaixo
+--INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente
+
+WHERE d.nivel IN ('G')
+
+--passando campi
+AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(56))
+
+--passando periodo
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1 --turma não leva ano e período
+
+--passando curo
+AND d.id_curso =  197350
+
+--passando turma
+--AND mc.id_turma = 2889
+
+--parametro detalhes
+AND sd.descricao = 'ATIVO'
+
+ORDER BY discente

@@ -66,7 +66,8 @@
         var parametroDetalhes = data.getValue(selectedItem.row, 0);
         persistirParametros("parametroDetalhes", parametroDetalhes); //persiste aqui o parametro selecionado no gráfico
         persistirParametros("url_consulta", "/get_data_forma_ingresso/"); //persiste aqui a url da consulta a ser executada na pg detalhes
-        definirQuerySelector(sessionStorage.getItem("querySelector"));
+        persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Forma ingresso", "E-mail"]); //persiste inf. cabeçalho tabela
+        definirQuerySelector(sessionStorage.getItem("querySelector")); //chama a função, passando o querySelector atual para definir o novo querySelector que dirá que consulta da view será executada na página de detalhes
       }
     }
 
@@ -256,13 +257,6 @@
   // Funções que populam os gráficos com dados
 
   function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name){
-    data = new google.visualization.DataTable();
-    data.addColumn(tipo_coluna1, coluna_1);
-    data.addColumn(tipo_coluna2, coluna_2);
-
-    for (let i = 0; i < dados.length; i++) {
-      data.addRows([dados[i]]);
-    }
 
     let options = {
       title: titulo_grafico,
@@ -273,11 +267,22 @@
       sliceVisibilityThreshold: 0,
     };
 
-    //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente
+    //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente. Da mesma forma cada gráfico precisa ter sua dataTable disponível para queja possível acessar o valor selecionado no gráfico pelo usuário
     if (chart_name == "chart_status_discente") { 
+      //cria a dataTable
+      data_table_status_discente = new google.visualization.DataTable();
+      data_table_status_discente.addColumn(tipo_coluna1, coluna_1);
+      data_table_status_discente.addColumn(tipo_coluna2, coluna_2);
+
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_status_discente.addRows([dados[i]]);
+      }
+
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
       chart_status_discente = new google.visualization.PieChart(document.getElementById('pieChart_status_discente'));
       google.visualization.events.addListener(chart_status_discente, 'select', select_handler_status_discente);
-      chart_status_discente.draw(data, options);
+      chart_status_discente.draw(data_table_status_discente, options);
     } else {
       //Como o gráfico de forma de ingresso foi feito de forma diferente não tem outro gráfico de pizza para ir aqui
     }
@@ -306,7 +311,7 @@
       titleTextStyle: {fontSize:14, bold: true, color:'grey'},
     };
 
-    //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente
+    //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente.  Da mesma forma cada gráfico precisa ter sua dataTable disponível para queja possível acessar o valor selecionado no gráfico pelo usuário
     if (chart_name == "chart_total_matriculados") { 
       chart_total_matriculados = new google.visualization.ColumnChart(document.getElementById('columnChart_total_matriculas'));
       google.visualization.events.addListener(chart_total_matriculados, 'select', select_handler_total_matriculados);
@@ -365,10 +370,11 @@
   function select_handler_status_discente() {
     var selectedItem = chart_status_discente.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_status_discente.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_status_discente/");
-      definirQuerySelector(sessionStorage.getItem("querySelector")); //chama a função, passando o querySelector atual para definir o novo querySelector que dirá que consulta da view da página de detalhes será executada
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Status", "E-mail"]);
+      definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }
 
@@ -378,6 +384,7 @@
       var parametroDetalhes = data.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_total_matriculas/");
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
@@ -388,6 +395,7 @@
       var parametroDetalhes = data.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_concluintes/"); 
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
@@ -398,6 +406,7 @@
       var parametroDetalhes = data.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_tamanho_turmas/"); 
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
@@ -408,6 +417,7 @@
       var parametroDetalhes = data.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_discentes_evadidos/"); 
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
