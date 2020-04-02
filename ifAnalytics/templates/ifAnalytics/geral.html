@@ -283,20 +283,14 @@
       chart_status_discente = new google.visualization.PieChart(document.getElementById('pieChart_status_discente'));
       google.visualization.events.addListener(chart_status_discente, 'select', select_handler_status_discente);
       chart_status_discente.draw(data_table_status_discente, options);
-    } else {
+    } 
+    else {
       //Como o gráfico de forma de ingresso foi feito de forma diferente não tem outro gráfico de pizza para ir aqui
     }
   }
 
   function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name) {
-    data = new google.visualization.DataTable();
-    data.addColumn(tipo_coluna1, coluna_1);
-    data.addColumn(tipo_coluna2, coluna_2);
-
-    for (let i = 0; i < dados.length; i++) {
-      data.addRows([dados[i]]);
-    }
-
+    
     let options = {
       title: titulo_grafico,
       hAxis: {
@@ -312,22 +306,69 @@
     };
 
     //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente.  Da mesma forma cada gráfico precisa ter sua dataTable disponível para queja possível acessar o valor selecionado no gráfico pelo usuário
-    if (chart_name == "chart_total_matriculados") { 
+    if (chart_name == "chart_total_matriculados") {
+      //cria a dataTable
+      data_table_total_matriculados = new google.visualization.DataTable();
+      data_table_total_matriculados.addColumn(tipo_coluna1, coluna_1);
+      data_table_total_matriculados.addColumn(tipo_coluna2, coluna_2);
+
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_total_matriculados.addRows([dados[i]]);
+      }
+
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
       chart_total_matriculados = new google.visualization.ColumnChart(document.getElementById('columnChart_total_matriculas'));
       google.visualization.events.addListener(chart_total_matriculados, 'select', select_handler_total_matriculados);
-      chart_total_matriculados.draw(data, options);
-    } else if (chart_name == "chart_concluintes") { 
+      chart_total_matriculados.draw(data_table_total_matriculados, options);
+    }
+    else if (chart_name == "chart_concluintes") { 
+      //cria a dataTable
+      data_table_concluintes = new google.visualization.DataTable();
+      data_table_concluintes.addColumn(tipo_coluna1, coluna_1);
+      data_table_concluintes.addColumn(tipo_coluna2, coluna_2);
+
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_concluintes.addRows([dados[i]]);
+      }
+
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
       chart_concluintes = new google.visualization.ColumnChart(document.getElementById('columnChart_concluintes'));
       google.visualization.events.addListener(chart_concluintes, 'select', select_handler_concluintes);
-      chart_concluintes.draw(data, options);
-    } else if (chart_name == "chart_tamanho_turmas") { 
+      chart_concluintes.draw(data_table_concluintes, options);
+    }
+    else if (chart_name == "chart_tamanho_turmas") { 
+      //cria a dataTable
+      data_table_tamanho_turmas = new google.visualization.DataTable();
+      data_table_tamanho_turmas.addColumn(tipo_coluna1, coluna_1);
+      data_table_tamanho_turmas.addColumn(tipo_coluna2, coluna_2);
+
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_tamanho_turmas.addRows([dados[i]]);
+      }
+
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
       chart_tamanho_turmas = new google.visualization.ColumnChart(document.getElementById('columnChart_tamanho_turmas'));
       google.visualization.events.addListener(chart_tamanho_turmas, 'select', select_handler_tamanho_turmas);
-      chart_tamanho_turmas.draw(data, options);
-    } else if (chart_name == "chart_discentes_evadidos") { 
+      chart_tamanho_turmas.draw(data_table_tamanho_turmas, options);
+    }
+    else if (chart_name == "chart_discentes_evadidos") { 
+      //cria a dataTable
+      data_table_discentes_evadidos = new google.visualization.DataTable();
+      data_table_discentes_evadidos.addColumn(tipo_coluna1, coluna_1);
+      data_table_discentes_evadidos.addColumn(tipo_coluna2, coluna_2);
+
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_discentes_evadidos.addRows([dados[i]]);
+      }
+
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
       chart_discentes_evadidos = new google.visualization.ColumnChart(document.getElementById('columnChart_discentes_evadidos'));
       google.visualization.events.addListener(chart_discentes_evadidos, 'select', select_handler_discentes_evadidos);
-      chart_discentes_evadidos.draw(data, options);
+      chart_discentes_evadidos.draw(data_table_discentes_evadidos, options);
     }
   }
 </script>
@@ -381,10 +422,10 @@
   function select_handler_total_matriculados() {
     var selectedItem = chart_total_matriculados.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_total_matriculados.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_total_matriculas/");
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Quantidade de disciplinas matriculadas", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
@@ -392,7 +433,7 @@
   function select_handler_concluintes() {
     var selectedItem = chart_total_matriculados.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_concluintes.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_concluintes/"); 
       persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
@@ -403,7 +444,7 @@
   function select_handler_tamanho_turmas() {
     var selectedItem = chart_tamanho_turmas.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_tamanho_turmas.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_tamanho_turmas/"); 
       persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
@@ -414,7 +455,7 @@
   function select_handler_discentes_evadidos() {
     var selectedItem = chart_discentes_evadidos.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_discentes_evadidos.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_discentes_evadidos/"); 
       persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
