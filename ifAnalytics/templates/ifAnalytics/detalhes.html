@@ -14,7 +14,8 @@
           'semestre' : sessionStorage.getItem("semestre"),
           'turma_id': sessionStorage.getItem("turmaId"),
           'querySelector' : sessionStorage.getItem("querySelector"),
-          'parametroDetalhes' : sessionStorage.getItem("parametroDetalhes")
+          'parametroDetalhes' : sessionStorage.getItem("parametroDetalhes"),
+          'colunaSelecionada' : sessionStorage.getItem("colunaSelecionada") //somente para gráficos com dois indicadores
        },
        success: function(data_from_view){ //retorno da view
          //função que monta a tabela

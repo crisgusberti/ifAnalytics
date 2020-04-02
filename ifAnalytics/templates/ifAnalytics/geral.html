@@ -169,7 +169,7 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         let dadosNovoArray = formataRetorno(dados, "Alunos que Passaram do Prazo de Conclusao", "Alunos Formandos");
+         let dadosNovoArray = formataRetorno(dados, "Alunos que Passaram do Prazo de Conclusão", "Alunos Formandos");
          tipo_coluna1 = 'string'
          tipo_coluna2 = 'number'
          titulo_grafico = 'Não Concluíntes e Formandos'
@@ -425,18 +425,20 @@
       var parametroDetalhes = data_table_total_matriculados.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_total_matriculas/");
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Quantidade de disciplinas matriculadas", "E-mail"]);
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Quantidade de Disciplinas Matriculadas", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
 
   function select_handler_concluintes() {
-    var selectedItem = chart_total_matriculados.getSelection()[0];
+    var selectedItem = chart_concluintes.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data_table_concluintes.getValue(selectedItem.row, 0);
-      persistirParametros("parametroDetalhes", parametroDetalhes);
+      var colunaSelecionada = data_table_concluintes.getValue(selectedItem.row, 0); //esse parametro é usado qnd o mesmo gráfico representa duas consultas diferentes. Nesse caso eu preciso saber se os detalhes são para os alunos não concluintes ou para os concluintes, pq isso muda qual consulta vai ser executada nos detalhes
+      var parametroDetalhes = data_table_concluintes.getValue(selectedItem.row, 1);
+      persistirParametros("colunaSelecionada", colunaSelecionada);
+      persistirParametros("parametroDetalhes", parametroDetalhes); //não está sendo usado nessa consulta, pq eu listo todos os alunos da coluna selecionada
       persistirParametros("url_consulta", "/get_data_concluintes/"); 
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Prazo de Conclusão", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
