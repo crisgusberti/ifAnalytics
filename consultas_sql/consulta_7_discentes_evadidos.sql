@@ -83,24 +83,21 @@ WITH q_disciplinas_curso AS (
 
 
 ======================
---nova versão feita por mim para CURSO e para TURMA --É ESSA QUE ESTÁ SENDO USADA NO SISTEMA
+--nova versão feita por mim para CAMPUS, CURSO e TURMA --É ESSA QUE ESTÁ SENDO USADA NO SISTEMA
+
 WITH q1 AS(
 SELECT 
 	mc.id_matricula_componente,
 	mc.id_discente,
 	mc.id_turma,
-	mc.id_situacao_matricula,
 	ccd.nome
 
 FROM ensino.matricula_componente mc
-	INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
 	INNER JOIN discente d ON d.id_discente = mc.id_discente
-	INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina
-	INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = cc.id_detalhe
+	INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = mc.id_componente_detalhes
 	
-WHERE mc.ano= 2019 AND mc.periodo = 1
-	AND d.nivel = 'G'
+WHERE d.nivel = 'G'
 	AND mc.id_situacao_matricula IN (3) -- CANCELADO
 	
     -- busca o campus
@@ -108,16 +105,53 @@ WHERE mc.ano= 2019 AND mc.periodo = 1
 		SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(56) --vera
 	)
 	
+	AND mc.ano = 2019 AND mc.periodo = 1
+	
     -- curso
-	AND d.id_curso =  197350 --ads
+	--AND d.id_curso =  197350 --ads
 	
     -- turma específica (para a consulta de turma, descomentar essa e comentar a busca por campus e por curso.)
 	--AND mc.id_turma = 2900 --Algoritmos e programação I
 
-GROUP BY mc.id_matricula_componente, mc.id_discente, mc.id_turma, mc.id_situacao_matricula, ccd.nome
+GROUP BY mc.id_matricula_componente, mc.id_discente, mc.id_turma, ccd.nome
 )
 SELECT
 	nome AS disciplina,
-	COUNT(id_discente) AS total_matriculados
+	COUNT(id_discente) AS total_evadidos
 FROM q1
 GROUP BY disciplina, id_turma
+
+
+===============================================
+--CONSULTA DETALHES
+
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, p.email AS contato 
+
+FROM ensino.matricula_componente mc
+	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+	INNER JOIN discente d ON d.id_discente = mc.id_discente
+	INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = mc.id_componente_detalhes
+	INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa
+	INNER JOIN curso c ON c.id_curso = d.id_curso
+	
+WHERE d.nivel = 'G'
+	AND mc.id_situacao_matricula IN (3) -- CANCELADO
+	
+    -- busca o campus
+	AND d.id_gestora_academica IN (
+		SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(56) --vera
+	)
+	
+	AND mc.ano = 2019 AND mc.periodo = 1
+	
+    -- curso
+	--AND d.id_curso =  197350 --ads
+	
+    -- turma específica (para a consulta de turma, descomentar essa e comentar a busca por campus e por curso.)
+	--AND mc.id_turma = 2900 --Algoritmos e programação I
+
+	-- detalhe
+	--AND ccd.nome = 'BANCO DE DADOS II'
+	
+GROUP BY d.matricula, discente, curso, disciplina, contato
+ORDER BY discente

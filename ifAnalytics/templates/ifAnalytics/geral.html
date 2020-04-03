@@ -238,7 +238,7 @@
          dados = data_from_view
          tipo_coluna1 = 'string'
          tipo_coluna2 = 'number'
-         titulo_grafico = 'Discentes Evadidos'
+         titulo_grafico = 'Discentes Evadidos por Disciplinas'
          titulo_hAxis = 'Disciplinas'
          titulo_vAxis = 'Alunos Evadidos'
          chart_name = 'chart_discentes_evadidos'
@@ -460,7 +460,7 @@
       var parametroDetalhes = data_table_discentes_evadidos.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_discentes_evadidos/"); 
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
