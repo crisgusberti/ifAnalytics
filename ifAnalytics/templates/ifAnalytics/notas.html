@@ -4,240 +4,408 @@
 
 <script>
 
-       let dados
+  let dados
 
-       function renderChartNotasParciais(unidade, querySelector, campusId, ano, semestre, cursoId, turmaId){
-         //pegando os dados da view "get_data_notas_parciais" para popular o gráfico
-              $.ajax({
-                     method: "GET",
-                     url: '/get_data_notas_parciais/', 
-                     data: {
-                     'campus_id' : campusId,
-                     'curso_id' : cursoId,
-                     'ano' : ano,
-                     'semestre' : semestre,
-                     'turma_id': turmaId,
-                     'unidade' : unidade,
-                     'querySelector' : querySelector
-                     },
-              success: function(data_from_view){
-                     dados = data_from_view
-                     label_linha_1 = "ACIMA DE 7"
-                     label_linha_2 = "ABAIXO DE 7"
-                     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
-                     tipo_coluna1 = 'string'
-                     tipo_coluna2 = 'number'
-                     coluna_1 = 'Situação'
-                     coluna_2 = 'Quantidade de Alunos'
-                     
-                     if (unidade == 1) {
-                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, 'Notas Parciais Unidade 1', 'pieChart_notas_parciais_unidade1');});
-                     } else {
-                       google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray,  tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, 'Notas Parciais Unidade 2', 'pieChart_notas_parciais_unidade2');});
-                     }
-              },
-                    error: function(error_data){
-                    console.log("error")
-                    console.log(error_data)
-              }
-              })
-       }
+  function renderChartNotasParciais(unidade, querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //persistindo valores para serem utilizados na página de detalhes.
+    persistirParametros("querySelector", querySelector); 
+    persistirParametros("campusId", campusId); 
+    persistirParametros("ano", ano); 
+    persistirParametros("semestre", semestre); 
+    persistirParametros("cursoId", cursoId); 
+    persistirParametros("turmaId", turmaId); 
 
-       function renderChartMediasFinais(querySelector, campusId, ano, semestre, cursoId, turmaId){
-              //pegando os dados da view "get_data_medias_finais" para popular o gráfico
-              $.ajax({
-                     method: "GET",
-                     url: '/get_data_medias_finais/', 
-                     data: {
-                     'campus_id' : campusId,
-                     'curso_id' : cursoId,
-                     'ano' : ano,
-                     'semestre' : semestre,
-                     'turma_id': turmaId,
-                     'querySelector' : querySelector
-              },
-              success: function(data_from_view){
-                     dados = data_from_view
-                     label_linha_1 = "ACIMA DE 5"
-                     label_linha_2 = "ABAIXO DE 5"
-                     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
-                     tipo_coluna1 = 'string'
-                     tipo_coluna2 = 'number'
-                     coluna_1 = 'Situação'
-                     coluna_2 = 'Quantidade de Alunos'
-                     titulo_grafico = 'Médias Finais'
-                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_medias_finais');});
-              },
-                     error: function(error_data){
-                     console.log("error")
-                     console.log(error_data)
-              }
-              })
-       }
+    //pegando os dados da view "get_data_notas_parciais" para popular o gráfico
+    $.ajax({
+     method: "GET",
+     url: '/get_data_notas_parciais/', 
+     data: {
+     'campus_id' : campusId,
+     'curso_id' : cursoId,
+     'ano' : ano,
+     'semestre' : semestre,
+     'turma_id': turmaId,
+     'unidade' : unidade,
+     'querySelector' : querySelector
+    },
+    success: function(data_from_view){
+     dados = data_from_view
+     label_linha_1 = "ACIMA DE 7"
+     label_linha_2 = "ABAIXO DE 7"
+     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
+     tipo_coluna1 = 'string'
+     tipo_coluna2 = 'number'
+     coluna_1 = 'Situação'
+     coluna_2 = 'Quantidade de Alunos'
+     
+     if (unidade == 1) {
+        chart_name = 'chart_notas_parciais1'
+        google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, 'Notas Parciais Unidade 1', chart_name);});
+      } else {
+        chart_name = 'chart_notas_parciais2'
+        google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray,  tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, 'Notas Parciais Unidade 2', chart_name);});
+      }
+    },
+    error: function(error_data){
+      console.log("error")
+      console.log(error_data)
+    }
+    })
+  }
 
-       function renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId, turmaId){
-              //pegando os dados da view "get_data_discentes_exame" para popular o gráfico
-              $.ajax({
-                     method: "GET",
-                     url: '/get_data_discentes_exame/', 
-                     data: {
-                     'campus_id' : campusId,
-                     'curso_id' : cursoId,
-                     'ano' : ano,
-                     'semestre' : semestre,
-                     'turma_id': turmaId,
-                     'querySelector' : querySelector
-              },
-              success: function(data_from_view){
-                     dados = data_from_view
-                     label_linha_1 = "DISCENTES QUE NÃO ESTÃO EM EXAME"
-                     label_linha_2 = "DISCENTES EM EXAME"
-                     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
-                     tipo_coluna1 = 'string'
-                     tipo_coluna2 = 'number'
-                     coluna_1 = 'Discentes que não estão em exame'
-                     coluna_2 = 'Discentes em exame'
-                     titulo_grafico = 'Discentes em Exame'
-                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_discentes_exame');});
-              },
-                     error: function(error_data){
-                     console.log("error")
-                     console.log(error_data)
-              }
-              })
-       }
+  function renderChartMediasFinais(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //pegando os dados da view "get_data_medias_finais" para popular o gráfico
+    $.ajax({
+     method: "GET",
+     url: '/get_data_medias_finais/', 
+     data: {
+     'campus_id' : campusId,
+     'curso_id' : cursoId,
+     'ano' : ano,
+     'semestre' : semestre,
+     'turma_id': turmaId,
+     'querySelector' : querySelector
+    },
+    success: function(data_from_view){
+     dados = data_from_view
+     label_linha_1 = "ACIMA DE 5"
+     label_linha_2 = "ABAIXO DE 5"
+     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
+     tipo_coluna1 = 'string'
+     tipo_coluna2 = 'number'
+     coluna_1 = 'Situação'
+     coluna_2 = 'Quantidade de Alunos'
+     titulo_grafico = 'Médias Finais'
+     chart_name = 'chart_medias_finais'
+     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name);});
+    },
+    error: function(error_data){
+     console.log("error")
+     console.log(error_data)
+    }
+    })
+  }
 
-       function renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId, turmaId){
-              //pegando os dados da view "get_data_aprovados_reprovados" para popular o gráfico
-              $.ajax({
-                     method: "GET",
-                     url: '/get_data_aprovados_reprovados/', 
-                     data: {
-                     'campus_id' : campusId,
-                     'curso_id' : cursoId,
-                     'ano' : ano,
-                     'semestre' : semestre,
-                     'turma_id': turmaId,
-                     'querySelector' : querySelector
-              },
-              success: function(data_from_view){
-                     dados = data_from_view
-                     label_linha_1 = "DISCENTES APROVADOS"
-                     label_linha_2 = "DISCENTES REPROVADOS"
-                     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
-                     tipo_coluna1 = 'string'
-                     tipo_coluna2 = 'number'
-                     coluna_1 = 'Discentes Aprovados'
-                     coluna_2 = 'Discentes Reprovados'
-                     titulo_grafico = 'Aprovados e Reprovados'
-                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_aprovados_reprovados');});
-              },
-                     error: function(error_data){
-                     console.log("error")
-                     console.log(error_data)
-              }
-              })
-       }
+  function renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //pegando os dados da view "get_data_discentes_exame" para popular o gráfico
+    $.ajax({
+     method: "GET",
+     url: '/get_data_discentes_exame/', 
+     data: {
+     'campus_id' : campusId,
+     'curso_id' : cursoId,
+     'ano' : ano,
+     'semestre' : semestre,
+     'turma_id': turmaId,
+     'querySelector' : querySelector
+    },
+    success: function(data_from_view){
+     dados = data_from_view
+     label_linha_1 = "DISCENTES QUE NÃO ESTÃO EM EXAME"
+     label_linha_2 = "DISCENTES EM EXAME"
+     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
+     tipo_coluna1 = 'string'
+     tipo_coluna2 = 'number'
+     coluna_1 = 'Discentes que não estão em exame'
+     coluna_2 = 'Discentes em exame'
+     titulo_grafico = 'Discentes em Exame'
+     chart_name = 'chart_discentes_exame'
+     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico,  chart_name);});
+    },
+    error: function(error_data){
+     console.log("error")
+     console.log(error_data)
+    }
+    })
+  }
 
-       function renderChartStatusDisciplinas(querySelector, campusId, ano, semestre, cursoId, turmaId){
-              //pegando os dados da view "get_data_status_disciplina" para popular o gráfico
-              $.ajax({
-                     method: "GET",
-                     url: '/get_data_status_disciplina/', 
-                     data: {
-                     'campus_id' : campusId,
-                     'curso_id' : cursoId,
-                     'ano' : ano,
-                     'semestre' : semestre,
-                     'turma_id': turmaId,
-                     'querySelector' : querySelector
-              },
-              success: function(data_from_view){
-                     dados = data_from_view
-                     tipo_coluna1 = 'string'
-                     tipo_coluna2 = 'number'
-                     coluna_1 = 'Status Disciplina'
-                     coluna_2 = 'Quantidade Alunos'
-                     titulo_grafico = 'Quantidade por Status nas Disciplinas'
-                     google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, 'pieChart_status_disciplina');});
-              },
-                     error: function(error_data){
-                     console.log("error")
-                     console.log(error_data)
-              }
-              })
-       }
+  function renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //pegando os dados da view "get_data_aprovados_reprovados" para popular o gráfico
+    $.ajax({
+     method: "GET",
+     url: '/get_data_aprovados_reprovados/', 
+     data: {
+     'campus_id' : campusId,
+     'curso_id' : cursoId,
+     'ano' : ano,
+     'semestre' : semestre,
+     'turma_id': turmaId,
+     'querySelector' : querySelector
+    },
+    success: function(data_from_view){
+     dados = data_from_view
+     label_linha_1 = "DISCENTES APROVADOS"
+     label_linha_2 = "DISCENTES REPROVADOS"
+     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2);
+     tipo_coluna1 = 'string'
+     tipo_coluna2 = 'number'
+     coluna_1 = 'Discentes Aprovados'
+     coluna_2 = 'Discentes Reprovados'
+     titulo_grafico = 'Aprovados e Reprovados'
+     chart_name = 'chart_aprovados_reprovados'
+     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name);});
+    },
+    error: function(error_data){
+     console.log("error")
+     console.log(error_data)
+    }
+    })
+  }
 
-       //Funções que desenham todos os gráficos
-       function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, id_div){
-              data = new google.visualization.DataTable();
-              data.addColumn(tipo_coluna1, coluna_1);
-              data.addColumn(tipo_coluna2, coluna_2);
+  function renderChartStatusDisciplinas(querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //pegando os dados da view "get_data_status_disciplina" para popular o gráfico
+    $.ajax({
+     method: "GET",
+     url: '/get_data_status_disciplina/', 
+     data: {
+     'campus_id' : campusId,
+     'curso_id' : cursoId,
+     'ano' : ano,
+     'semestre' : semestre,
+     'turma_id': turmaId,
+     'querySelector' : querySelector
+    },
+    success: function(data_from_view){
+     dados = data_from_view
+     tipo_coluna1 = 'string'
+     tipo_coluna2 = 'number'
+     coluna_1 = 'Status Disciplina'
+     coluna_2 = 'Quantidade Alunos'
+     titulo_grafico = 'Quantidade por Status nas Disciplinas'
+     chart_name = 'chart_status_disciplinas'
+     google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico,  chart_name);});
+    },
+    error: function(error_data){
+     console.log("error")
+     console.log(error_data)
+    }
+    })
+  }
 
-              for (let i = 0; i < dados.length; i++) {
-                   data.addRows([dados[i]]);
-              }
+  //Funções que desenham todos os gráficos
+  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico,  chart_name){
+    let options = {
+      title: titulo_grafico,
+      backgroundColor: '#E1F0DB',
+      chartArea: {left: 10, height: 250, width: 600},
+      legend: {textStyle: {fontSize: 10}},
+      titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+      sliceVisibilityThreshold: 0,
+    };
 
-              let options = {
-                   title: titulo_grafico,
-                   backgroundColor: '#E1F0DB',
-                   chartArea: {left: 10, height: 250, width: 600},
-                   legend: {textStyle: {fontSize: 10}},
-                   titleTextStyle: {fontSize:14, bold: true, color:'grey'},
-                   sliceVisibilityThreshold: 0,
-              };
+    if (chart_name == "chart_notas_parciais1") { 
+      //cria a dataTable
+      data_table_notas_parciais1 = new google.visualization.DataTable();
+      data_table_notas_parciais1.addColumn(tipo_coluna1, coluna_1);
+      data_table_notas_parciais1.addColumn(tipo_coluna2, coluna_2);
 
-              let chart = new google.visualization.PieChart(document.getElementById(id_div));
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_notas_parciais1.addRows([dados[i]]);
+      }
 
-              chart.draw(data, options);
-       }
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
+      chart_notas_parciais1 = new google.visualization.PieChart(document.getElementById('pieChart_notas_parciais_unidade1'));
+      google.visualization.events.addListener(chart_notas_parciais1, 'select', select_handler_notas_parciais1);
+      chart_notas_parciais1.draw(data_table_notas_parciais1, options);
+    } 
+    else if (chart_name == "chart_notas_parciais2") { 
+      //cria a dataTable
+      data_table_notas_parciais2 = new google.visualization.DataTable();
+      data_table_notas_parciais2.addColumn(tipo_coluna1, coluna_1);
+      data_table_notas_parciais2.addColumn(tipo_coluna2, coluna_2);
 
-       function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, titulo_hAxis, titulo_vAxis, id_div) {
-              data = new google.visualization.DataTable();
-              data.addColumn(tipo_coluna1, coluna_1);
-              data.addColumn(tipo_coluna2, coluna_2);
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_notas_parciais2.addRows([dados[i]]);
+      }
 
-              for (let i = 0; i < dados.length; i++) {
-                     data.addRows([dados[i]]);
-              }
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
+      chart_notas_parciais2 = new google.visualization.PieChart(document.getElementById('pieChart_notas_parciais_unidade2'));
+      google.visualization.events.addListener(chart_notas_parciais2, 'select', select_handler_notas_parciais2);
+      chart_notas_parciais2.draw(data_table_notas_parciais2, options);
+    } 
+    else if (chart_name == "chart_medias_finais") { 
+      //cria a dataTable
+      data_table_medias_finais = new google.visualization.DataTable();
+      data_table_medias_finais.addColumn(tipo_coluna1, coluna_1);
+      data_table_medias_finais.addColumn(tipo_coluna2, coluna_2);
 
-              let options = {
-                   title: titulo_grafico,
-                   hAxis: {
-                     title: titulo_hAxis
-                   },
-                   vAxis: {
-                     title: titulo_vAxis
-                   },
-                   backgroundColor: '#E1F0DB',
-                   chartArea: {left: 10, height: 250, width: 600},
-                   legend: {textStyle: {fontSize: 10}},
-                   titleTextStyle: {fontSize:14, bold: true, color:'grey'},
-              };
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_medias_finais.addRows([dados[i]]);
+      }
 
-              let chart = new google.visualization.ColumnChart(document.getElementById(id_div));
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
+      chart_medias_finais = new google.visualization.PieChart(document.getElementById('pieChart_medias_finais'));
+      google.visualization.events.addListener(chart_medias_finais, 'select', select_handler_medias_finais);
+      chart_medias_finais.draw(data_table_medias_finais, options);
+    }
+    else if (chart_name == "chart_discentes_exame") { 
+      //cria a dataTable
+      data_table_discentes_exame = new google.visualization.DataTable();
+      data_table_discentes_exame.addColumn(tipo_coluna1, coluna_1);
+      data_table_discentes_exame.addColumn(tipo_coluna2, coluna_2);
 
-              chart.draw(data, options);
-       }
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_discentes_exame.addRows([dados[i]]);
+      }
 
-       function formataRetorno(dados, label_linha_1, label_linha_2){
-              //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
+      chart_discentes_exame = new google.visualization.PieChart(document.getElementById('pieChart_discentes_exame'));
+      google.visualization.events.addListener(chart_discentes_exame, 'select', select_handler_discentes_exame);
+      chart_discentes_exame.draw(data_table_discentes_exame, options);
+    }
+    else if (chart_name == "chart_aprovados_reprovados") { 
+      //cria a dataTable
+      data_table_aprovados_reprovados = new google.visualization.DataTable();
+      data_table_aprovados_reprovados.addColumn(tipo_coluna1, coluna_1);
+      data_table_aprovados_reprovados.addColumn(tipo_coluna2, coluna_2);
 
-              //dependendo do que foi selecionados nos combos, a consulta pode retornar vazia
-              //esse if/else faz uma verificação para evitar erros no console.
-              if(dados == null || dados.length == 0){ //Se o retorno da consulta for vazio 
-                let posicao1 = [label_linha_1,0];     //o vetor é preenchido com label da linha e valor 0
-                let posicao2 = [label_linha_2,0];    
-                let dadosNovoArray= [posicao1, posicao2];
-                return dadosNovoArray;               
-              }else{                    //senão faz o tratamento normal dos dados que retornaram da consulta
-                let dadosNovo = dados[0].toString().split(",");
-                let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
-                let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
-                let dadosNovoArray= [posicao1, posicao2];
-                return dadosNovoArray;
-              }
-       }
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_aprovados_reprovados.addRows([dados[i]]);
+      }
+
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
+      chart_aprovados_reprovados = new google.visualization.PieChart(document.getElementById('pieChart_aprovados_reprovados'));
+      google.visualization.events.addListener(chart_aprovados_reprovados, 'select', select_handler_aprovados_reprovados);
+      chart_aprovados_reprovados.draw(data_table_aprovados_reprovados, options);
+    } 
+    else if (chart_name == "chart_status_disciplinas") { 
+      //cria a dataTable
+      data_table_status_disciplinas = new google.visualization.DataTable();
+      data_table_status_disciplinas.addColumn(tipo_coluna1, coluna_1);
+      data_table_status_disciplinas.addColumn(tipo_coluna2, coluna_2);
+
+      //popula a dataTable
+      for (let i = 0; i < dados.length; i++) {
+        data_table_status_disciplinas.addRows([dados[i]]);
+      }
+
+      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
+      chart_status_disciplinas = new google.visualization.PieChart(document.getElementById('pieChart_status_disciplinas'));
+      google.visualization.events.addListener(chart_status_disciplinas, 'select', select_handler_status_disciplinas);
+      chart_status_disciplinas.draw(data_table_status_disciplinas, options);
+    } 
+  }
+
+  //Funções Gerais
+  function formataRetorno(dados, label_linha_1, label_linha_2){
+    //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
+
+    //dependendo do que foi selecionados nos combos, a consulta pode retornar vazia
+    //esse if/else faz uma verificação para evitar erros no console.
+    if(dados == null || dados.length == 0){ //Se o retorno da consulta for vazio 
+      let posicao1 = [label_linha_1,0];     //o vetor é preenchido com label da linha e valor 0
+      let posicao2 = [label_linha_2,0];    
+      let dadosNovoArray= [posicao1, posicao2];
+      return dadosNovoArray;               
+    }else{ //senão faz o tratamento normal dos dados que retornaram da consulta
+      let dadosNovo = dados[0].toString().split(",");
+      let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
+      let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
+      let dadosNovoArray= [posicao1, posicao2];
+      return dadosNovoArray;
+    }
+  }
+
+  function persistirParametros(chave, valor){
+    //persiste na seção os valores do parametros utilizados nas consultas da página de detalhes
+    sessionStorage.removeItem(chave);
+    sessionStorage.setItem(chave, valor);
+  }
+
+  function definirQuerySelector(querySelector){
+    //altera o querySelector para executar a consulta de detalhes correspondente
+    if (querySelector == "campus"){
+      persistirParametros("querySelector", "campus_detalhes");
+    } else if (querySelector == "periodo"){
+      persistirParametros("querySelector", "periodo_detalhes");
+    } else if(querySelector == "curso"){
+      persistirParametros("querySelector", "curso_detalhes");
+    } else if(querySelector == "turma"){
+      persistirParametros("querySelector", "turma_detalhes");
+    }
+    window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
+  }
+
+  //Funções handler para interatividade de cada um dos gráficos
+  function select_handler_notas_parciais1() {
+    var selectedItem = chart_notas_parciais1.getSelection()[0];
+    if (selectedItem) {
+      var parametroDetalhes = data_table_notas_parciais1.getValue(selectedItem.row, 0);
+      persistirParametros("parametroDetalhes", parametroDetalhes); 
+      
+      // if (parametroDetalhes = "ACIMA DE 7") {
+      //   persistirParametros("parametroDetalhes", ">="); 
+      // } else if(parametroDetalhes = "ABAIXO DE 7") {
+      //   persistirParametros("parametroDetalhes", "<");
+      // }
+
+      persistirParametros("url_consulta", "/get_data_notas_parciais/");
+      persistirParametros("unidade", 1);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Nota", "E-mail"]);
+      definirQuerySelector(sessionStorage.getItem("querySelector")); 
+    }
+  }
+
+  function select_handler_notas_parciais2() {
+    var selectedItem = chart_notas_parciais2.getSelection()[0];
+    if (selectedItem) {
+      var parametroDetalhes = data_table_notas_parciais2.getValue(selectedItem.row, 0);
+      persistirParametros("parametroDetalhes", parametroDetalhes); 
+      persistirParametros("url_consulta", "/get_data_notas_parciais/");
+      persistirParametros("unidade", 2);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Nota", "E-mail"]);
+      definirQuerySelector(sessionStorage.getItem("querySelector")); 
+    }
+  }
+
+  function select_handler_medias_finais() {
+    var selectedItem = chart_medias_finais.getSelection()[0];
+    if (selectedItem) {
+      var parametroDetalhes = data_table_medias_finais.getValue(selectedItem.row, 0);
+      persistirParametros("parametroDetalhes", parametroDetalhes); 
+      persistirParametros("url_consulta", "/get_data_medias_finais/");
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "XXXXXX", "E-mail"]);
+      definirQuerySelector(sessionStorage.getItem("querySelector")); 
+    }
+  }
+
+  function select_handler_discentes_exame() {
+    var selectedItem = chart_discentes_exame.getSelection()[0];
+    if (selectedItem) {
+      var parametroDetalhes = data_table_discentes_exame.getValue(selectedItem.row, 0);
+      persistirParametros("parametroDetalhes", parametroDetalhes); 
+      persistirParametros("url_consulta", "/get_data_discentes_exame/");
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "XXXXXX", "E-mail"]);
+      definirQuerySelector(sessionStorage.getItem("querySelector")); 
+    }
+  }
+
+  function select_handler_aprovados_reprovados() {
+    var selectedItem = chart_aprovados_reprovados.getSelection()[0];
+    if (selectedItem) {
+      var parametroDetalhes = data_table_aprovados_reprovados.getValue(selectedItem.row, 0);
+      persistirParametros("parametroDetalhes", parametroDetalhes); 
+      persistirParametros("url_consulta", "/get_data_aprovados_reprovados/");
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "XXXXXX", "E-mail"]);
+      definirQuerySelector(sessionStorage.getItem("querySelector")); 
+    }
+  }
+
+  function select_handler_status_disciplinas() {
+    var selectedItem = chart_status_disciplinas.getSelection()[0];
+    if (selectedItem) {
+      var parametroDetalhes = data_table_status_disciplinas.getValue(selectedItem.row, 0);
+      persistirParametros("parametroDetalhes", parametroDetalhes); 
+      persistirParametros("url_consulta", "/get_data_status_disciplina/");
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "XXXXXX", "E-mail"]);
+      definirQuerySelector(sessionStorage.getItem("querySelector")); 
+    }
+  }
 </script>
 
 <div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
@@ -246,6 +414,6 @@
   <div id="pieChart_medias_finais" class="grafico alinha_grafico_esquerda"></div>
   <div id="pieChart_discentes_exame" class="grafico alinha_grafico_direita"></div>
   <div id="pieChart_aprovados_reprovados" class="grafico alinha_grafico_esquerda"></div>
-  <div id="pieChart_status_disciplina" class="grafico alinha_grafico_direita"></div>
+  <div id="pieChart_status_disciplinas" class="grafico alinha_grafico_direita"></div>
 </div>
 {% endblock %}

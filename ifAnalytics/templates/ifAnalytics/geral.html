@@ -66,7 +66,7 @@
         var parametroDetalhes = data.getValue(selectedItem.row, 0);
         persistirParametros("parametroDetalhes", parametroDetalhes); //persiste aqui o parametro selecionado no gráfico
         persistirParametros("url_consulta", "/get_data_forma_ingresso/"); //persiste aqui a url da consulta a ser executada na pg detalhes
-        persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Forma ingresso", "E-mail"]); //persiste inf. cabeçalho tabela
+        persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Forma ingresso", "E-mail"]); //persiste inf. cabeçalho tabela
         definirQuerySelector(sessionStorage.getItem("querySelector")); //chama a função, passando o querySelector atual para definir o novo querySelector que dirá que consulta da view será executada na página de detalhes
       }
     }
@@ -414,7 +414,7 @@
       var parametroDetalhes = data_table_status_discente.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_status_discente/");
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Status", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Status", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }
@@ -425,7 +425,7 @@
       var parametroDetalhes = data_table_total_matriculados.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_total_matriculas/");
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Quantidade de Disciplinas Matriculadas", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Quantidade de Disciplinas Matriculadas", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
@@ -438,7 +438,7 @@
       persistirParametros("colunaSelecionada", colunaSelecionada);
       persistirParametros("parametroDetalhes", parametroDetalhes); //não está sendo usado nessa consulta, pq eu listo todos os alunos da coluna selecionada
       persistirParametros("url_consulta", "/get_data_concluintes/"); 
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Prazo de Conclusão", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Prazo de Conclusão", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
@@ -449,7 +449,7 @@
       var parametroDetalhes = data_table_tamanho_turmas.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_tamanho_turmas/"); 
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
@@ -460,7 +460,7 @@
       var parametroDetalhes = data_table_discentes_evadidos.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_discentes_evadidos/"); 
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }

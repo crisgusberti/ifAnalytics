@@ -15,7 +15,8 @@
           'turma_id': sessionStorage.getItem("turmaId"),
           'querySelector' : sessionStorage.getItem("querySelector"),
           'parametroDetalhes' : sessionStorage.getItem("parametroDetalhes"),
-          'colunaSelecionada' : sessionStorage.getItem("colunaSelecionada") //somente para gráficos com dois indicadores
+          'colunaSelecionada' : sessionStorage.getItem("colunaSelecionada"), //somente para gráficos com dois indicadores
+          'unidade': sessionStorage.getItem("unidade") //para o gráfico de notas parciais
        },
        success: function(data_from_view){ //retorno da view
          //função que monta a tabela
@@ -39,13 +40,15 @@
 		$('thead').append(cabecalho_tabela); //popula cabeçalho da tabela dinamicamente
 		
 		//corpo
+		let numero_linha = 1;
 		for (let i = 0; i < data_from_view.length; i++) { //for que adiciona uma linha da tabela
-			let corpo_tabela = "<tr>"; //adiciona linha em <tr> e abaixo adiciona célula (coluna) em <td>
+			let corpo_tabela = "<tr>"+"<td>"+numero_linha+"</td>"; //adiciona linha em <tr> e abaixo adiciona célula (coluna) em <td>. Nessa mesma linha adiciona um <td> com o contador "numero_linha" para aparecer na tabela o numero de cada linha
 			for(let j = 0; j < data_from_view[i].length; j++){ //pega a quantidade de itens (tamanho) da linha i do array
 				corpo_tabela +="<td>"+data_from_view[i][j]+"</td>"; //enquanto nessa linha i, percorre cada posição da linha i como sendo j
 			}
 			corpo_tabela +="</tr>";
 			$('tbody').append(corpo_tabela); //popula o corpo da tabela dinamicamente
+			numero_linha++;
  		}
 	}
 </script>
