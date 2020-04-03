@@ -449,7 +449,7 @@
       var parametroDetalhes = data_table_tamanho_turmas.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_tamanho_turmas/"); 
-      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "XXXXXXX", "E-mail"]);
+      persistirParametros("array_cabecalho", ["Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
