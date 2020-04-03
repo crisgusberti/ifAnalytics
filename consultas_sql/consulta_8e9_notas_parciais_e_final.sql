@@ -37,7 +37,7 @@ GROUP BY q1.unidade
 
 
 =====================================
-CONSULTA DETALHES - MÉDIAS Parciais
+CONSULTA DETALHES - MÉDIAS PARCIAIS
 
 SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, nu.nota_final_unidade, p.email AS contato
 
@@ -77,11 +77,9 @@ WHERE t.ano = 2019 AND t.periodo = 1
 
 
 
-
-
-
+=============================================================================
+==================================================================================================================
 ------------CONSULTA 9 - MEDIAS FINAIS
-
 SELECT 
 	SUM (CASE WHEN mc.media_final >= 5 THEN 1 ELSE 0 END) AS notas_acima_media, 
 	SUM (CASE WHEN mc.media_final < 5 THEN 1 ELSE 0 END) AS notas_abaixo_media
@@ -91,9 +89,15 @@ FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
 	INNER JOIN discente d ON d.id_discente = mc.id_discente
 	
-WHERE t.ano = 2019 AND t.periodo = 2
+WHERE d.nivel = 'G'
 
-	--passando o campus
+	AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) --só está considerando status 1 (ativo) e 8 (formando)
+
+	AND mc.id_situacao_matricula IN (2, 6, 7 , 9, 25, 26, 27, 4, 21, 22, 24) -- 2 é matriculado, do 6 ao 27 são todos os tipos de reprovação e do 4 ao 24 aprovações incluindo cert. conhecimento e aprov. estudos.
+
+	AND t.ano = 2019 AND t.periodo = 1
+
+	--passando o campus -- não estou usando pra curso!
 	AND d.id_gestora_academica IN (
 		SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(56)
 	)
@@ -105,8 +109,41 @@ WHERE t.ano = 2019 AND t.periodo = 2
 	AND mc.id_turma = 3402
 
 
-	incluir isso 
 
-	AND d.nivel = 'G'
+=================================
+CONSULTA DETALHES - MÉDIAS FINAIS
+--a consulta para cada um dos parametros será repetida, um com AND mc.media_final >= 5 e outra com AND mc.media_final < 5 quem define vai ser o querySelector
+
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, mc.media_final, p.email AS contato
+		
+FROM ensino.matricula_componente mc
+	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+	INNER JOIN discente d ON d.id_discente = mc.id_discente
+	INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa
+	INNER JOIN curso c ON c.id_curso = d.id_curso
+	INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = mc.id_componente_detalhes
+	
+WHERE d.nivel = 'G'
+
 	AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) --só está considerando status 1 (ativo) e 8 (formando)
+
 	AND mc.id_situacao_matricula IN (2, 6, 7 , 9, 25, 26, 27, 4, 21, 22, 24) -- 2 é matriculado, do 6 ao 27 são todos os tipos de reprovação e do 4 ao 24 aprovações incluindo cert. conhecimento e aprov. estudos.
+
+	AND t.ano = 2019 AND t.periodo = 2
+
+	--passando o campus
+	AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(56)) --não estou usando pra curso
+	
+	--passando o curso
+   -- AND d.id_curso = 194730
+
+    --passando a turma
+	--AND mc.id_turma = 3402
+	
+	--parametro de detalhe
+	--AND mc.media_final < 5
+	--AND mc.media_final >= 5
+	
+	ORDER BY discente, mc.media_final
+
+	
