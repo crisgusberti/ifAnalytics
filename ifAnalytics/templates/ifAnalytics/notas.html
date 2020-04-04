@@ -337,13 +337,6 @@
     if (selectedItem) {
       var parametroDetalhes = data_table_notas_parciais1.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
-      
-      // if (parametroDetalhes = "ACIMA DE 7") {
-      //   persistirParametros("parametroDetalhes", ">="); 
-      // } else if(parametroDetalhes = "ABAIXO DE 7") {
-      //   persistirParametros("parametroDetalhes", "<");
-      // }
-
       persistirParametros("url_consulta", "/get_data_notas_parciais/");
       persistirParametros("unidade", 1);
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Nota", "E-mail"]);
@@ -369,7 +362,7 @@
       var parametroDetalhes = data_table_medias_finais.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_medias_finais/");
-      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Nota", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Média Final", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }
@@ -380,7 +373,7 @@
       var parametroDetalhes = data_table_discentes_exame.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_discentes_exame/");
-      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "XXXXXX", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Média Parcial", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }

@@ -212,9 +212,9 @@
 			renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId);
 			renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre, cursoId);
 		}else if(paginaAtual == 'notas'){
-			renderChartNotasParciais(1, querySelector, null, ano, semestre, cursoId);
-			renderChartNotasParciais(2, querySelector, null, ano, semestre, cursoId);
-			renderChartMediasFinais(querySelector, null, ano, semestre, cursoId);
+			renderChartNotasParciais(1, querySelector, campusId, ano, semestre, cursoId);
+			renderChartNotasParciais(2, querySelector, campusId, ano, semestre, cursoId);
+			renderChartMediasFinais(querySelector, campusId, ano, semestre, cursoId);
 			renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId);
 			renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId);
 			renderChartStatusDisciplinas(querySelector, campusId, ano, semestre, cursoId);
