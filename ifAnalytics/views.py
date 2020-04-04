@@ -614,6 +614,38 @@ def get_data_aprovados_reprovados(request): #Gráfico 12
             cursor.execute(sql_string, parametros) 
             rows = cursor.fetchall();
         return JsonResponse(rows, safe=False)
+    #Consultas para montar a tabela da página de detalhes
+    if query_selector == "turma_detalhes":
+        with connection.cursor() as cursor:
+            #O if abaixo define qual consulta vai ser executada. A unica diferença entre elas é mc.id_situacao_matricula para aprovado e reprovado
+            if parametro_detalhe == "DISCENTES REPROVADOS":
+                sql_string="SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = mc.id_componente_detalhes INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE  d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27, 4, 21, 22, 24) AND mc.ano= %s AND mc.periodo = %s AND mc.id_turma = %s AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27) GROUP BY matricula, discente, curso, disciplina, situacao, contato ORDER BY discente, situacao"
+            elif parametro_detalhe == "DISCENTES APROVADOS":
+                sql_string="SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = mc.id_componente_detalhes INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE  d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27, 4, 21, 22, 24) AND mc.ano= %s AND mc.periodo = %s AND mc.id_turma = %s AND mc.id_situacao_matricula IN (4, 21, 22, 24) GROUP BY matricula, discente, curso, disciplina, situacao, contato ORDER BY discente, situacao"
+            parametros = [ano, semestre, turma_id]
+            cursor.execute(sql_string, parametros)
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)
+    if query_selector == "curso_detalhes":
+        with connection.cursor() as cursor:
+            if parametro_detalhe == "DISCENTES REPROVADOS":
+                sql_string="SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = mc.id_componente_detalhes INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE  d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27, 4, 21, 22, 24) AND mc.ano= %s AND mc.periodo = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.id_curso =  %s AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27) GROUP BY matricula, discente, curso, disciplina, situacao, contato ORDER BY discente, situacao"
+            elif parametro_detalhe == "DISCENTES APROVADOS":
+                sql_string="SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = mc.id_componente_detalhes INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE  d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27, 4, 21, 22, 24) AND mc.ano= %s AND mc.periodo = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.id_curso =  %s AND mc.id_situacao_matricula IN (4, 21, 22, 24) GROUP BY matricula, discente, curso, disciplina, situacao, contato ORDER BY discente, situacao"
+            parametros = [ano, semestre, campus_id, curso_id]
+            cursor.execute(sql_string, parametros)
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)
+    if query_selector == "campus_detalhes" or query_selector == "periodo_detalhes":
+        with connection.cursor() as cursor:
+            if parametro_detalhe == "DISCENTES REPROVADOS":
+                sql_string="SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = mc.id_componente_detalhes INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE  d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27, 4, 21, 22, 24) AND mc.ano= %s AND mc.periodo = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27) GROUP BY matricula, discente, curso, disciplina, situacao, contato ORDER BY discente, situacao"
+            elif parametro_detalhe == "DISCENTES APROVADOS":
+                sql_string="SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN ensino.componente_curricular_detalhes ccd ON ccd.id_componente_detalhes = mc.id_componente_detalhes INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE  d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27, 4, 21, 22, 24) AND mc.ano= %s AND mc.periodo = %s AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND mc.id_situacao_matricula IN (4, 21, 22, 24) GROUP BY matricula, discente, curso, disciplina, situacao, contato ORDER BY discente, situacao"
+            parametros = [ano, semestre, campus_id]
+            cursor.execute(sql_string, parametros)
+            rows = cursor.fetchall();
+        return JsonResponse(rows, safe=False)
 
 def get_data_status_disciplina(request): #Gráfico 13
     campus_id = request.GET.get('campus_id') 

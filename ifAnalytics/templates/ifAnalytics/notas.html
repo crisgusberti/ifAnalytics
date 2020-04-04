@@ -384,7 +384,7 @@
       var parametroDetalhes = data_table_aprovados_reprovados.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_aprovados_reprovados/");
-      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "XXXXXX", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Situação", "E-mail"]);
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }
