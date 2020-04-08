@@ -49,8 +49,8 @@ nav#menu_direita {
 	width:180px;
 	float: left;
 	margin-top: 10px;
-	height: 100vh;
-	/*height: 100vmax;*/
+	/*height: 100vh;*/
+	height: 100vmax;
 }
 nav#menu_direta ul{
 	/*padding-left: -0px;*/
@@ -161,6 +161,39 @@ div#dashboards {
 .alinha_grafico_esquerda{
 	display: inline-block;
 	float: left;
+}
+
+/*====Tabela Detalhes====*/
+div#table{
+	margin-left: 200px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color:Black;
+	font-family: helvetica;
+	font-size: 14px;
+	background-color: #ECFCF1;
+	padding: 10px 10px 10px 10px;
+	/*display: inline-block; esse comando centraliza
+	float: center;			/*esse comando centraliza*/*/
+}
+table, th, td {
+	border: 1px solid #999999;
+	border-collapse: collapse;
+}
+th {
+	height: 50px;
+	background-color: rgba(185, 220, 187, 0.7); /*Equivalente a cor #B9DCBB com 0.75 de opacity*/
+}
+td {
+	padding: 3px;
+}
+
+tr:nth-child(even) {
+	background-color: #D3F3D4;
+}
+
+tr:hover{
+	background-color: #DFE8DB;
 }
 
 /*====Logo IFRS====*/
