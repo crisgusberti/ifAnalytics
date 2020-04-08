@@ -99,6 +99,11 @@
 		let campusId = $("#campus").val();
 		passaCurso = false;
 
+		if (campusId == 11 || campusId == 20 || campusId == 35) { //Aviso para os campus Bento, Canoas e Rio Grande
+			alert("Este campus ainda não implantou nenhum curso no SIGAA. Selecione outro!")
+			return; //Esse return para a execução aqui evitando erro no console
+		}
+
 		//popula select Período
 		$.ajax({
 			url: '/consulta_periodos/', 
