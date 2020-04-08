@@ -340,6 +340,7 @@
       persistirParametros("url_consulta", "/get_data_notas_parciais/");
       persistirParametros("unidade", 1);
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Nota", "E-mail"]);
+      persistirParametros("titulo_tabela_detalhes", "Detalhamento das Notas Parciais da Unidade 1");
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }
@@ -352,6 +353,7 @@
       persistirParametros("url_consulta", "/get_data_notas_parciais/");
       persistirParametros("unidade", 2);
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Nota", "E-mail"]);
+      persistirParametros("titulo_tabela_detalhes", "Detalhamento das Notas Parciais da Unidade 2");
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }
@@ -363,6 +365,7 @@
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_medias_finais/");
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Média Final", "E-mail"]);
+      persistirParametros("titulo_tabela_detalhes", "Detalhamento das Médias Finais");
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }
@@ -374,6 +377,7 @@
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_discentes_exame/");
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Média Parcial", "E-mail"]);
+      persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Discentes em Exame");
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }
@@ -385,6 +389,7 @@
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_aprovados_reprovados/");
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Situação", "E-mail"]);
+      persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Discentes Aprovados ou Reprovados");
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }
@@ -396,6 +401,7 @@
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_status_disciplina/");
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Situação", "E-mail"]);
+      persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Discentes por Status nas Disciplinas");
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
   }

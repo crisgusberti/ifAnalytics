@@ -32,7 +32,8 @@
 		//cabeçalho
 		let array_cabecalho = sessionStorage.getItem("array_cabecalho").split(","); //sessionStorage armazenou como string unica por isso splitei aqui
 
-		let cabecalho_tabela = "<tr>";//adiciona uma linha de cabeçalho
+		let cabecalho_tabela = "<tr><th colspan="+array_cabecalho.length+">"+sessionStorage.getItem("titulo_tabela_detalhes")+"</th></tr>"//adiciona o título da tabela
+		cabecalho_tabela += "<tr>";//adiciona uma linha de cabeçalho
 		for (let i = 0; i < array_cabecalho.length; i++) { 
 			cabecalho_tabela += "<th>"+array_cabecalho[i] +"</th>"; //percorre o array de cabeçalho e para cada item cria uma célula (coluna)
 		}
