@@ -1,21 +1,27 @@
 /*====Estrutura Geral====*/
 html{
-	/*height: 100%;*/	
+	height: 100vh;	
 }				
 body{
-background-color: #ECFDF0;
+	margin: 0;
+	height: 100vh;
+	background-color: #ECFDF0;
 }
 h1{
 	text-align:left;
 	color: #B9DCBB;
 	font-family: helvetica;
 }
+div#cabecalho{
+	margin-left: 3px;
+}
 
 /*====Menu Superior====*/
 nav#menu_superior ul{
 	background-color: #E1F0DB;
 	list-style: none;
-	margin: 0;
+	margin: 0px;
+	padding-left: 0px;
 	border-bottom: 0.5px solid  #999999;
 	border-top: 0.5px solid  #999999;
 }
@@ -49,8 +55,7 @@ nav#menu_direita {
 	width:180px;
 	float: left;
 	margin-top: 10px;
-	/*height: 100vh;*/
-	height: 100vmax;
+	height: 150vh;
 }
 nav#menu_direta ul{
 	/*padding-left: -0px;*/
@@ -109,7 +114,6 @@ nav#menu_direita a:hover{
 div#filtros{
 	margin-left:200px;
 	margin-top: 10px;
-	margin-bottom: 10px;
 	color:Black;
 	font-family: helvetica;
 	background-color: #ECFCF1;
@@ -141,18 +145,15 @@ select#periodo{
 div#dashboards {
 	/*border:1px solid black; */
 	margin-left: 200px;
-	margin-top: 10px;
-	margin-bottom: 10px;
 	color:Black;
 	font-family: helvetica;
 	background-color: #ECFCF1;
-	padding: 10px 10px 10px 10px;
-/*	height: 100vh;*/
+	padding-right: 10px;
 }
 .grafico{
-	width: 625px;
+	width: 640px;
 	height: 300px;
-	margin-bottom: 30px;
+	margin-top: 28px;
 }
 .alinha_grafico_direita{
 	display: inline-block;
@@ -203,10 +204,13 @@ tr:hover{
 
 /*====Rodapé====*/
 #rodape{
+	margin-left: 3px;
 	clear:both;
 	text-align:left;
 	font-family: helvetica;
 	font-size: small;
 	color: grey;
+	padding-top: 10px;
+	padding-bottom: 5px;
 }
 
