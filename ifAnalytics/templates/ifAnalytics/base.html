@@ -54,7 +54,7 @@
 			</select>
 
 			<select id="periodo" name="periodo" class="combobox">
-				<option value="">Periodo</option>
+				<option value="">Período</option>
 			</select><br><br>
 			
 			<select id="curso" name="curso" class="combobox">
@@ -90,17 +90,22 @@
 	        url: '/consulta_campus/', //chama a view "consulta_campus"
 	        success: function(response) { 
 	           $('#campus').html(response); //em caso de sucesso a resposta daquela view é carregado dentro do id "campus" desse arquivo HTML
+	           div_dashboards_vazia = $('#dashboards').html(); //Armazena o cógido html que está dentro da div dashboards (vazio neste momento)
 	       }
 	   })
 	});
 
 	//detecta alteração no combo campus e chama funções do geral/notas/frequencias.html além de popular periodos
 	$('#campus').change(function() {
+		$('#dashboards').html(div_dashboards_vazia); //ao mudar o combo campus, substitui o que está dentro da div dashboards pelo html vazio armazenado acima
+		$('#turma').html('<option value="000000">Turma</option>'); //limpa combo turma ao alterar campus
+		$('#curso').html('<option value="000000">Curso</option>'); //limpa combo curso ao alterar campus
 		let campusId = $("#campus").val();
 		passaCurso = false;
 
 		if (campusId == 11 || campusId == 20 || campusId == 35) { //Aviso para os campus Bento, Canoas e Rio Grande
 			alert("Este campus ainda não implantou nenhum curso no SIGAA. Selecione outro!")
+			$('#periodo').html('<option value="000000">Período</option>'); //limpa combo período ao selecionar esses campus
 			return; //Esse return para a execução aqui evitando erro no console
 		}
 
@@ -112,33 +117,7 @@
 			},
 			success: function(response) {
 				$('#periodo').html(response);
-				$('#turma').html('<option value="000000">Turma</option>'); //limpa combo turma ao alterar campus
-				$('#curso').html('<option value="000000">Curso</option>'); //limpa combo curso ao alterar campus
-				let campusId = $("#campus").val();
-				let cursoId = $("#curso").val(); 
-				let periodo = $("#periodo").val();
-				let arrayString = periodo.split("/");
-				let ano = arrayString[0];
-				let semestre = arrayString[1];
-				querySelector = 'campus';
-
-				if (paginaAtual == 'geral') {
-					renderChartFormaIngresso(querySelector, campusId, ano, semestre);
-					renderChartStatusDiscente(querySelector, campusId, ano, semestre);
-					renderChartTotalMatriculas(querySelector, campusId, ano, semestre);
-					renderChartConcluintes(querySelector, campusId, ano, semestre);
-					renderChartTamanhoTurmas(querySelector, campusId, ano, semestre);
-					renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre);
-				}else if(paginaAtual == 'notas'){
-					renderChartNotasParciais(1, querySelector, campusId, ano, semestre);
-					renderChartNotasParciais(2, querySelector, campusId, ano, semestre);
-					renderChartMediasFinais(querySelector, campusId, ano, semestre);
-					renderChartDiscenteExame(querySelector, campusId, ano, semestre);
-					renderChartAprovadosReprovados(querySelector, campusId, ano, semestre);
-					renderChartStatusDisciplinas(querySelector, campusId, ano, semestre);
-				}else if(paginaAtual == 'Frequências'){
-					renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre);
-				}
+				// querySelector = 'campus'; //não está mais sendo usado, desde a alteração onde os gráficos só aparecem ao alterar o combo período (commit nº: )
 			}
 		})
 	});

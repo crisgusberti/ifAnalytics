@@ -1,4 +1,5 @@
 
+<option value="000000">Período</option> <!-- deixa a primeira opção sempre neutra -->
 {% for periodo in periodos %}
    <option value="{{ periodo.periodo_formatado }}">{{ periodo.periodo_formatado }}</option>
  {% endfor %}

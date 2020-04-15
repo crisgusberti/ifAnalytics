@@ -49,7 +49,7 @@
 				if (j != data_from_view[i].length-1) { //verifica se não é a última posição adiciona as colunas normalmente
 					corpo_tabela +="<td>"+data_from_view[i][j]+"</td>"; //enquanto nessa linha i, percorre cada posição da linha i como sendo j
 				}else{ //se for a ultima posição (e-mail) adiciona uma imagem com o link para o e-mail do aluno
-					corpo_tabela +="<td><a href=mailto:"+data_from_view[i][j]+"><img src='{% static 'images/email.png' %}'></a></td>";
+					corpo_tabela +="<td><a href=mailto:"+data_from_view[i][j]+"><img src='{% static 'images/email.png' %}' title='Enviar e-mail'></a></td>";
 				}
 			}
 
