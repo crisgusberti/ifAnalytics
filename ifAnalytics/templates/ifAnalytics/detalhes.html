@@ -17,15 +17,15 @@
           'parametroDetalhes' : sessionStorage.getItem("parametroDetalhes"),
           'colunaSelecionada' : sessionStorage.getItem("colunaSelecionada"), //somente para gráficos com dois indicadores
           'unidade': sessionStorage.getItem("unidade") //para o gráfico de notas parciais
-       },
-       success: function(data_from_view){ //retorno da view
+		},
+		success: function(data_from_view){ //retorno da view
          //função que monta a tabela
          gerarTabela(data_from_view);
-       },
-       error: function(error_data){
+		},
+		error: function(error_data){
           console.log("error")
           console.log(error_data)
-       }
+		}
     })
 
 	function gerarTabela(data_from_view){
@@ -60,7 +60,7 @@
 	}
 </script>
 
-<div id="table"><!-- Plotagem da tabela -->
+<div id="table"><!-- PLOTAGEM DA TABELA -->
 	<table>
 		<thead>
 			<!-- insere aqui o append do thead -->
