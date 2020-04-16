@@ -1,34 +1,40 @@
-{% extends 'ifAnalytics/base.html' %}
 {% load static %} <!-- carregamento de arquivos estaticos Django -->
-{% block content %}
 
 <script>
-
-	$.ajax({
-        method: "GET",
-        url: sessionStorage.getItem("url_consulta"), //URL da view da consulta do sessionStorage salvo nos handlers das páginas geral/notas/frequencia
-        data: { //resgatando os parametros que foram salvos no sessionStorage pelas páginas geral/notas/frequencia
-          'campus_id' : sessionStorage.getItem("campusId"),
-          'curso_id' : sessionStorage.getItem("cursoId"),
-          'ano' : sessionStorage.getItem("ano"),
-          'semestre' : sessionStorage.getItem("semestre"),
-          'turma_id': sessionStorage.getItem("turmaId"),
-          'querySelector' : sessionStorage.getItem("querySelector"),
-          'parametroDetalhes' : sessionStorage.getItem("parametroDetalhes"),
-          'colunaSelecionada' : sessionStorage.getItem("colunaSelecionada"), //somente para gráficos com dois indicadores
-          'unidade': sessionStorage.getItem("unidade") //para o gráfico de notas parciais
-		},
-		success: function(data_from_view){ //retorno da view
-         //função que monta a tabela
-         gerarTabela(data_from_view);
-		},
-		error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-		}
-    })
+	function gerarDetalhamento(){
+		$.ajax({
+	        method: "GET",
+	        url: sessionStorage.getItem("url_consulta"), //URL da view da consulta do sessionStorage salvo nos handlers das páginas geral/notas/frequencia
+	        data: { //resgatando os parametros que foram salvos no sessionStorage pelas páginas geral/notas/frequencia
+	          'campus_id' : sessionStorage.getItem("campusId"),
+	          'curso_id' : sessionStorage.getItem("cursoId"),
+	          'ano' : sessionStorage.getItem("ano"),
+	          'semestre' : sessionStorage.getItem("semestre"),
+	          'turma_id': sessionStorage.getItem("turmaId"),
+	          'querySelector' : sessionStorage.getItem("querySelector"),
+	          'parametroDetalhes' : sessionStorage.getItem("parametroDetalhes"),
+	          'colunaSelecionada' : sessionStorage.getItem("colunaSelecionada"), //somente para gráficos com dois indicadores
+	          'unidade': sessionStorage.getItem("unidade") //para o gráfico de notas parciais
+			},
+			success: function(data_from_view){ //retorno da view
+	         //função que monta a tabela
+	         gerarTabela(data_from_view);
+			},
+			error: function(error_data){
+	          console.log("error")
+	          console.log(error_data)
+			}
+	    })
+	}
 
 	function gerarTabela(data_from_view){
+
+		let tabela_vazia = "<table><thead></thead><tbody></tbody></table>" //estrutura de uma tabela vazia
+		$('#table').html(tabela_vazia); //limpa a tabela para popula-la novamente
+
+		mostrarDiv("dashboards", false); //oculta os dashboards e mostra a tabela de detalhes
+		mostrarDiv("table", true);
+
 		//cabeçalho
 		let array_cabecalho = sessionStorage.getItem("array_cabecalho").split(","); //sessionStorage armazenou como string unica por isso splitei aqui
 
@@ -60,7 +66,7 @@
 	}
 </script>
 
-<div id="table"><!-- PLOTAGEM DA TABELA -->
+<div id="table" style="display:none"><!-- PLOTAGEM DA TABELA -->
 	<table>
 		<thead>
 			<!-- insere aqui o append do thead -->
@@ -71,4 +77,3 @@
 	</table>
 </div>
 
-{% endblock %}

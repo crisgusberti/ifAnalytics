@@ -328,7 +328,8 @@
     } else if(querySelector == "turma"){
       persistirParametros("querySelector", "turma_detalhes");
     }
-    window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
+    // window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
+    gerarDetalhamento();
   }
 
   //Funções handler para interatividade de cada um dos gráficos
@@ -415,4 +416,6 @@
   <div id="pieChart_aprovados_reprovados" class="grafico alinha_grafico_esquerda"></div>
   <div id="pieChart_status_disciplinas" class="grafico alinha_grafico_direita"></div>
 </div>
+
+{% include 'ifAnalytics/detalhes.html' %}
 {% endblock %}

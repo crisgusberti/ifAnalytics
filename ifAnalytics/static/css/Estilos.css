@@ -1,10 +1,10 @@
 /*====Estrutura Geral====*/
 html{
-	height: 100vh;	
+	height: 100%;	
 }				
 body{
 	margin: 0;
-	height: 100vh;
+	height: 100%;
 	background-color: #ECFDF0;
 }
 h1{
@@ -173,13 +173,17 @@ div#table{
 	font-family: helvetica;
 	font-size: 14px;
 	background-color: #ECFCF1;
-	padding: 10px 10px 10px 10px;
+	padding-top: 10px;
+	padding-right: 10px;
 	/*display: inline-block; esse comando centraliza
 	float: center;			/*esse comando centraliza*/*/
 }
 table, th, td {
 	border: 1px solid #999999;
 	border-collapse: collapse;
+}
+table{
+	width: 100%;
 }
 th {
 	height: 50px;

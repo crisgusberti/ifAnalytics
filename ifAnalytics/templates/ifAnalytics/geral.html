@@ -77,8 +77,6 @@
 
     chart.draw(data, options); //Desenha o gráfico (função original do charts antes da interatividade)
   }
-
-
 </script>
 
 
@@ -402,7 +400,8 @@
     } else if(querySelector == "turma"){
       persistirParametros("querySelector", "turma_detalhes");
     }
-    window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
+    // window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
+    gerarDetalhamento();
   }
 </script>
 
@@ -473,7 +472,7 @@
 
 </script>
 
-<div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
+<div id="dashboards" style="display:block"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
 	<div id="pieChart_forma_ingresso" class="grafico alinha_grafico_esquerda"></div>
   <div id="pieChart_status_discente" class="grafico alinha_grafico_direita"></div>
   <div id="columnChart_total_matriculas" class="grafico alinha_grafico_esquerda"></div>
@@ -481,4 +480,7 @@
   <div id="columnChart_tamanho_turmas" class="grafico alinha_grafico_esquerda"></div>
   <div id="columnChart_discentes_evadidos" class="grafico alinha_grafico_direita"></div>
 </div>
-{% endblock %}
+
+{% include 'ifAnalytics/detalhes.html' %}
+{% endblock content %}
+

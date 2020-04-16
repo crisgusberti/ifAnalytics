@@ -69,8 +69,9 @@
 
 	<!-- Área de Plotagem dos gráficos específica de cada página-->
 	{% block content %}
-	{% endblock %}
-	<!-- Fim da Área de plotagem -->
+	{% endblock content %}
+	<!-- Fim da Área de plotagem dos gráficos-->
+
 
 	<div id="rodape">
 		<b>Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul - IFRS</b>
@@ -120,6 +121,8 @@
 				// querySelector = 'campus'; //não está mais sendo usado, desde a alteração onde os gráficos só aparecem ao alterar o combo período (commit nº: f12b06b69d835c47e0fa4970541855cc5e057d69 )
 			}
 		})
+		mostrarDiv("dashboards", true); //a função mostrarDiv altera a exibição entre os dashboards e a tabela de detalhes
+		mostrarDiv("table", false); // aqui na geração dos gráficos os dashboards sempre serão exibidos e a tabela ocultada
 	});
 
 	//detecta alteração no combo periodo e chama funções do geral/notas/frequencias.html além de popular cursos
@@ -161,6 +164,8 @@
 		}else if(paginaAtual == 'Frequências'){
 				renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre);
 		}
+		mostrarDiv("dashboards", true);
+		mostrarDiv("table", false);
 	});
 
 	//detecta alteração no combo curso e chama funções do geral/notas/frequencias.html além de popular turmas
@@ -205,6 +210,8 @@
 		}else if(paginaAtual == 'Frequências'){
 			renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId);
 		}
+		mostrarDiv("dashboards", true);
+		mostrarDiv("table", false);
 	});
 
 	//detecta alteração no combo turmas e chama funções do geral/notas/frequencias.html
@@ -235,6 +242,8 @@
 		}else if(paginaAtual == 'Frequências'){
 			renderChartPercentuaisFrequencia(querySelector, null, ano, semestre, null, turmaId);
 		}
+		mostrarDiv("dashboards", true);
+		mostrarDiv("table", false);
 	});
 
 	//função que me diz qual é a página atual
@@ -254,11 +263,18 @@
 		return thisPage;
 	}
 
+	//Função que oculta ou mostra a div dos gráficos ou da tabela de detalhes
+	function mostrarDiv(id_elemento, visibilidade) {
+		if (visibilidade == true)
+			document.getElementById(id_elemento).style.display = 'block';
+		else
+			document.getElementById(id_elemento).style.display = 'none';
+	}
+
 	var thisPage = thisPage();  // recebe a string da página atual
 	if (thisPage == "geral" || thisPage == "notas" || thisPage == "Frequências") { //não considera a página de detalhes pq ela não tem menu
 		document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página
 	}
-
 </script>
 {% endblock js %}
 

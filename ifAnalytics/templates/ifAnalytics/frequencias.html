@@ -119,7 +119,8 @@
     } else if(querySelector == "turma"){
       persistirParametros("querySelector", "turma_detalhes");
     }
-    window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
+    // window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
+    gerarDetalhamento();
   }
 
   //Funções handler para interatividade de cada um dos gráficos
@@ -157,4 +158,6 @@
 <div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
   <div id="pieChart_percentuais_frequencia" class="grafico alinha_grafico_esquerda"></div>
 </div>
+
+{% include 'ifAnalytics/detalhes.html' %}
 {% endblock %}
