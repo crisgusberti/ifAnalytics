@@ -441,7 +441,11 @@
       persistirParametros("parametroDetalhes", parametroDetalhes); //não está sendo usado nessa consulta, pq eu listo todos os alunos da coluna selecionada
       persistirParametros("url_consulta", "/get_data_concluintes/"); 
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Prazo de Conclusão", "E-mail"]);
-      persistirParametros("titulo_tabela_detalhes", "Detalhamento do Total de Alunos Concluíntes");
+      if (colunaSelecionada == "Alunos Formandos") {
+        persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos Concluíntes");
+      } else {
+        persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos que Passaram do Prazo de Conclusão");
+      }
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
@@ -472,7 +476,7 @@
 
 </script>
 
-<div id="dashboards" style="display:block"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
+<div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
 	<div id="pieChart_forma_ingresso" class="grafico alinha_grafico_esquerda"></div>
   <div id="pieChart_status_discente" class="grafico alinha_grafico_direita"></div>
   <div id="columnChart_total_matriculas" class="grafico alinha_grafico_esquerda"></div>

@@ -17,7 +17,10 @@
 	          'unidade': sessionStorage.getItem("unidade") //para o gráfico de notas parciais
 			},
 			success: function(data_from_view){ //retorno da view
-	         //função que monta a tabela
+	         if (sessionStorage.getItem("url_consulta") == "/get_data_concluintes/") {
+	         	gerarTabela(formatarAnoPeriodo(data_from_view));
+	         }
+
 	         gerarTabela(data_from_view);
 			},
 			error: function(error_data){
@@ -27,6 +30,8 @@
 	    })
 	}
 
+
+	//função que monta a tabela
 	function gerarTabela(data_from_view){
 
 		let tabela_vazia = "<table><thead></thead><tbody></tbody></table>" //estrutura de uma tabela vazia
@@ -64,9 +69,19 @@
 			numero_linha++;
  		}
 	}
+
+	//função que formata prazo de conclusão de, por exemplo, 20192 para 2019/2
+	function formatarAnoPeriodo(data_from_view){
+		for (let i = data_from_view.length - 1; i >= 0; i--) {
+			let periodo = String(data_from_view[i][3]) //data_from_view[i][3] é, especificamente a coluna do ano/período
+			let periodo_formatado = periodo.substr(0,4)+"/"+periodo.substr(4,4);
+			data_from_view[i][3] = periodo_formatado;
+		}
+		return data_from_view;
+	}
 </script>
 
-<div id="table" style="display:none"><!-- PLOTAGEM DA TABELA -->
+<div id="table"><!-- PLOTAGEM DA TABELA -->
 	<table>
 		<thead>
 			<!-- insere aqui o append do thead -->
