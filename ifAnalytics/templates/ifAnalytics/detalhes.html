@@ -34,11 +34,7 @@
 	//função que monta a tabela
 	function gerarTabela(data_from_view){
 
-		let tabela_vazia = "<table><thead></thead><tbody></tbody></table>" //estrutura de uma tabela vazia
-		$('#table').html(tabela_vazia); //limpa a tabela para popula-la novamente
-
-		mostrarDiv("dashboards", false); //oculta os dashboards e mostra a tabela de detalhes
-		mostrarDiv("table", true);
+		limparTabela()
 
 		//cabeçalho
 		let array_cabecalho = sessionStorage.getItem("array_cabecalho").split(","); //sessionStorage armazenou como string unica por isso splitei aqui
@@ -68,6 +64,9 @@
 			$('tbody').append(corpo_tabela); //popula o corpo da tabela dinamicamente
 			numero_linha++;
  		}
+
+		mostrarDiv("dashboards", false); //oculta os dashboards e mostra a tabela de detalhes
+		mostrarDiv("table", true);
 	}
 
 	//função que formata prazo de conclusão de, por exemplo, 20192 para 2019/2
@@ -78,6 +77,20 @@
 			data_from_view[i][3] = periodo_formatado;
 		}
 		return data_from_view;
+	}
+
+	// Como eu não consegui, apenas com CSS, alterar dinamicamente a altura da div do menu lateral para que sempre esteja do mesmo tamanho da div dashboards e da div da tabela detalhes, tive que fazer a função abaixo 
+	function alterarAlturaMenuLateral(elemento){
+	 	let height_filtros = document.getElementById("filtros").offsetHeight; //pega a altura da div filtos (combos)
+	 	let height_elemento = document.getElementById(elemento).offsetHeight; //pega a altura do elemento em questão (div dashboards ou table)
+	 	let heigth_total = height_elemento + height_filtros; //soma a altura dos combos com a do elemento
+		document.getElementById("menu_esquerda").style.height = heigth_total + "px"; // seta a soma das alturas no menu lateral
+	}
+
+	//Sem essa função, ao gerar uma tabela com outra fatia do gráfico, ficam dados da tabela antiga
+	function limparTabela(){
+		let tabela_vazia = "<table><thead></thead><tbody></tbody></table>" //estrutura de uma tabela vazia
+		$('#table').html(tabela_vazia); //limpa a tabela para popula-la novamente
 	}
 </script>
 

@@ -33,9 +33,9 @@
 	</nav><br>
 
 
-	<nav id="menu_direita">
+	<nav id="menu_esquerda">
 		<div class="preencher"><span class="negrito">Menu</span><img src="{% static 'images/menu_icon.PNG' %}" class="icone_menu_opaco"></div>
-		<ul id="lista_menu" style="padding-left: 2px">
+		<ul>
 			<li id="geral"><a href="{% url 'geral' %}" title="Informações Gerais">Geral</a><img src="{% static 'images/geral_icon.PNG' %}" class="icone_menu_opaco"></li>
 			<li id="notas"><a href="{% url 'notas' %}" title="Informações sobre notas">Notas</a><img src="{% static 'images/notas_icon.PNG' %}" class="icone_menu"></li>
 			<li id="Frequências"><a href="{% url 'frequencias' %}" title="Informações sobre frequência">Frequência</a><img src="{% static 'images/frequencia_icon.PNG' %}" class="icone_menu"></li>
@@ -263,12 +263,15 @@
 		return thisPage;
 	}
 
-	//Função que oculta ou mostra a div dos gráficos ou da tabela de detalhes
+	//Função que oculta ou mostra a div dos gráficos ou da tabela de detalhes. Essa função é necessária para mostrar, alternadamente, os gráficos ou a tabela de detalhes na mesma página, permitindo assim usar os combos e as seleções já feitas sempre
 	function mostrarDiv(id_elemento, visibilidade) {
-		if (visibilidade == true)
+		if (visibilidade == true){
 			document.getElementById(id_elemento).style.display = 'block';
-		else
+
+			alterarAlturaMenuLateral(id_elemento); //toda vez que a div dos gráficos ou da tabela é mostrada, a altura do menu lateral é recalculada e alterada
+		}else{
 			document.getElementById(id_elemento).style.display = 'none';
+		}
 	}
 
 	var thisPage = thisPage();  // recebe a string da página atual
