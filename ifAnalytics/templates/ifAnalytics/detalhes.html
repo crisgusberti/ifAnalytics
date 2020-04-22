@@ -69,6 +69,25 @@
 		mostrarDiv("table", true);
 	}
 
+
+	// Como eu não consegui, apenas com CSS, alterar dinamicamente a altura da div do menu lateral para que sempre esteja do mesmo tamanho da div dashboards e da div da tabela detalhes, tive que fazer a função abaixo 
+	function alterarAlturaMenuLateral(elemento){
+	 	let height_filtros = document.getElementById("filtros").offsetHeight; //pega a altura da div filtos (combos)
+	 	let height_elemento = document.getElementById(elemento).offsetHeight; //pega a altura do elemento em questão (div dashboards ou table)
+	 	let heigth_total = height_elemento + height_filtros; //soma a altura dos combos com a do elemento
+	 	if (heigth_total <  1098.8) { //define uma altura mínima para a página
+	 		heigth_total =  1098.8;
+	 	}
+		document.getElementById("menu_esquerda").style.height = heigth_total + "px"; // seta a soma das alturas no menu lateral
+	}
+
+	//Sem essa função, ao gerar uma tabela com outra fatia do gráfico, ficam dados da tabela antiga
+	function limparTabela(){
+		let tabela_vazia = "<table><thead></thead><tbody></tbody></table>" //estrutura de uma tabela vazia
+		$('#table').html(tabela_vazia); //limpa a tabela para popula-la novamente
+	}
+
+
 	//função que formata prazo de conclusão de, por exemplo, 20192 para 2019/2
 	function formatarAnoPeriodo(data_from_view){
 		for (let i = data_from_view.length - 1; i >= 0; i--) {
@@ -79,19 +98,6 @@
 		return data_from_view;
 	}
 
-	// Como eu não consegui, apenas com CSS, alterar dinamicamente a altura da div do menu lateral para que sempre esteja do mesmo tamanho da div dashboards e da div da tabela detalhes, tive que fazer a função abaixo 
-	function alterarAlturaMenuLateral(elemento){
-	 	let height_filtros = document.getElementById("filtros").offsetHeight; //pega a altura da div filtos (combos)
-	 	let height_elemento = document.getElementById(elemento).offsetHeight; //pega a altura do elemento em questão (div dashboards ou table)
-	 	let heigth_total = height_elemento + height_filtros; //soma a altura dos combos com a do elemento
-		document.getElementById("menu_esquerda").style.height = heigth_total + "px"; // seta a soma das alturas no menu lateral
-	}
-
-	//Sem essa função, ao gerar uma tabela com outra fatia do gráfico, ficam dados da tabela antiga
-	function limparTabela(){
-		let tabela_vazia = "<table><thead></thead><tbody></tbody></table>" //estrutura de uma tabela vazia
-		$('#table').html(tabela_vazia); //limpa a tabela para popula-la novamente
-	}
 </script>
 
 <div id="table"><!-- PLOTAGEM DA TABELA -->
