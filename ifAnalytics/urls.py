@@ -3,7 +3,7 @@ from ifAnalytics.views import geral
 from ifAnalytics.views import notas
 from ifAnalytics.views import frequencias
 from ifAnalytics.views import suporte
-# from ifAnalytics.views import detalhes #essa página não está mais sendo renderizada a parte, agora aparece dentro da página que chama
+from ifAnalytics.views import detalhes
 from ifAnalytics.views import consulta_cursos
 from ifAnalytics.views import consulta_campus
 from ifAnalytics.views import consulta_periodos
@@ -29,7 +29,7 @@ urlpatterns = [
 	path('notas/', notas, name='notas'),
 	path('frequencias/', frequencias, name='frequencias'),
 	path('suporte/', suporte, name='suporte'),
-	# path('detalhes/', detalhes, name='detalhes'),
+	path('detalhes/', detalhes, name='detalhes'),
 	path('consulta_cursos/', consulta_cursos, name='consulta_cursos'),
 	path('consulta_campus/', consulta_campus, name='consulta_campus'),
 	path('consulta_periodos/', consulta_periodos, name='consulta_periodos'),
