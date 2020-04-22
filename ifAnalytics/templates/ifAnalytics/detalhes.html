@@ -1,5 +1,9 @@
 {% load static %} <!-- carregamento de arquivos estaticos Django -->
 
+<!--DETALHE IMPORTATE! 
+	Como a página de detalhes não é mais uma página separada e agora aparece em uma div dentro da própria página que a chama (geral/notas/frequencia), através do comando "include" que está no fim destas mesmas páginas, não seria mais necessário armazenar as variáveis em sessionStorage. Nas Funções handlers das páginas geral/notas/frequencia as variáveis poderiam ser atribuídas normalmente e seriam acessíveis diretamenta aqui, já que as funções dessa página estão "incluidas" na página que a está chamando. Eu nunca testei isso, mas na teoria seria só remover os comandos sessionStorage.getItem e sessionStorage.setItem, deixando as atribuições diretamente que funcionaria. Não fiz essa alteração pq na prática não muda nada no funcionamento. Já está funcionando assim, inicialmente eu projetei o sistema assim, para o detalhamento ser numa página diferente, então vou deixar assim, até pq gostei de usar o sesssionStorage. 
+-->
+
 <script>
 	function gerarDetalhamento(){
 		$.ajax({
@@ -70,6 +74,18 @@
 	}
 
 
+	//Função que oculta ou mostra a div dos gráficos ou da tabela de detalhes. Essa função é necessária para mostrar, alternadamente, os gráficos ou a tabela de detalhes na mesma página, permitindo assim usar os combos e as seleções já feitas sempre
+	function mostrarDiv(id_elemento, visibilidade) {
+		if (visibilidade == true){
+			document.getElementById(id_elemento).style.display = 'block';
+
+			alterarAlturaMenuLateral(id_elemento); //toda vez que a div dos gráficos ou da tabela é mostrada, a altura do menu lateral é recalculada e alterada
+		}else{
+			document.getElementById(id_elemento).style.display = 'none';
+		}
+	}
+
+
 	// Como eu não consegui, apenas com CSS, alterar dinamicamente a altura da div do menu lateral para que sempre esteja do mesmo tamanho da div dashboards e da div da tabela detalhes, tive que fazer a função abaixo 
 	function alterarAlturaMenuLateral(elemento){
 	 	let height_filtros = document.getElementById("filtros").offsetHeight; //pega a altura da div filtos (combos)
@@ -80,6 +96,7 @@
 	 	}
 		document.getElementById("menu_esquerda").style.height = heigth_total + "px"; // seta a soma das alturas no menu lateral
 	}
+
 
 	//Sem essa função, ao gerar uma tabela com outra fatia do gráfico, ficam dados da tabela antiga
 	function limparTabela(){

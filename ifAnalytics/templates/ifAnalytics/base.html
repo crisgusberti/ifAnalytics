@@ -121,6 +121,7 @@
 				// querySelector = 'campus'; //não está mais sendo usado, desde a alteração onde os gráficos só aparecem ao alterar o combo período (commit nº: f12b06b69d835c47e0fa4970541855cc5e057d69 )
 			}
 		})
+		//função mostrarDiv está na página de detalhes
 		mostrarDiv("dashboards", true); //a função mostrarDiv altera a exibição entre os dashboards e a tabela de detalhes
 		mostrarDiv("table", false); // aqui na geração dos gráficos os dashboards sempre serão exibidos e a tabela ocultada
 	});
@@ -261,17 +262,6 @@
 			thisPage = "Frequências";
 		}
 		return thisPage;
-	}
-
-	//Função que oculta ou mostra a div dos gráficos ou da tabela de detalhes. Essa função é necessária para mostrar, alternadamente, os gráficos ou a tabela de detalhes na mesma página, permitindo assim usar os combos e as seleções já feitas sempre
-	function mostrarDiv(id_elemento, visibilidade) {
-		if (visibilidade == true){
-			document.getElementById(id_elemento).style.display = 'block';
-
-			alterarAlturaMenuLateral(id_elemento); //toda vez que a div dos gráficos ou da tabela é mostrada, a altura do menu lateral é recalculada e alterada
-		}else{
-			document.getElementById(id_elemento).style.display = 'none';
-		}
 	}
 
 	var thisPage = thisPage();  // recebe a string da página atual
