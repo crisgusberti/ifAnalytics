@@ -137,9 +137,9 @@
          dados = data_from_view
          tipo_coluna1 = 'number'
          tipo_coluna2 = 'number'
-         titulo_grafico = 'Quantidade de disciplinas pela respectiva quantidade de alunos' //'Quantidade de alunos matriculados em um total de X disciplinas'
-         titulo_hAxis = 'Disciplinas'
-         titulo_vAxis = 'Alunos'
+         titulo_grafico = 'Quantidade de Disciplinas em que os Alunos se Matricularam'
+         titulo_hAxis = 'Quantidade de Disciplinas'
+         titulo_vAxis = 'Quantidade de Alunos'
          chart_name = 'chart_total_matriculados'
          google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplinas', tipo_coluna2, 'Quantidade_Alunos', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name);});
        },
@@ -168,12 +168,12 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         let dadosNovoArray = formataRetorno(dados, "Alunos que Passaram do Prazo de Conclusão", "Alunos Formandos");
+         let dadosNovoArray = formataRetorno(dados, "Alunos Jubilados", "Alunos Formandos");
          tipo_coluna1 = 'string'
          tipo_coluna2 = 'number'
-         titulo_grafico = 'Não Concluíntes e Formandos'
-         titulo_hAxis = 'Não Concluíntes e Formandos'
-         titulo_vAxis = ''
+         titulo_grafico = 'Jubilados e Formandos'
+         titulo_hAxis = 'Jubilados e Formandos'
+         titulo_vAxis = 'Quantidade de Alunos'
          chart_name = 'chart_concluintes'
          google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, tipo_coluna1, 'Situação', tipo_coluna2, 'Quantidade', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name);});
        },
@@ -299,7 +299,7 @@
         title: titulo_vAxis
       },
       backgroundColor: '#E1F0DB',
-      chartArea: {left: 10, height: 250, width: 600},
+      chartArea: {left: 40, height: 250, width: 600},
       legend: {position: 'none'},
       titleTextStyle: {fontSize:14, bold: true, color:'grey'},
     };
@@ -442,9 +442,9 @@
       persistirParametros("url_consulta", "/get_data_concluintes/"); 
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Prazo de Conclusão", "E-mail"]);
       if (colunaSelecionada == "Alunos Formandos") {
-        persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos Concluíntes");
+        persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos Formandos");
       } else {
-        persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos que Passaram do Prazo de Conclusão");
+        persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos Jubilados");
       }
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }

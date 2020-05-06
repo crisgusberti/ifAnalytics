@@ -29,6 +29,7 @@ SELECT
 	q1.status_disciplina, COUNT (q1.status_disciplina) AS total_alunos
 FROM q1
 GROUP BY q1.status_disciplina
+ORDER BY q1.status_disciplina
 
 
 

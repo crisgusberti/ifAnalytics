@@ -78,6 +78,7 @@ SELECT
 	nome AS disciplina, COUNT(id_discente) AS total_matriculados
 FROM q1
 GROUP BY disciplina, id_turma
+ORDER BY total_matriculados
 
 
 =======================================
