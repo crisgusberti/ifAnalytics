@@ -101,7 +101,7 @@
 	//Sem essa função, ao gerar uma tabela com outra fatia do gráfico, ficam dados da tabela antiga
 	function limparTabela(){
 		let tabela_vazia = "<table><thead></thead><tbody></tbody></table>" //estrutura de uma tabela vazia
-		$('#table').html(tabela_vazia); //limpa a tabela para popula-la novamente
+		$('#table_inner').html(tabela_vazia); //limpa a tabela para popula-la novamente
 	}
 
 
@@ -117,14 +117,23 @@
 
 </script>
 
+
 <div id="table"><!-- PLOTAGEM DA TABELA -->
-	<table>
-		<thead>
-			<!-- insere aqui o append do thead -->
-		</thead>
-		<tbody>
-			<!-- insere aqui o append do tbody -->
-		</tbody> 
-	</table>
+
+	<div id="table_inner">
+		<table>
+			<thead>
+				<!-- insere aqui o append do thead -->
+			</thead>
+			<tbody>
+				<!-- insere aqui o append do tbody -->
+			</tbody> 
+		</table>
+	</div>
+
+	<div id="btn_voltar">	
+		<input type="button" value="Voltar" onclick="mostrarDiv('table', false); mostrarDiv('dashboards', true)">
+		<!-- Botão voltar que oculta a div da tabela e mostra a div dos dashboards -->
+	</div>
 </div>
 

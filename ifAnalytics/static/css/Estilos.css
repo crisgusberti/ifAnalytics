@@ -193,6 +193,26 @@ tr:hover{
 	background-color: #DFE8DB;
 }
 
+#btn_voltar{
+	font-family: helvetica;
+	font-size: 14px;
+	margin-bottom: 8px;
+	margin-top: 8px;
+	text-align: right; 
+	width: 98%;
+}
+
+#btn_voltar input{
+	border: 0.5px solid #999999;
+	border-radius: 5px;
+	color: grey;
+}
+
+#btn_voltar input:hover{
+	background-color: #606060;
+	color: white;
+}
+
 /*====Logo IFRS====*/
 .imagem{
 	float: right;
