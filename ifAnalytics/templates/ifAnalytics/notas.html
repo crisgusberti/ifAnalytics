@@ -284,6 +284,52 @@
         data_table_status_disciplinas.addRows([dados[i]]);
       }
 
+      //mapeamento fixo da cor de cada status
+        // https://stackoverflow.com/questions/46107128/google-visualization-set-pie-chart-slice-color
+        // https://stackoverflow.com/questions/13816621/fix-color-for-each-sector-of-google-pie-chart
+        // https://developers.google.com/chart/interactive/docs/gallery/piechart#removing-slices
+     
+      // cria um array colors mapeando a cor específica de cada status
+      var colors = {
+        // primeiras 20 cores do google charts http://there4.io/2012/05/02/google-chart-color-list/
+        'MATRICULADO' : '#0F9D58', //verde do google
+        'APROVADO' : '#3366CC', //azul do google
+        'APROVADO POR NOTA' :'#4d4dff',
+        'REPROVADO' : '#B82E2E',
+        'REPROVADO EM TODO PERÍODO LETIVO' :'#990000',
+        'REPROVADO POR FALTAS' : '#ff8080',
+        'REPROVADO POR MÉDIA E POR FALTAS' : '#DB4437', //vermelho do google,
+        'REPROVADO POR NOTA' : '#ff3377',
+        'REPROVADO POR NOTA E FALTA' : 'red',
+        'CANCELADO' : '#000000',
+        'AGUARDANDO DEFERIMENTO' : '#ff66cc',
+        'APROV ESTUD' : '#F4B400', //amarelo do google
+        'CERTIF CONHEC' : '#339966',
+        'CONCLUIDO' : '#33ccff',
+        'DESISTENCIA' : '#AAAA11',
+        'DISPENSADO' : '#e6e600',
+        'EM ESPERA' : '#0099C6',
+        'EXCLUIDA' : '#6633CC',
+        'INCORPORADO' : '#ffcc99',
+        'INDEFERIDO' : '#FF9900',
+        'NÃO CONCLUÍDO' : '#c2c2d6',
+        'TRANCADO' : '#666699',
+        'TRANSFERIDO' : '#cc99ff'
+      };
+
+      //cria um array do tamanho da tabela
+      var slices = [];
+      for (var i = 0; i < data_table_status_disciplinas.getNumberOfRows(); i++) {
+        //percorre a tabela e bate o status com a cor mepeada na variável colors
+        slices.push({
+          color: colors[data_table_status_disciplinas.getValue(i, 0)]
+        });
+      }
+      // adiciona dentro da optios do gráfico o array slices com o mapeamento da cor pra cada status
+      options['slices'] = slices;
+
+
+
       //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
       chart_status_disciplinas = new google.visualization.PieChart(document.getElementById('pieChart_status_disciplinas'));
       google.visualization.events.addListener(chart_status_disciplinas, 'select', select_handler_status_disciplinas);
