@@ -264,7 +264,7 @@ def get_data_concluintes(request): #Gráfico 4 e 5
                 cursor.execute(sql_string, parametros)
                 rows = cursor.fetchall();
             return JsonResponse(rows, safe=False)
-    elif coluna_selecionada == "Alunos que Passaram do Prazo de Conclusão": #detalhes para a coluna de NÃO CONCLUINTES
+    elif coluna_selecionada == "Alunos Jubilados": #detalhes para a coluna de NÃO CONCLUINTES
         if query_selector == "turma_detalhes":
             with connection.cursor() as cursor:
                 sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND  d.prazo_conclusao < %s AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_turma = %s GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
