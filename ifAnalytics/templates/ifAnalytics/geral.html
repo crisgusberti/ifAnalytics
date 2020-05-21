@@ -168,11 +168,11 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         let dadosNovoArray = formataRetorno(dados, "Alunos Jubilados", "Alunos Formandos");
+         let dadosNovoArray = formataRetorno(dados, "Alunos Jubilados", "Alunos em Vias de Jubilar", "Alunos Formandos");
          tipo_coluna1 = 'string'
          tipo_coluna2 = 'number'
-         titulo_grafico = 'Jubilados e Formandos'
-         titulo_hAxis = 'Jubilados e Formandos'
+         titulo_grafico = 'Jubilados, em Vias de Jubilar e Formandos'
+         titulo_hAxis = 'Jubilados, em Vias de Jubilar e Formandos'
          titulo_vAxis = 'Quantidade de Alunos'
          chart_name = 'chart_concluintes'
          google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, tipo_coluna1, 'Situação', tipo_coluna2, 'Quantidade', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name);});
@@ -374,12 +374,13 @@
 
 <script> //FUNÇÕES GERIAS
 
-  function formataRetorno(dados, label_linha_1, label_linha_2){
-    //pega o retorno da consulta (que vem em uma linha) e quebra em duas linhas, adicionando o label da linha para poder gerar o grafico
+  function formataRetorno(dados, label_linha_1, label_linha_2, label_linha_3){
+    //pega o retorno da consulta (que vem em uma linha) e quebra em 3 linhas, adicionando o label da linha para poder gerar o grafico
     let dadosNovo = dados[0].toString().split(",");
     let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
     let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
-    let dadosNovoArray= [posicao1, posicao2];
+    let posicao3 = [label_linha_3,parseInt(dadosNovo[2], 10)];
+    let dadosNovoArray= [posicao1, posicao2, posicao3];
     return dadosNovoArray;
   }
 
@@ -443,6 +444,9 @@
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Prazo de Conclusão", "E-mail"]);
       if (colunaSelecionada == "Alunos Formandos") {
         persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos Formandos");
+      } else if (colunaSelecionada =="Alunos em Vias de Jubilar") {
+        persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos em Vias de Jubilar");
+        persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Prazo de Conclusão", "CH Componentes Obrigatórios Pendente", "CH Optativa Pendente", "CH Complementar Pendente", "CH Total Pendente", "E-mail"]);
       } else {
         persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos Jubilados");
       }
