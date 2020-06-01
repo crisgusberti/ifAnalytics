@@ -120,6 +120,7 @@ SELECT
 	COUNT(id_discente) AS total_evadidos
 FROM q1
 GROUP BY disciplina, id_turma
+ORDER BY total_evadidos
 
 
 ===============================================
