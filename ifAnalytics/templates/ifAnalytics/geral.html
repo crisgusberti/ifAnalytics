@@ -50,14 +50,27 @@
 
     let options = {
       title: 'Forma de Ingresso',
-      backgroundColor: '#E1F0DB',
-      chartArea: {left: 10, height: 250, width: 600},
+      // backgroundColor: '#E1F0DB', //cores originais antes do Evandro
+      backgroundColor:{ fill: 'white'},
+      chartArea: {left: 10, top: 45, height: 250, width: 600},
       legend: {textStyle: {fontSize: 10}},
-      titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+      // titleTextStyle: {fontSize:14, bold: true, color:'grey'}, //cores originais antes do Evandro
+      titleTextStyle: {fontSize:18, bold: true, color:'black'},
       sliceVisibilityThreshold: 0,
     };
 
     let chart = new google.visualization.PieChart(document.getElementById('pieChart_forma_ingresso'));
+    google.visualization.events.addListener(chart, 'ready', titleCenter); //chama a função que centraliza o titulo quando o gráfico ficar pronto.
+
+    // Função que centraliza o título do gráfico
+    function titleCenter() {
+      var $container = $('#pieChart_forma_ingresso');
+      var svgWidth = $container.find('svg').width();
+      var $titleElem = $container.find("text:contains(" + options.title + ")");
+      var titleWidth = $titleElem.html().length * ($titleElem.attr('font-size')/2);
+      var xAxisAlign = (svgWidth - titleWidth)/2;
+      $titleElem.attr('x', xAxisAlign);
+    }
 
     // Função que permite a interatividade com o gráfico
     function selectHandler() {

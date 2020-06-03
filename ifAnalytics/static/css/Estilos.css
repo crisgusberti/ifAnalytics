@@ -8,10 +8,13 @@ html, body {
 }
 body{
 	background-color: #ECFDF0;
+	padding-left: 5px; /*sugestão marcelo*/
+	padding-right: 5px; /*sugestão marcelo*/
 }
 h1{
 	text-align:left;
-	color: #B9DCBB;
+	/*color: #B9DCBB;*/ /*cor original*/
+	color: green;
 	font-family: helvetica;
 }
 div#cabecalho{
@@ -37,7 +40,8 @@ nav#menu_superior li:hover{
 	background-color: #606060;
 }
 nav#menu_superior a{
-	color: grey;
+	/*color: grey;*/ /*cor original*/
+	color: black;
 	text-decoration: none;
 	cursor: default;
 }
@@ -52,7 +56,8 @@ nav#menu_superior a:hover{
 nav#menu_esquerda {
 	background-color: #E1F0DB;
 	border: 0.5px solid #999999;
-	border-top-right-radius: 5px;
+	/*border-top-right-radius: 5px;*/ /*com o padding-left: (sugestão do marcelo) o radius tem q ser aplicado em todos os cantos*/
+	border-radius: 5px;
 	font-family: helvetica;
 	width:180px;
 	float: left;
@@ -72,7 +77,8 @@ nav#menu_esquerda li:hover{
 }
 nav#menu_esquerda a{
 	cursor: default;
-	color: grey;
+	/*color: grey;*/ /*cor original*/
+	color: black;
 	text-decoration: none;
 	line-height: 1.5;
 }
@@ -90,7 +96,7 @@ nav#menu_esquerda a:hover{
 	border: 0.5px solid #999999;
 	border-top-right-radius: 5px;
 	padding: 3px;
-	opacity: 0.75;
+	/*opacity: 0.75;*/ /*sugestão marcelo remover*/
 }
 .icone_menu{
 	float: right;
@@ -120,11 +126,12 @@ div#filtros{
 	border-width: 1px;
 	border-color: #999999;
 	background-color: #B9DCBB;
-	color: grey;
+	/*color: grey;*/ /*cor original*/
+	color: black;
 	border-style: solid;
 	border-radius: 7px;
 	width:97%;
-	opacity: 0.75;
+	/*opacity: 0.75;*/ /*sugestão marcelo remover*/
 	text-align-last: center;
 }
 select#campus{
@@ -145,11 +152,20 @@ div#dashboards {
 	background-color: #ECFCF1;
 	overflow: hidden;
 }
+
 .grafico{
 	width: 620px;
 	height: 300px;
 	margin-top: 28px;
 }
+
+.grafico svg{ /*deixa o retangulo do gráfico com bordas arredondadas*/
+	border-radius: 7px;
+	border: solid;
+	border-color: grey;
+	border-width: 1px;
+}
+
 .alinha_grafico_direita{
 	display: inline-block;
 	margin-right: 28px;
@@ -205,7 +221,12 @@ tr:hover{
 #btn_voltar input{
 	border: 0.5px solid #999999;
 	border-radius: 5px;
-	color: grey;
+	/*color: grey;*/ /*cor original*/
+	color: black;
+	/*tamanho do botão voltar*/ /*sugestão marcelo*/
+	width: 90px;
+	height: 30px;
+	font-size: 18px;
 }
 
 #btn_voltar input:hover{
