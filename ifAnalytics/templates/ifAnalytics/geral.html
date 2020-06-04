@@ -4,6 +4,8 @@
 <script> //GRÁFICO 1: FORMA DE INGRESSO - Primeira versão (original)
 
   let data_forma_ingresso
+  let chart_div
+  let titulo_grafico
 
   function renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId, turmaId){
     //salvando os parametros na sessionStorage para ser possível acessa-los da página de detalhes
@@ -50,27 +52,19 @@
 
     let options = {
       title: 'Forma de Ingresso',
-      // backgroundColor: '#E1F0DB', //cores originais antes do Evandro
-      backgroundColor:{ fill: 'white'},
-      chartArea: {left: 10, top: 45, height: 250, width: 600},
-      legend: {textStyle: {fontSize: 10}},
-      // titleTextStyle: {fontSize:14, bold: true, color:'grey'}, //cores originais antes do Evandro
-      titleTextStyle: {fontSize:18, bold: true, color:'black'},
+      backgroundColor:{ fill: '#E1F0DB'},
+      chartArea: {left: 10, top: 40, height: 250, width: 600},
+      legend: {position: 'right', alignment: 'center', textStyle: {fontSize: 10}},
+      titleTextStyle: {fontSize: 17, bold: true, color: 'black'},
       sliceVisibilityThreshold: 0,
     };
 
-    let chart = new google.visualization.PieChart(document.getElementById('pieChart_forma_ingresso'));
-    google.visualization.events.addListener(chart, 'ready', titleCenter); //chama a função que centraliza o titulo quando o gráfico ficar pronto.
+    //como esse primeiro gráfico foi feito de forma diferente, preciso dessas duas variáveis definidas aqui pra poder usar na função que centraliza o título desse gráfico.
+    chart_div = 'pieChart_forma_ingresso'
+    titulo_grafico = 'Forma de Ingresso'
 
-    // Função que centraliza o título do gráfico
-    function titleCenter() {
-      var $container = $('#pieChart_forma_ingresso');
-      var svgWidth = $container.find('svg').width();
-      var $titleElem = $container.find("text:contains(" + options.title + ")");
-      var titleWidth = $titleElem.html().length * ($titleElem.attr('font-size')/2);
-      var xAxisAlign = (svgWidth - titleWidth)/2;
-      $titleElem.attr('x', xAxisAlign);
-    }
+    let chart = new google.visualization.PieChart(document.getElementById(chart_div));
+    google.visualization.events.addListener(chart, 'ready', titleCenter); //chama a função que centraliza o titulo quando o gráfico ficar pronto.
 
     // Função que permite a interatividade com o gráfico
     function selectHandler() {
@@ -120,7 +114,8 @@
          coluna_2 = 'Quantidade de Alunos'
          titulo_grafico = 'Status dos Discentes'
          chart_name = 'chart_status_discente'
-         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name);});
+         chart_div = 'pieChart_status_discente'
+         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div);});
        },
        error: function(error_data){
           console.log("error")
@@ -154,7 +149,8 @@
          titulo_hAxis = 'Quantidade de Disciplinas'
          titulo_vAxis = 'Quantidade de Alunos'
          chart_name = 'chart_total_matriculados'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplinas', tipo_coluna2, 'Quantidade_Alunos', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name);});
+         chart_div = 'columnChart_total_matriculas'
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplinas', tipo_coluna2, 'Quantidade_Alunos', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div);});
        },
        error: function(error_data){
           console.log("error")
@@ -188,7 +184,8 @@
          titulo_hAxis = 'Jubilados, em Vias de Jubilar e Formandos'
          titulo_vAxis = 'Quantidade de Alunos'
          chart_name = 'chart_concluintes'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, tipo_coluna1, 'Situação', tipo_coluna2, 'Quantidade', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name);});
+         chart_div = 'columnChart_concluintes'
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, tipo_coluna1, 'Situação', tipo_coluna2, 'Quantidade', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div);});
        },
        error: function(error_data){
           console.log("error")
@@ -221,7 +218,8 @@
          titulo_hAxis = 'Disciplinas'
          titulo_vAxis = 'Alunos Matriculados'
          chart_name = 'chart_tamanho_turmas'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplina', tipo_coluna2, 'Alunos_matriculados', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name);});
+         chart_div = 'columnChart_tamanho_turmas'
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplina', tipo_coluna2, 'Alunos_matriculados', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div);});
        },
        error: function(error_data){
           console.log("error")
@@ -254,7 +252,8 @@
          titulo_hAxis = 'Disciplinas'
          titulo_vAxis = 'Alunos Evadidos'
          chart_name = 'chart_discentes_evadidos'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Discentes Evadidos', tipo_coluna2, 'Alunos_evadidos', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name);});
+         chart_div = 'columnChart_discentes_evadidos'
+         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Discentes Evadidos', tipo_coluna2, 'Alunos_evadidos', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div);});
        },
        error: function(error_data){
           console.log("error")
@@ -268,19 +267,19 @@
 <script> //POPULANDO OS GRÁFICOS!
   // Funções que populam os gráficos com dados
 
-  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name){
+  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div){
 
     let options = {
       title: titulo_grafico,
-      backgroundColor: '#E1F0DB',
-      chartArea: {left: 10, height: 250, width: 600},
-      legend: {textStyle: {fontSize: 10}},
-      titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+      backgroundColor:{ fill: '#E1F0DB'},
+      chartArea: {left: 10, top: 40, height: 250, width: 600},
+      legend: {position: 'right', alignment: 'center', textStyle: {fontSize: 10}},
+      titleTextStyle: {fontSize: 17, bold: true, color: 'black'},
       sliceVisibilityThreshold: 0,
     };
 
     //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente. Da mesma forma cada gráfico precisa ter sua dataTable disponível para queja possível acessar o valor selecionado no gráfico pelo usuário
-    if (chart_name == "chart_status_discente") { 
+    if (chart_name == "chart_status_discente") {
       //cria a dataTable
       data_table_status_discente = new google.visualization.DataTable();
       data_table_status_discente.addColumn(tipo_coluna1, coluna_1);
@@ -291,8 +290,9 @@
         data_table_status_discente.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_status_discente = new google.visualization.PieChart(document.getElementById('pieChart_status_discente'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_status_discente = new google.visualization.PieChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_status_discente, 'ready', titleCenter);
       google.visualization.events.addListener(chart_status_discente, 'select', select_handler_status_discente);
       chart_status_discente.draw(data_table_status_discente, options);
     } 
@@ -301,7 +301,7 @@
     }
   }
 
-  function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name) {
+  function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div) {
     
     let options = {
       title: titulo_grafico,
@@ -311,10 +311,10 @@
       vAxis: {
         title: titulo_vAxis
       },
-      backgroundColor: '#E1F0DB',
-      chartArea: {left: 45, height: 250, width: 600},
+      backgroundColor:{ fill: '#E1F0DB'},
+      chartArea: {left: 45, top: 40, height: 250, width: 600},
       legend: {position: 'none'},
-      titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+      titleTextStyle: {fontSize: 17, bold: true, color:'black'},
     };
 
     //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente.  Da mesma forma cada gráfico precisa ter sua dataTable disponível para queja possível acessar o valor selecionado no gráfico pelo usuário
@@ -329,8 +329,9 @@
         data_table_total_matriculados.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_total_matriculados = new google.visualization.ColumnChart(document.getElementById('columnChart_total_matriculas'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_total_matriculados = new google.visualization.ColumnChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_total_matriculados, 'ready', titleCenter);
       google.visualization.events.addListener(chart_total_matriculados, 'select', select_handler_total_matriculados);
       chart_total_matriculados.draw(data_table_total_matriculados, options);
     }
@@ -345,8 +346,9 @@
         data_table_concluintes.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_concluintes = new google.visualization.ColumnChart(document.getElementById('columnChart_concluintes'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_concluintes = new google.visualization.ColumnChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_concluintes, 'ready', titleCenter);
       google.visualization.events.addListener(chart_concluintes, 'select', select_handler_concluintes);
       chart_concluintes.draw(data_table_concluintes, options);
     }
@@ -361,8 +363,9 @@
         data_table_tamanho_turmas.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_tamanho_turmas = new google.visualization.ColumnChart(document.getElementById('columnChart_tamanho_turmas'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_tamanho_turmas = new google.visualization.ColumnChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_tamanho_turmas, 'ready', titleCenter);
       google.visualization.events.addListener(chart_tamanho_turmas, 'select', select_handler_tamanho_turmas);
       chart_tamanho_turmas.draw(data_table_tamanho_turmas, options);
     }
@@ -377,8 +380,9 @@
         data_table_discentes_evadidos.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_discentes_evadidos = new google.visualization.ColumnChart(document.getElementById('columnChart_discentes_evadidos'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_discentes_evadidos = new google.visualization.ColumnChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_discentes_evadidos, 'ready', titleCenter);
       google.visualization.events.addListener(chart_discentes_evadidos, 'select', select_handler_discentes_evadidos);
       chart_discentes_evadidos.draw(data_table_discentes_evadidos, options);
     }
@@ -417,6 +421,18 @@
     // window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
     gerarDetalhamento(); // função da página de detalhes.html que pega os dados e monta a tabela de detalhes
   }
+
+    function titleCenter() {
+      // Função que centraliza o título do gráfico
+      var chart_div_container = '#' + chart_div;
+      var $container = $(chart_div_container);
+      var svgWidth = $container.find('svg').width();
+      // var $titleElem = $container.find("text:contains(" + options.title + ")");
+      var $titleElem = $container.find("text:contains(" + titulo_grafico + ")");
+      var titleWidth = $titleElem.html().length * ($titleElem.attr('font-size')/2);
+      var xAxisAlign = (svgWidth - titleWidth)/2;
+      $titleElem.attr('x', xAxisAlign);
+    }
 </script>
 
 <script> //FUNÇÕES HANDLER PARA INTERATIVIDADE DE CADA UM DOS GRÁFICOS

@@ -5,6 +5,8 @@
 <script>
 
   let dados
+  let chart_div
+  let titulo_grafico
 
   function renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId, turmaId){
     //persistindo valores para serem utilizados na página de detalhes.
@@ -44,7 +46,8 @@
      coluna_2 = 'Quantidade de Alunos'
      titulo_grafico = 'Percentuais de Frequência'
      chart_name = 'chart_percentuais_frequencia'
-     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name);});
+     chart_div = 'pieChart_percentuais_frequencia'
+     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div);});
     },
     error: function(error_data){
      console.log("error")
@@ -54,13 +57,13 @@
   }
 
   //Funções que desenham todos os gráficos
-  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name){
+  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div){
     let options = {
      title: titulo_grafico,
-     backgroundColor: '#E1F0DB',
-     chartArea: {left: 10, height: 250, width: 600},
-     legend: {textStyle: {fontSize: 10}},
-     titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+     backgroundColor:{ fill: '#E1F0DB'},
+     chartArea: {left: 10, top: 40, height: 250, width: 600},
+     legend: {position: 'right', alignment: 'center', textStyle: {fontSize: 10}},
+     titleTextStyle: {fontSize:14, bold: true, color:'black'},
      sliceVisibilityThreshold: 0,
     };
 
@@ -76,8 +79,9 @@
         data_table_percentuais_frequencias.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_percentuais_frequencia = new google.visualization.PieChart(document.getElementById('pieChart_percentuais_frequencia'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_percentuais_frequencia = new google.visualization.PieChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_percentuais_frequencia, 'ready', titleCenter);
       google.visualization.events.addListener(chart_percentuais_frequencia, 'select', select_handler_percentuais_frequencias);
       chart_percentuais_frequencia.draw(data_table_percentuais_frequencias, options);
     } 
@@ -121,6 +125,18 @@
     }
     // window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
     gerarDetalhamento();
+  }
+
+  function titleCenter() {
+    // Função que centraliza o título do gráfico
+    var chart_div_container = '#' + chart_div;
+    var $container = $(chart_div_container);
+    var svgWidth = $container.find('svg').width();
+    // var $titleElem = $container.find("text:contains(" + options.title + ")");
+    var $titleElem = $container.find("text:contains(" + titulo_grafico + ")");
+    var titleWidth = $titleElem.html().length * ($titleElem.attr('font-size')/2);
+    var xAxisAlign = (svgWidth - titleWidth)/2;
+    $titleElem.attr('x', xAxisAlign);
   }
 
   //Funções handler para interatividade de cada um dos gráficos

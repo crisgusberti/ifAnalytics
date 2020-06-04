@@ -5,6 +5,8 @@
 <script>
 
   let dados
+  let chart_div
+  let titulo_grafico
 
   function renderChartNotasParciais(unidade, querySelector, campusId, ano, semestre, cursoId, turmaId){
     //persistindo valores para serem utilizados na página de detalhes.
@@ -39,11 +41,15 @@
      coluna_2 = 'Quantidade de Alunos'
      
      if (unidade == 1) {
+        titulo_grafico = 'Notas Parciais Unidade 1'
         chart_name = 'chart_notas_parciais1'
-        google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, 'Notas Parciais Unidade 1', chart_name);});
+        chart_div = 'pieChart_notas_parciais_unidade1'
+        google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div);});
       } else {
+        titulo_grafico = 'Notas Parciais Unidade 2'
         chart_name = 'chart_notas_parciais2'
-        google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray,  tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, 'Notas Parciais Unidade 2', chart_name);});
+        chart_div = 'pieChart_notas_parciais_unidade2'
+        google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray,  tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div);});
       }
     },
     error: function(error_data){
@@ -77,7 +83,8 @@
      coluna_2 = 'Quantidade de Alunos'
      titulo_grafico = 'Médias Finais'
      chart_name = 'chart_medias_finais'
-     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name);});
+     chart_div = 'pieChart_medias_finais'
+     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div);});
     },
     error: function(error_data){
      console.log("error")
@@ -110,7 +117,8 @@
      coluna_2 = 'Discentes em exame'
      titulo_grafico = 'Discentes em Exame'
      chart_name = 'chart_discentes_exame'
-     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico,  chart_name);});
+     chart_div = 'pieChart_discentes_exame'
+     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div);});
     },
     error: function(error_data){
      console.log("error")
@@ -143,7 +151,8 @@
      coluna_2 = 'Discentes Reprovados'
      titulo_grafico = 'Aprovados e Reprovados'
      chart_name = 'chart_aprovados_reprovados'
-     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name);});
+     chart_div = 'pieChart_aprovados_reprovados'
+     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div);});
     },
     error: function(error_data){
      console.log("error")
@@ -173,7 +182,8 @@
      coluna_2 = 'Quantidade Alunos'
      titulo_grafico = 'Status nas Disciplinas'
      chart_name = 'chart_status_disciplinas'
-     google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico,  chart_name);});
+     chart_div = 'pieChart_status_disciplinas'
+     google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico,  chart_name, chart_div);});
     },
     error: function(error_data){
      console.log("error")
@@ -183,13 +193,13 @@
   }
 
   //Funções que desenham todos os gráficos
-  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico,  chart_name){
+  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico,  chart_name, chart_div){
     let options = {
       title: titulo_grafico,
-      backgroundColor: '#E1F0DB',
-      chartArea: {left: 10, height: 250, width: 600},
-      legend: {textStyle: {fontSize: 10}},
-      titleTextStyle: {fontSize:14, bold: true, color:'grey'},
+      backgroundColor:{ fill: '#E1F0DB'},
+      chartArea: {left: 10, top: 40, height: 250, width: 600},
+      legend: {position: 'right', alignment: 'center', textStyle: {fontSize: 10}},
+      titleTextStyle: {fontSize: 17, bold: true, color:'black'},
       sliceVisibilityThreshold: 0,
     };
 
@@ -204,8 +214,9 @@
         data_table_notas_parciais1.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_notas_parciais1 = new google.visualization.PieChart(document.getElementById('pieChart_notas_parciais_unidade1'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_notas_parciais1 = new google.visualization.PieChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_notas_parciais1, 'ready', titleCenter);
       google.visualization.events.addListener(chart_notas_parciais1, 'select', select_handler_notas_parciais1);
       chart_notas_parciais1.draw(data_table_notas_parciais1, options);
     } 
@@ -220,8 +231,9 @@
         data_table_notas_parciais2.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_notas_parciais2 = new google.visualization.PieChart(document.getElementById('pieChart_notas_parciais_unidade2'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_notas_parciais2 = new google.visualization.PieChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_notas_parciais2, 'ready', titleCenter);
       google.visualization.events.addListener(chart_notas_parciais2, 'select', select_handler_notas_parciais2);
       chart_notas_parciais2.draw(data_table_notas_parciais2, options);
     } 
@@ -236,8 +248,9 @@
         data_table_medias_finais.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_medias_finais = new google.visualization.PieChart(document.getElementById('pieChart_medias_finais'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_medias_finais = new google.visualization.PieChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_medias_finais, 'ready', titleCenter);
       google.visualization.events.addListener(chart_medias_finais, 'select', select_handler_medias_finais);
       chart_medias_finais.draw(data_table_medias_finais, options);
     }
@@ -252,8 +265,9 @@
         data_table_discentes_exame.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_discentes_exame = new google.visualization.PieChart(document.getElementById('pieChart_discentes_exame'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_discentes_exame = new google.visualization.PieChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_discentes_exame, 'ready', titleCenter);
       google.visualization.events.addListener(chart_discentes_exame, 'select', select_handler_discentes_exame);
       chart_discentes_exame.draw(data_table_discentes_exame, options);
     }
@@ -268,8 +282,9 @@
         data_table_aprovados_reprovados.addRows([dados[i]]);
       }
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_aprovados_reprovados = new google.visualization.PieChart(document.getElementById('pieChart_aprovados_reprovados'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_aprovados_reprovados = new google.visualization.PieChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_aprovados_reprovados, 'ready', titleCenter);
       google.visualization.events.addListener(chart_aprovados_reprovados, 'select', select_handler_aprovados_reprovados);
       chart_aprovados_reprovados.draw(data_table_aprovados_reprovados, options);
     } 
@@ -330,8 +345,9 @@
 
 
 
-      //cria o gráfico, adiciona o listner para interatividade e desenha o gráfico
-      chart_status_disciplinas = new google.visualization.PieChart(document.getElementById('pieChart_status_disciplinas'));
+      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
+      chart_status_disciplinas = new google.visualization.PieChart(document.getElementById(chart_div));
+      google.visualization.events.addListener(chart_status_disciplinas, 'ready', titleCenter);
       google.visualization.events.addListener(chart_status_disciplinas, 'select', select_handler_status_disciplinas);
       chart_status_disciplinas.draw(data_table_status_disciplinas, options);
     } 
@@ -377,6 +393,18 @@
     // window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
     gerarDetalhamento();
   }
+
+  function titleCenter() {
+      // Função que centraliza o título do gráfico
+      var chart_div_container = '#' + chart_div;
+      var $container = $(chart_div_container);
+      var svgWidth = $container.find('svg').width();
+      // var $titleElem = $container.find("text:contains(" + options.title + ")");
+      var $titleElem = $container.find("text:contains(" + titulo_grafico + ")");
+      var titleWidth = $titleElem.html().length * ($titleElem.attr('font-size')/2);
+      var xAxisAlign = (svgWidth - titleWidth)/2;
+      $titleElem.attr('x', xAxisAlign);
+    }
 
   //Funções handler para interatividade de cada um dos gráficos
   function select_handler_notas_parciais1() {
