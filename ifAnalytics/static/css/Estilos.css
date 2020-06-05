@@ -13,9 +13,13 @@ body{
 }
 h1{
 	text-align:left;
-	/*color: #B9DCBB;*/ /*cor original*/
+	/*color: #B9DCBB; cor original*/
 	color: green;
 	font-family: helvetica;
+	/*daqui pra baixo foi adicionado em função do logo_ifanalytics*/
+	font-size: 23px;
+	padding-left: 7px;
+	margin-top: 5px;
 }
 div#cabecalho{
 	margin-left: 3px;
@@ -235,8 +239,13 @@ tr:hover{
 }
 
 /*====Logo IFRS====*/
-.imagem{
+.imagem_right{
 	float: right;
+}
+
+.imagem_left{
+	float: left;
+	/*display: block;*/
 }
 
 /*====Rodapé====*/
