@@ -346,11 +346,15 @@
         data_table_concluintes.addRows([dados[i]]);
       }
 
+      //adiciona labels dentro das colunas. É preciso criar essa Daview e adicionar ela como parametro na função que desenha o gráfico (mais abaixo), não mais a DataTable, essa agora é um parametro da DataView
+      var view = new google.visualization.DataView(data_table_concluintes);
+      view.setColumns([0, 1, { calc: "stringify", sourceColumn: 0, type: "string", role: "annotation" }]);
+
       //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
       chart_concluintes = new google.visualization.ColumnChart(document.getElementById(chart_div));
       google.visualization.events.addListener(chart_concluintes, 'ready', titleCenter);
       google.visualization.events.addListener(chart_concluintes, 'select', select_handler_concluintes);
-      chart_concluintes.draw(data_table_concluintes, options);
+      chart_concluintes.draw(view, options); //passando a DataView no lugar da DataTable
     }
     else if (chart_name == "chart_tamanho_turmas") { 
       //cria a dataTable
