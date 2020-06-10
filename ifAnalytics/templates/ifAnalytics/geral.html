@@ -383,6 +383,37 @@
       chart_concluintes.draw(data_table_concluintes, options);
     }
     else if (chart_name == "chart_tamanho_turmas") { 
+      //testa qual é a consulta que está sendo executada e modifica a exibição desse grafico de acordo      
+      if (querySelector == "periodo" || querySelector == "curso"){ //se for periodo ou curso mostra o gráfico grande
+
+        //define um conjunto de opções específicas para esse gráfico 
+        options = {
+          title: titulo_grafico,
+          hAxis: {
+            title: titulo_hAxis,
+            textStyle: { //opção especifica desse gráfico que seta o tamanho de fonte dos labels do eixo horizontal
+              fontSize: 8
+            },
+            slantedText: true, //opção especifica desse gráfico que forca a inclinação da legenda do eixo horizontal
+            slantedTextAngle: 60, //opção especifica desse gráfico que define o angulo de inclinação dessa legenda
+          },
+          vAxis: {
+            title: titulo_vAxis
+          },
+          backgroundColor:{ fill: '#E1F0DB'},
+          chartArea: {left: 45, top: 40, height: 250, width: "100%"},
+          legend: {position: 'none'},
+          titleTextStyle: {fontSize: 17, bold: true, color:'black'},
+        };
+
+        document.getElementById(chart_div).style.width = '1275px'; //aumenta o tamanho do gráfico
+        document.getElementById(chart_div).style.height = '450px';
+      } else{
+        var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
+        element.style.removeProperty("width");
+        element.style.removeProperty("height");
+      }
+
       //cria a dataTable
       data_table_tamanho_turmas = new google.visualization.DataTable();
       data_table_tamanho_turmas.addColumn(tipo_coluna1, coluna_1);
@@ -400,23 +431,38 @@
       chart_tamanho_turmas.draw(data_table_tamanho_turmas, options);
     }
     else if (chart_name == "chart_discentes_evadidos") { 
-      //define um conjunto de opções específicas para esse gráfico      
-      let options = {
-        title: titulo_grafico,
-        hAxis: {
-          title: titulo_hAxis
-        },
-        vAxis: {
-          title: titulo_hAxis,  
-          viewWindow:{ 
-            max: 10 //limita a exibição até a escala 10
-          }
-        },
-        backgroundColor:{ fill: '#E1F0DB'},
-        chartArea: {left: 45, top: 40, height: 250, width: 600},
-        legend: {position: 'none'},
-        titleTextStyle: {fontSize: 17, bold: true, color:'black'},
-      };
+      //testa qual é a consulta que está sendo executada e modifica a exibição desse grafico de acordo
+      if (querySelector == "periodo" || querySelector == "curso"){ //se for periodo ou curso mostra o gráfico grande
+
+        //define um conjunto de opções específicas para esse gráfico      
+        options = {
+          title: titulo_grafico,
+          hAxis: {
+            title: titulo_hAxis,
+            textStyle: { //opção especifica desse gráfico que seta o tamanho de fonte dos labels do eixo horizontal
+              fontSize: 9
+            },
+          },
+          vAxis: {
+            title: titulo_hAxis,
+            viewWindow:{ 
+              max: 10 //opção especifica desse gráfico que limita a exibição até a escala 10
+            }
+          },
+          backgroundColor:{ fill: '#E1F0DB'},
+          chartArea: {left: 45, top: 40, height: 250, width: "100%"},
+          legend: {position: 'none'},
+          titleTextStyle: {fontSize: 17, bold: true, color:'black'},
+        };
+
+        document.getElementById(chart_div).style.width = '1275px'; //aumenta o tamanho do gráfico
+        document.getElementById(chart_div).style.height = '450px';
+      } else{
+        var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
+        element.style.removeProperty("width");
+        element.style.removeProperty("height");
+      }
+
 
       //cria a dataTable
       data_table_discentes_evadidos = new google.visualization.DataTable();
