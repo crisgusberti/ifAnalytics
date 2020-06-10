@@ -143,9 +143,11 @@
        },
        success: function(data_from_view){
          dados = data_from_view
+         //transforma o retorno que são dois numeros em uma string concatenada para facilitar o entendimento na leitura do gráfico
          dados.forEach(function (arrayItem) {
-            arrayItem[0] = " "+arrayItem[0]; //adiciona um espaço antes do numero da qtd disciplinas para ele ser uma string e aparecer melhor nas labels do gráfico
-          });
+            arrayItem[0] = arrayItem[0] + ' '; //adiciona um espaço depois do numero da qtd disciplinas 
+            arrayItem[2] = arrayItem[1] + ' alunos matricularam-se em  ' + arrayItem[0] + ' disciplinas' ; //concatena qnt de alunos (agora string) com qnt de disciplinas (number) e adiciona em um terceiro item no array (arrayItem[2]) que é especifico pro tooltip
+         });
          tipo_coluna1 = 'string'
          tipo_coluna2 = 'number'
          titulo_grafico = 'Quantidade de Disciplinas em que os Alunos se Matricularam'
@@ -326,17 +328,23 @@
       data_table_total_matriculados = new google.visualization.DataTable();
       data_table_total_matriculados.addColumn(tipo_coluna1, coluna_1);
       data_table_total_matriculados.addColumn(tipo_coluna2, coluna_2);
+      data_table_total_matriculados.addColumn({type: 'string', role: 'tooltip'}); //essa coluna é especifica pro tooltip que foi criado lá no retorno da consulta da função renderChartTotalMatriculas
+
 
       //popula a dataTable
       for (let i = 0; i < dados.length; i++) {
         data_table_total_matriculados.addRows([dados[i]]);
       }
 
+      //adiciona labels dentro das colunas. É preciso criar essa Daview e adicionar ela como parametro na função que desenha o gráfico (mais abaixo), não mais a DataTable, essa agora é um parametro da DataView
+      var view = new google.visualization.DataView(data_table_total_matriculados);
+      view.setColumns([0, 1, { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }, 2]);
+
       //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
       chart_total_matriculados = new google.visualization.ColumnChart(document.getElementById(chart_div));
       google.visualization.events.addListener(chart_total_matriculados, 'ready', titleCenter);
       google.visualization.events.addListener(chart_total_matriculados, 'select', select_handler_total_matriculados);
-      chart_total_matriculados.draw(data_table_total_matriculados, options);
+      chart_total_matriculados.draw(view, options); //passando a DataView no lugar da DataTable
     }
     else if (chart_name == "chart_concluintes") { 
       //define um conjunto de opções específicas para esse gráfico      
