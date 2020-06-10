@@ -178,7 +178,7 @@ WITH q1 AS (
 SELECT total_matricula_discente AS total_disciplinas_ano, COUNT(*) AS total_alunos
 	FROM q1
 	GROUP BY total_disciplinas_ano
-
+	ORDER BY total_disciplinas_ano
 
 
 =========================================================

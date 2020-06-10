@@ -143,7 +143,10 @@
        },
        success: function(data_from_view){
          dados = data_from_view
-         tipo_coluna1 = 'number'
+         dados.forEach(function (arrayItem) {
+            arrayItem[0] = "Quantidade de disciplinas: "+arrayItem[0]; //adiciona um label na quantidade de disciplinas facilitando o entendimento na visualização do gráfico
+          });
+         tipo_coluna1 = 'string'
          tipo_coluna2 = 'number'
          titulo_grafico = 'Quantidade de Disciplinas em que os Alunos se Matricularam'
          titulo_hAxis = 'Quantidade de Disciplinas'
