@@ -144,7 +144,7 @@
        success: function(data_from_view){
          dados = data_from_view
          dados.forEach(function (arrayItem) {
-            arrayItem[0] = "Quantidade de disciplinas: "+arrayItem[0]; //adiciona um label na quantidade de disciplinas facilitando o entendimento na visualização do gráfico
+            arrayItem[0] = " "+arrayItem[0]; //adiciona um espaço antes do numero da qtd disciplinas para ele ser uma string e aparecer melhor nas labels do gráfico
           });
          tipo_coluna1 = 'string'
          tipo_coluna2 = 'number'
@@ -306,7 +306,7 @@
 
   function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div) {
     
-    let options = {
+    let options = { //ATENÇÃO: alguns gráficos tem opções específicas. Ver abaixo cada caso
       title: titulo_grafico,
       hAxis: {
         title: titulo_hAxis
@@ -348,8 +348,8 @@
         vAxis: {
           title: titulo_hAxis,  
           viewWindow:{ //opção específica desse gráfico que impede que valores negativos apareçam
-            min:0,
-            max:20 //limita a exibição até a escala 10, sem esse parametro o "min" não funciona
+            min: 0,
+            max: 10 //limita a exibição até a escala 10, sem esse parametro o "min" não funciona
           }
         },
         backgroundColor:{ fill: '#E1F0DB'},
@@ -368,15 +368,11 @@
         data_table_concluintes.addRows([dados[i]]);
       }
 
-      //adiciona labels dentro das colunas. É preciso criar essa Daview e adicionar ela como parametro na função que desenha o gráfico (mais abaixo), não mais a DataTable, essa agora é um parametro da DataView
-      var view = new google.visualization.DataView(data_table_concluintes);
-      view.setColumns([0, 1, { calc: "stringify", sourceColumn: 0, type: "string", role: "annotation" }]);
-
       //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
       chart_concluintes = new google.visualization.ColumnChart(document.getElementById(chart_div));
       google.visualization.events.addListener(chart_concluintes, 'ready', titleCenter);
       google.visualization.events.addListener(chart_concluintes, 'select', select_handler_concluintes);
-      chart_concluintes.draw(view, options); //passando a DataView no lugar da DataTable
+      chart_concluintes.draw(data_table_concluintes, options);
     }
     else if (chart_name == "chart_tamanho_turmas") { 
       //cria a dataTable
@@ -396,6 +392,24 @@
       chart_tamanho_turmas.draw(data_table_tamanho_turmas, options);
     }
     else if (chart_name == "chart_discentes_evadidos") { 
+      //define um conjunto de opções específicas para esse gráfico      
+      let options = {
+        title: titulo_grafico,
+        hAxis: {
+          title: titulo_hAxis
+        },
+        vAxis: {
+          title: titulo_hAxis,  
+          viewWindow:{ 
+            max: 10 //limita a exibição até a escala 10
+          }
+        },
+        backgroundColor:{ fill: '#E1F0DB'},
+        chartArea: {left: 45, top: 40, height: 250, width: 600},
+        legend: {position: 'none'},
+        titleTextStyle: {fontSize: 17, bold: true, color:'black'},
+      };
+
       //cria a dataTable
       data_table_discentes_evadidos = new google.visualization.DataTable();
       data_table_discentes_evadidos.addColumn(tipo_coluna1, coluna_1);
