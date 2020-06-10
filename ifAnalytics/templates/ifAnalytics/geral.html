@@ -336,6 +336,25 @@
       chart_total_matriculados.draw(data_table_total_matriculados, options);
     }
     else if (chart_name == "chart_concluintes") { 
+      //define um conjunto de opções específicas para esse gráfico      
+      let options = {
+        title: titulo_grafico,
+        hAxis: {
+          title: titulo_hAxis
+        },
+        vAxis: {
+          title: titulo_hAxis,  
+          viewWindow:{ //opção específica desse gráfico que impede que valores negativos apareçam
+            min:0,
+            max:10 //limita a exibição até a escala 10, sem esse parametro o "min" não funciona
+          }
+        },
+        backgroundColor:{ fill: '#E1F0DB'},
+        chartArea: {left: 45, top: 40, height: 250, width: 600},
+        legend: {position: 'none'},
+        titleTextStyle: {fontSize: 17, bold: true, color:'black'},
+      };
+
       //cria a dataTable
       data_table_concluintes = new google.visualization.DataTable();
       data_table_concluintes.addColumn(tipo_coluna1, coluna_1);
