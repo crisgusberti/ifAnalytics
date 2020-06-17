@@ -1,15 +1,9 @@
 {% extends 'ifAnalytics/base.html' %}
 
 {% block content %}
-<script> //GRÁFICO 1: FORMA DE INGRESSO - Primeira versão (original)
-
-  let data_forma_ingresso
-  let chart_div
-  let titulo_grafico
-
-  function renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId, turmaId){
-    //salvando os parametros na sessionStorage para ser possível acessa-los da página de detalhes
-    //só é preciso executar uma vez por página, já que todos os gráficos são gerados juntos e com os mesmos parametros
+<script> //RENDER GERAL PARA TODOS OS GRÁFICOS
+  function renderChartsGeral(chart_name, querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //É preciso persistir esses dados aqui para que, assim que a função receber os parametros eles possam ser utilizados pela consulta de detalhes e atualizados sempre que os combos forem alterados e essa função for chamada
     persistirParametros("querySelector", querySelector); 
     persistirParametros("campusId", campusId); 
     persistirParametros("ano", ano); 
@@ -17,263 +11,90 @@
     persistirParametros("cursoId", cursoId); 
     persistirParametros("turmaId", turmaId); 
 
-    //pegando os dados da view "get_data_forma_ingresso" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_forma_ingresso/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano' : ano,
-          'semestre' : semestre,
-          'turma_id': turmaId,
-          'querySelector' : querySelector
-       },
-       success: function(data_from_view){
-         data_forma_ingresso = data_from_view
-         google.charts.setOnLoadCallback(function() {drawChart_forma_ingresso(data_forma_ingresso);});
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-       }
-    })
-  }
+    switch(chart_name) { //Define a URL da view específica de cada gráfico
 
-  // Populando o gráfico com dados
-  function drawChart_forma_ingresso(data_forma_ingresso) {
-    let data = new google.visualization.DataTable();
-    data.addColumn('string', 'Forma de Ingresso');
-    data.addColumn('number', 'Alunos');
+      case 'chart_forma_ingresso':  
+        url = '/get_data_forma_ingresso/'
+      break
 
-    for (let i = 0; i < data_forma_ingresso.length; i++) {
-            data.addRows([data_forma_ingresso[i]]);
+      case 'chart_status_discente':  
+        url = '/get_data_status_discente/'
+      break
+      
+      case 'chart_total_matriculas':  
+        url = '/get_data_total_matriculas/'
+      break
+      
+      case 'chart_concluintes':  
+        url = '/get_data_concluintes/'
+      break
+      
+      case 'chart_tamanho_turmas':  
+        url = '/get_data_tamanho_turmas/'
+      break
+      
+      case 'chart_discentes_evadidos':  
+        url = '/get_data_discentes_evadidos/'
+      break
     }
+    $.ajax({ //passa os parametros que vieram da base.html para a view
+      method: "GET",
+      url: url, 
+      data: {
+        'campus_id' : campusId,
+        'curso_id' : cursoId,
+        'ano' : ano,
+        'semestre' : semestre,
+        'turma_id': turmaId,
+        'querySelector' : querySelector
+      },
+      success: function(data_from_view){ //pega os dados do retorno da view
+        dados = data_from_view
+        switch(chart_name) {
 
-    let options = {
-      title: 'Forma de Ingresso',
-      backgroundColor:{ fill: '#E1F0DB'},
-      chartArea: {left: 40, top: 40, right: 10, height: "80%", width: "100%"},
-      legend: {position: 'right', alignment: 'center', textStyle: {fontSize: 10}},
-      titleTextStyle: {fontSize: 17, bold: true, color: 'black'},
-      sliceVisibilityThreshold: 0,
-    };
+          case 'chart_forma_ingresso': 
+            google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'string', 'Forma de ingresso', 'number', 'Alunos', 'Forma de ingresso', 'chart_forma_ingresso', 'pieChart_forma_ingresso');}); //chama a função que cria e popula uma dataTable, instancia, passa os dados e desenha o gráfico
+          break
 
-    //como esse primeiro gráfico foi feito de forma diferente, preciso dessas duas variáveis definidas aqui pra poder usar na função que centraliza o título desse gráfico.
-    chart_div = 'pieChart_forma_ingresso'
-    titulo_grafico = 'Forma de Ingresso'
+          case 'chart_status_discente': 
+            google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'string', 'Status dos discentes', 'number', 'Quantidade de alunos', 'Status dos discentes', 'chart_status_discente', 'pieChart_status_discente');});
+          break
 
-    let chart = new google.visualization.PieChart(document.getElementById(chart_div));
-    google.visualization.events.addListener(chart, 'ready', titleCenter); //chama a função que centraliza o titulo quando o gráfico ficar pronto.
+          case 'chart_total_matriculas': 
+            dados.forEach(function (arrayItem) { //cria um terceiro item no array (tooltip das barras do gráfico)
+              arrayItem[0] = arrayItem[0] + ' '; //adiciona um espaço depois do numero da qtd disciplinas 
+              arrayItem[2] = arrayItem[1] + ' alunos matricularam-se em  ' + arrayItem[0] + ' disciplinas'; //concatena qnt de alunos (string) com qnt de disciplinas (number) e adiciona em um terceiro item no array (arrayItem[2]) que é especifico pro tooltip
+            });
+            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Disciplinas', 'number', 'Quantidade_Alunos', 'Quantidade de disciplinas em que os alunos se matricularam', 'Quantidade de disciplinas', 'Quantidade de alunos', 'chart_total_matriculados', 'columnChart_total_matriculas');});
+          break
 
-    // Função que permite a interatividade com o gráfico
-    function selectHandler() {
-      var selectedItem = chart.getSelection()[0];
-      if (selectedItem) {
-        var parametroDetalhes = data.getValue(selectedItem.row, 0);
-        persistirParametros("parametroDetalhes", parametroDetalhes); //persiste aqui o parametro selecionado no gráfico
-        persistirParametros("url_consulta", "/get_data_forma_ingresso/"); //persiste aqui a url da consulta a ser executada na pg detalhes
-        persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Forma ingresso", "E-mail"]); //persiste inf. cabeçalho tabela
-        persistirParametros("titulo_tabela_detalhes", "Detalhamento da Forma de Ingresso dos Discentes");
-        definirQuerySelector(sessionStorage.getItem("querySelector")); //chama a função, passando o querySelector atual para definir o novo querySelector que dirá que consulta da view será executada na página de detalhes
+          case 'chart_concluintes': 
+            let dadosNovoArray = formataRetorno(dados, labels =["Alunos Jubilados", "Alunos em Vias de Jubilar", "Alunos Formandos"]);
+            google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade', 'Jubilados, em vias de jubilar e formandos', 'Situação dos alunos', 'Quantidade de alunos', 'chart_concluintes', 'columnChart_concluintes');}); 
+          break
+          
+          case 'chart_tamanho_turmas':  
+            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Disciplina', 'number', 'Alunos_matriculados', 'Tamanho da(s) turma(s)', 'Disciplinas', 'Alunos matriculados', 'chart_tamanho_turmas', 'columnChart_tamanho_turmas');});
+          break
+
+          case 'chart_discentes_evadidos':  
+            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Discentes Evadidos', 'number', 'Alunos_evadidos', 'Discentes evadidos por disciplina', 'Disciplinas', 'Alunos Evadidos', 'chart_discentes_evadidos', 'columnChart_discentes_evadidos');});
+          break
+        }
+      },
+      error: function(error_data){
+        console.log("error")
+        console.log(error_data)
       }
-    }
-
-    //Listen for the 'select' event, and call my function selectHandler() when the user selects something on the chart.
-    google.visualization.events.addListener(chart, 'select', selectHandler);
-
-    chart.draw(data, options); //Desenha o gráfico (função original do charts antes da interatividade)
-  }
-</script>
-
-
-<script> //GRÁFICO 2: STATUS DISCENTE - Segunda versão, usando parametros para chamar a função que desenha os gráficos
-
-  let dados
-  let tipo_coluna1
-  let tipo_coluna2
-
-  function renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId, turmaId){
-    //pegando os dados da view "get_data_status_discente" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_status_discente/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano' : ano,
-          'semestre' : semestre,
-          'turma_id': turmaId,
-          'querySelector' : querySelector
-       },
-       success: function(data_from_view){
-         dados = data_from_view
-         tipo_coluna1 = 'string'
-         tipo_coluna2 = 'number'
-         coluna_1 = 'Status dos Discentes'
-         coluna_2 = 'Quantidade de Alunos'
-         titulo_grafico = 'Status dos Discentes'
-         chart_name = 'chart_status_discente'
-         chart_div = 'pieChart_status_discente'
-         google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div);});
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-       }
     })
   }
 </script>
 
-
-<script> //GRÁFICO 3: TOTAL MATRICULAS (EM COLUNAS)
-
-   function renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId, turmaId){
-    //pegando os dados da view "get_data_total_matriculas" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_total_matriculas/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano' : ano,
-          'semestre' : semestre,
-          'turma_id': turmaId,
-          'querySelector' : querySelector
-       },
-       success: function(data_from_view){
-         dados = data_from_view
-         //transforma o retorno que são dois numeros em uma string concatenada para facilitar o entendimento na leitura do gráfico
-         dados.forEach(function (arrayItem) {
-            arrayItem[0] = arrayItem[0] + ' '; //adiciona um espaço depois do numero da qtd disciplinas 
-            arrayItem[2] = arrayItem[1] + ' alunos matricularam-se em  ' + arrayItem[0] + ' disciplinas' ; //concatena qnt de alunos (agora string) com qnt de disciplinas (number) e adiciona em um terceiro item no array (arrayItem[2]) que é especifico pro tooltip
-         });
-         tipo_coluna1 = 'string'
-         tipo_coluna2 = 'number'
-         titulo_grafico = 'Quantidade de Disciplinas em que os Alunos se Matricularam'
-         titulo_hAxis = 'Quantidade de Disciplinas'
-         titulo_vAxis = 'Quantidade de Alunos'
-         chart_name = 'chart_total_matriculados'
-         chart_div = 'columnChart_total_matriculas'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplinas', tipo_coluna2, 'Quantidade_Alunos', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div);});
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-       }
-    })
-  }
-</script>
-
-<script> //GRÁFICO 4 e 5: CONCLUÍNTES E NÃO CONCLUÍNTES (EM COLUNAS)
-
-   function renderChartConcluintes(querySelector, campusId, ano, semestre, cursoId, turmaId){
-    //pegando os dados da view "get_data_concluintes" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_concluintes/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano' : ano,
-          'semestre' : semestre,
-          'turma_id': turmaId,
-          'querySelector' : querySelector
-       },
-       success: function(data_from_view){
-         dados = data_from_view
-         let dadosNovoArray = formataRetorno(dados, "Alunos Jubilados", "Alunos em Vias de Jubilar", "Alunos Formandos");
-         tipo_coluna1 = 'string'
-         tipo_coluna2 = 'number'
-         titulo_grafico = 'Jubilados, em Vias de Jubilar e Formandos'
-         titulo_hAxis = 'Situação dos Alunos'
-         titulo_vAxis = 'Quantidade de Alunos'
-         chart_name = 'chart_concluintes'
-         chart_div = 'columnChart_concluintes'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, tipo_coluna1, 'Situação', tipo_coluna2, 'Quantidade', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div);});
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-       }
-    })
-  }
-</script>
-
-<script> //GRÁFICO 6: TAMANHO DAS TURMAS (EM COLUNAS)
-
-   function renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId, turmaId){
-    //pegando os dados da view "get_data_tamanho_turmas" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_tamanho_turmas/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano' : ano,
-          'semestre' : semestre,
-          'turma_id': turmaId,
-          'querySelector' : querySelector
-       },
-       success: function(data_from_view){
-         dados = data_from_view
-         tipo_coluna1 = 'string'
-         tipo_coluna2 = 'number'
-         titulo_grafico = 'Tamanho da(s) Turma(s)'
-         titulo_hAxis = 'Disciplinas'
-         titulo_vAxis = 'Alunos Matriculados'
-         chart_name = 'chart_tamanho_turmas'
-         chart_div = 'columnChart_tamanho_turmas'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Disciplina', tipo_coluna2, 'Alunos_matriculados', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div);});
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-       }
-    })
-  }
-</script>
-
-
-<script> //GRÁFICO 7: DISCENTES EVADIDOS
-  function renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre, cursoId, turmaId){
-    //pegando os dados da view "get_data_discentes_evadidos" para popular o gráfico
-    $.ajax({
-        method: "GET",
-        url: '/get_data_discentes_evadidos/', 
-        data: {
-          'campus_id' : campusId,
-          'curso_id' : cursoId,
-          'ano' : ano,
-          'semestre' : semestre,
-          'turma_id': turmaId,
-          'querySelector' : querySelector
-       },
-       success: function(data_from_view){
-         dados = data_from_view
-         tipo_coluna1 = 'string'
-         tipo_coluna2 = 'number'
-         titulo_grafico = 'Discentes Evadidos por Disciplinas'
-         titulo_hAxis = 'Disciplinas'
-         titulo_vAxis = 'Alunos Evadidos'
-         chart_name = 'chart_discentes_evadidos'
-         chart_div = 'columnChart_discentes_evadidos'
-         google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, tipo_coluna1, 'Discentes Evadidos', tipo_coluna2, 'Alunos_evadidos', titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div);});
-       },
-       error: function(error_data){
-          console.log("error")
-          console.log(error_data)
-       }
-    })
-  }
-</script>
-
-
-<script> //POPULANDO OS GRÁFICOS!
-  // Funções que populam os gráficos com dados
-
-  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div){
-
+<script> //CRIANDO E POPULANDO OS GRÁFICOS!
+  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo, chart_name, div){
+    titulo_grafico = titulo //var global (preciso delas para a função que centraliza o titulo dos gráficos)
+    chart_div = div //var global
+    
     let options = {
       title: titulo_grafico,
       backgroundColor:{ fill: '#E1F0DB'},
@@ -283,271 +104,130 @@
       sliceVisibilityThreshold: 0,
     };
 
-    //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente. Da mesma forma cada gráfico precisa ter sua dataTable disponível para queja possível acessar o valor selecionado no gráfico pelo usuário
-    if (chart_name == "chart_status_discente") {
-      //cria a dataTable
-      data_table_status_discente = new google.visualization.DataTable();
-      data_table_status_discente.addColumn(tipo_coluna1, coluna_1);
-      data_table_status_discente.addColumn(tipo_coluna2, coluna_2);
+    //CRIAÇÃO DAS DATATABLE (vale para todos os gráficos de pizza)
+    //cada gráfico precisa de sua data_table pois cada gráfico tem que ter um listener individual que detecta a interatividade. Da mesma forma cada gráfico precisa ter sua dataTable disponível para que seja possível acessar o valor selecionado no gráfico pelo usuário
+    this['data_table_' + chart_name]= new google.visualization.DataTable();
+    this['data_table_' + chart_name].addColumn(tipo_coluna1, coluna_1);
+    this['data_table_' + chart_name].addColumn(tipo_coluna2, coluna_2);
 
-      //popula a dataTable
-      for (let i = 0; i < dados.length; i++) {
-        data_table_status_discente.addRows([dados[i]]);
-      }
-
-      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
-      chart_status_discente = new google.visualization.PieChart(document.getElementById(chart_div));
-      google.visualization.events.addListener(chart_status_discente, 'ready', titleCenter);
-      google.visualization.events.addListener(chart_status_discente, 'select', select_handler_status_discente);
-      chart_status_discente.draw(data_table_status_discente, options);
-    } 
-    else {
-      //Como o gráfico de forma de ingresso foi feito de forma diferente não tem outro gráfico de pizza para ir aqui
+    //POPULA DATA_TABLE (vale para todos os gráficos de coluna)
+    for (let i = 0; i < dados.length; i++) {
+      this['data_table_' + chart_name].addRows([dados[i]]);
     }
+
+    //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico (vale para todos os gráficos de pizza)
+    this[chart_name] = new google.visualization.PieChart(document.getElementById(chart_div));
+    google.visualization.events.addListener(this[chart_name], 'ready', titleCenter); //chama a função que centraliza o titulo quando o gráfico ficar pronto.
+    google.visualization.events.addListener(this[chart_name], 'select', window['select_handler_' + chart_name]); //Listen for the 'select' event, and call my function selectHandler() (no caso select_handler_chart_XXXX, lá em baixo) when the user selects something on the chart.
+    this[chart_name].draw(this['data_table_' + chart_name], options);
   }
 
-  function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, titulo_hAxis, titulo_vAxis, chart_name, chart_div) {
-    
+
+  function drawGeralColuna(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo, titulo_hAxis, titulo_vAxis, chart_name, div) {
+    titulo_grafico = titulo //var global (preciso delas para a função que centraliza o titulo dos gráficos)
+    chart_div = div //var global
+
     let options = { //ATENÇÃO: alguns gráficos tem opções específicas. Ver abaixo cada caso
       title: titulo_grafico,
       hAxis: {
-        title: titulo_hAxis
+        title: titulo_hAxis,
+        textStyle: {
+		      fontsize: 7,
+        },
       },
       vAxis: {
-        title: titulo_vAxis
+        title: titulo_vAxis,
+        viewWindow:{ //Impede valores negativos 
+          min: 0
+        },
       },
       backgroundColor:{ fill: '#E1F0DB'},
       chartArea: {left: 45, top: 40, height: 250, width: "100%"},
       legend: {position: 'none'},
       titleTextStyle: {fontSize: 17, bold: true, color:'black'},
     };
+    
+    //CRIAÇÃO DAS DATATABLE (vale para todos os gráficos de coluna)
+    //cada gráfico precisa de sua data_table pois cada gráfico tem que ter um listener individual que detecta a interatividade. Da mesma forma cada gráfico precisa ter sua dataTable disponível para que seja possível acessar o valor selecionado no gráfico pelo usuário
+    this['data_table_' + chart_name]= new google.visualization.DataTable();
+    this['data_table_' + chart_name].addColumn(tipo_coluna1, coluna_1);
+    this['data_table_' + chart_name].addColumn(tipo_coluna2, coluna_2);
 
-    //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente.  Da mesma forma cada gráfico precisa ter sua dataTable disponível para queja possível acessar o valor selecionado no gráfico pelo usuário
-    if (chart_name == "chart_total_matriculados") {
-      //cria a dataTable
-      data_table_total_matriculados = new google.visualization.DataTable();
-      data_table_total_matriculados.addColumn(tipo_coluna1, coluna_1);
-      data_table_total_matriculados.addColumn(tipo_coluna2, coluna_2);
-      data_table_total_matriculados.addColumn({type: 'string', role: 'tooltip'}); //essa coluna é especifica pro tooltip que foi criado lá no retorno da consulta da função renderChartTotalMatriculas
+    //caso for o gráfico "chart_total_matriculados" é preciso adicionar uma terceira coluna especifica pro tooltip que foi criado lá no retorno da consulta da view desse gráfico
+    if (chart_name == "chart_total_matriculados") { 
+      this['data_table_' + chart_name].addColumn({type: 'string', role: 'tooltip'});
+    }
 
+    else if (chart_name == "chart_concluintes") { //opção específica desse gráfico 
+      options.vAxis.viewWindow['max'] = 10; //limita a exibição até a escala 10
+    }
 
-      //popula a dataTable
-      for (let i = 0; i < dados.length; i++) {
-        data_table_total_matriculados.addRows([dados[i]]);
+    //testa qual é a consulta que está sendo executada e modifica a exibição desse grafico de acordo
+    else if (chart_name == "chart_tamanho_turmas" || chart_name == "chart_discentes_evadidos") { 
+      
+      if (querySelector == "periodo" || querySelector == "curso"){ //se for periodo ou curso mostra o gráfico grande e altera algumas opções
+        if(chart_name == "chart_tamanho_turmas") {
+          options.hAxis.textStyle['fontSize'] = 7 //seta o tamanho de fonte dos labels do eixo horizontal
+        } else {
+          options.hAxis.textStyle['fontSize'] = 8 //seta o tamanho de fonte dos labels do eixo horizontal
+          options.vAxis.viewWindow['max'] = 10; //limita a exibição até a escala 10
+        }    
+        options.hAxis['slantedText'] = 'True' //forca a inclinação da legenda do eixo horizontal
+        options.hAxis['slantedTextAngle'] = 60 //define o angulo de inclinação dessa legenda
+        document.getElementById(chart_div).style.width = '1275px'; //aumenta o tamanho do gráfico
+        document.getElementById(chart_div).style.height = '450px';
+      } else { //mostra gráfico pequeno
+        var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
+        element.style.removeProperty("width");
+        element.style.removeProperty("height");
       }
+    }
 
-      //adiciona labels dentro das colunas. É preciso criar essa Daview e adicionar ela como parametro na função que desenha o gráfico (mais abaixo), não mais a DataTable, essa agora é um parametro da DataView
-      var view = new google.visualization.DataView(data_table_total_matriculados);
+    //POPULA DATA_TABLE (vale para todos os gráficos de coluna)
+    for (let i = 0; i < dados.length; i++) {
+      this['data_table_' + chart_name].addRows([dados[i]]);
+    }
+
+    //CRIA VIEW (vale para todos os gráficos de coluna)
+    //Para adicionar labels dentro das colunas é preciso criar essa view e adicionar ela como parametro na função que desenha o gráfico (mais abaixo), não mais a DataTable, essa agora é um parametro da view
+    var view = new google.visualization.DataView(this['data_table_' + chart_name]);
+    if (chart_name == "chart_total_matriculados"){ //se for o chart_total_matriculados são 3 colunas na view (lembrar da coluna do tooltip)
       view.setColumns([0, 1, { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }, 2]);
-
-      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
-      chart_total_matriculados = new google.visualization.ColumnChart(document.getElementById(chart_div));
-      google.visualization.events.addListener(chart_total_matriculados, 'ready', titleCenter);
-      google.visualization.events.addListener(chart_total_matriculados, 'select', select_handler_total_matriculados);
-      chart_total_matriculados.draw(view, options); //passando a DataView no lugar da DataTable
-    }
-    else if (chart_name == "chart_concluintes") { 
-      //define um conjunto de opções específicas para esse gráfico      
-      let options = {
-        title: titulo_grafico,
-        hAxis: {
-          title: titulo_hAxis
-        },
-        vAxis: {
-          title: titulo_vAxis,  
-          viewWindow:{ //opção específica desse gráfico que impede que valores negativos apareçam
-            min: 0,
-            max: 10 //limita a exibição até a escala 10, sem esse parametro o "min" não funciona
-          }
-        },
-        backgroundColor:{ fill: '#E1F0DB'},
-        chartArea: {left: 45, top: 40, height: 250, width: "100%"},
-        legend: {position: 'none'},
-        titleTextStyle: {fontSize: 17, bold: true, color:'black'},
-      };
-
-      //cria a dataTable
-      data_table_concluintes = new google.visualization.DataTable();
-      data_table_concluintes.addColumn(tipo_coluna1, coluna_1);
-      data_table_concluintes.addColumn(tipo_coluna2, coluna_2);
-
-      //popula a dataTable
-      for (let i = 0; i < dados.length; i++) {
-        data_table_concluintes.addRows([dados[i]]);
-      }
-
-      //adiciona labels dentro das colunas. É preciso criar essa Daview e adicionar ela como parametro na função que desenha o gráfico (mais abaixo), não mais a DataTable, essa agora é um parametro da DataView
-      var view = new google.visualization.DataView(data_table_concluintes);
+    }else{ //senão são apenas duas colunas
       view.setColumns([0, 1, { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
-
-      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
-      chart_concluintes = new google.visualization.ColumnChart(document.getElementById(chart_div));
-      google.visualization.events.addListener(chart_concluintes, 'ready', titleCenter);
-      google.visualization.events.addListener(chart_concluintes, 'select', select_handler_concluintes);
-      chart_concluintes.draw(view, options); //passando a DataView no lugar da DataTable
     }
-    else if (chart_name == "chart_tamanho_turmas") { 
-      //testa qual é a consulta que está sendo executada e modifica a exibição desse grafico de acordo      
-      if (querySelector == "periodo" || querySelector == "curso"){ //se for periodo ou curso mostra o gráfico grande
 
-        //define um conjunto de opções específicas para esse gráfico 
-        options = {
-          title: titulo_grafico,
-          hAxis: {
-            title: titulo_hAxis,
-            textStyle: { //opção especifica desse gráfico que seta o tamanho de fonte dos labels do eixo horizontal
-              fontSize: 8
-            },
-            slantedText: true, //opção especifica desse gráfico que forca a inclinação da legenda do eixo horizontal
-            slantedTextAngle: 60, //opção especifica desse gráfico que define o angulo de inclinação dessa legenda
-          },
-          vAxis: {
-            title: titulo_vAxis
-          },
-          backgroundColor:{ fill: '#E1F0DB'},
-          chartArea: {left: 45, top: 40, height: 250, width: "100%"},
-          legend: {position: 'none'},
-          titleTextStyle: {fontSize: 17, bold: true, color:'black'},
-        };
+    //CRIA O GRÁFICO (vale para todos os gráficos de coluna)
+    this[chart_name]  = new google.visualization.ColumnChart(document.getElementById(chart_div));
 
-        document.getElementById(chart_div).style.width = '1275px'; //aumenta o tamanho do gráfico
-        document.getElementById(chart_div).style.height = '450px';
-      } else{
-        var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
-        element.style.removeProperty("width");
-        element.style.removeProperty("height");
-      }
-
-      //cria a dataTable
-      data_table_tamanho_turmas = new google.visualization.DataTable();
-      data_table_tamanho_turmas.addColumn(tipo_coluna1, coluna_1);
-      data_table_tamanho_turmas.addColumn(tipo_coluna2, coluna_2);
-
-      //popula a dataTable
-      for (let i = 0; i < dados.length; i++) {
-        data_table_tamanho_turmas.addRows([dados[i]]);
-      }
-
-      //adiciona labels dentro das colunas. É preciso criar essa Daview e adicionar ela como parametro na função que desenha o gráfico (mais abaixo), não mais a DataTable, essa agora é um parametro da DataView
-      var view = new google.visualization.DataView(data_table_tamanho_turmas);
-      view.setColumns([0, 1, { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
-
-      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
-      chart_tamanho_turmas = new google.visualization.ColumnChart(document.getElementById(chart_div));
-      google.visualization.events.addListener(chart_tamanho_turmas, 'ready', titleCenter);
-      google.visualization.events.addListener(chart_tamanho_turmas, 'select', select_handler_tamanho_turmas);
-      chart_tamanho_turmas.draw(view, options); //passando a DataView no lugar da DataTable
-    }
-    else if (chart_name == "chart_discentes_evadidos") { 
-      //testa qual é a consulta que está sendo executada e modifica a exibição desse grafico de acordo
-      if (querySelector == "periodo" || querySelector == "curso"){ //se for periodo ou curso mostra o gráfico grande
-
-        //define um conjunto de opções específicas para esse gráfico      
-        options = {
-          title: titulo_grafico,
-          hAxis: {
-            title: titulo_hAxis,
-            textStyle: { //opção especifica desse gráfico que seta o tamanho de fonte dos labels do eixo horizontal
-              fontSize: 9
-            },
-          },
-          vAxis: {
-            title: titulo_hAxis,
-            viewWindow:{ 
-              max: 10 //opção especifica desse gráfico que limita a exibição até a escala 10
-            }
-          },
-          backgroundColor:{ fill: '#E1F0DB'},
-          chartArea: {left: 45, top: 40, height: 250, width: "100%"},
-          legend: {position: 'none'},
-          titleTextStyle: {fontSize: 17, bold: true, color:'black'},
-        };
-
-        document.getElementById(chart_div).style.width = '1275px'; //aumenta o tamanho do gráfico
-        document.getElementById(chart_div).style.height = '450px';
-      } else{
-        var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
-        element.style.removeProperty("width");
-        element.style.removeProperty("height");
-      }
-
-
-      //cria a dataTable
-      data_table_discentes_evadidos = new google.visualization.DataTable();
-      data_table_discentes_evadidos.addColumn(tipo_coluna1, coluna_1);
-      data_table_discentes_evadidos.addColumn(tipo_coluna2, coluna_2);
-
-      //popula a dataTable
-      for (let i = 0; i < dados.length; i++) {
-        data_table_discentes_evadidos.addRows([dados[i]]);
-      }
-
-      //adiciona labels dentro das colunas. É preciso criar essa Daview e adicionar ela como parametro na função que desenha o gráfico (mais abaixo), não mais a DataTable, essa agora é um parametro da DataView
-      var view = new google.visualization.DataView(data_table_discentes_evadidos);
-      view.setColumns([0, 1, { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }]);
-
-      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
-      chart_discentes_evadidos = new google.visualization.ColumnChart(document.getElementById(chart_div));
-      google.visualization.events.addListener(chart_discentes_evadidos, 'ready', titleCenter);
-      google.visualization.events.addListener(chart_discentes_evadidos, 'select', select_handler_discentes_evadidos);
-      chart_discentes_evadidos.draw(view, options);//passando a DataView no lugar da DataTable
-    }
+    //ADICIONA LISTENER(vale para todos os gráficos de coluna)
+    google.visualization.events.addListener(this[chart_name], 'ready', titleCenter); //listener que centraliza o titulo
+    google.visualization.events.addListener(this[chart_name], 'select', window['select_handler_' + chart_name]); //lister para interatividade
+    
+    //DESENHA O GRÁFICO (vale para todos os gráficos de coluna)
+    this[chart_name].draw(view, options);//passando a view no lugar da DataTable
   }
-</script>
-
-<script> //FUNÇÕES GERIAS
-
-  function formataRetorno(dados, label_linha_1, label_linha_2, label_linha_3){
-    //pega o retorno da consulta (que vem em uma linha) e quebra em 3 linhas, adicionando o label da linha para poder gerar o grafico
-    let dadosNovo = dados[0].toString().split(",");
-    let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
-    let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
-    let posicao3 = [label_linha_3,parseInt(dadosNovo[2], 10)];
-    let dadosNovoArray= [posicao1, posicao2, posicao3];
-    return dadosNovoArray;
-  }
-
-  function persistirParametros(chave, valor){
-    //persiste na seção os valores do parametros utilizados nas consultas da página de detalhes
-    sessionStorage.removeItem(chave);
-    sessionStorage.setItem(chave, valor);
-  }
-
-  function definirQuerySelector(querySelector){
-    //altera o querySelector para executar a consulta de detalhes correspondente
-    if (querySelector == "campus"){
-      persistirParametros("querySelector", "campus_detalhes");
-    } else if (querySelector == "periodo"){
-      persistirParametros("querySelector", "periodo_detalhes");
-    } else if(querySelector == "curso"){
-      persistirParametros("querySelector", "curso_detalhes");
-    } else if(querySelector == "turma"){
-      persistirParametros("querySelector", "turma_detalhes");
-    }
-    // window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
-    gerarDetalhamento(); // função da página de detalhes.html que pega os dados e monta a tabela de detalhes
-  }
-
-    function titleCenter() {
-      // Função que centraliza o título do gráfico
-      var chart_div_container = '#' + chart_div;
-      var $container = $(chart_div_container);
-      var svgWidth = $container.find('svg').width();
-      // var $titleElem = $container.find("text:contains(" + options.title + ")");
-      var $titleElem = $container.find("text:contains(" + titulo_grafico + ")");
-      var titleWidth = $titleElem.html().length * ($titleElem.attr('font-size')/2);
-      var xAxisAlign = (svgWidth - titleWidth)/2;
-      $titleElem.attr('x', xAxisAlign);
-    }
 </script>
 
 <script> //FUNÇÕES HANDLER PARA INTERATIVIDADE DE CADA UM DOS GRÁFICOS
   // É necessário fazer uma função por gráfico pq cada gráfico precisa de um listener para capturar a seleção do usuário no gráfico. As funções handler, pela documentação, não aceitam envio e recebimento de parametros (https://developers.google.com/chart/interactive/docs/events) e em cada função handler eu preciso saber o nome do gráfico para utilizar a função nome_do_grafico.getSelection(). Preciso saber qual o parametro de detalhe específico do gráfico para executar a consulta de detalhes e preciso tbm definir qual a URL da consulta que será executada nos detalhes. Por isso tive que repetir código, criando uma função para cada gráfico.
 
-  function select_handler_status_discente() {
+  function select_handler_chart_forma_ingresso() {
+    var selectedItem = chart_forma_ingresso.getSelection()[0];
+    if (selectedItem) {
+      var parametroDetalhes = data_table_chart_forma_ingresso.getValue(selectedItem.row, 0);
+      persistirParametros("parametroDetalhes", parametroDetalhes); //persiste aqui o parametro selecionado no gráfico
+      persistirParametros("url_consulta", "/get_data_forma_ingresso/"); //persiste aqui a url da consulta a ser executada na pg detalhes
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Forma ingresso", "E-mail"]); //persiste inf. cabeçalho tabela
+      persistirParametros("titulo_tabela_detalhes", "Detalhamento da Forma de Ingresso dos Discentes");
+      definirQuerySelector(sessionStorage.getItem("querySelector")); //chama a função, passando o querySelector atual para definir o novo querySelector que dirá que consulta da view será executada na página de detalhes
+    }
+  }
+
+  function select_handler_chart_status_discente() {
     var selectedItem = chart_status_discente.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data_table_status_discente.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_chart_status_discente.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_status_discente/");
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Status", "E-mail"]);
@@ -556,10 +236,10 @@
     }
   }
 
-  function select_handler_total_matriculados() {
+  function select_handler_chart_total_matriculados() {
     var selectedItem = chart_total_matriculados.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data_table_total_matriculados.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_chart_total_matriculados.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_total_matriculas/");
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Quantidade de Disciplinas Matriculadas", "E-mail"]);
@@ -568,11 +248,11 @@
     }
   }
 
-  function select_handler_concluintes() {
+  function select_handler_chart_concluintes() {
     var selectedItem = chart_concluintes.getSelection()[0];
     if (selectedItem) {
-      var colunaSelecionada = data_table_concluintes.getValue(selectedItem.row, 0); //esse parametro é usado qnd o mesmo gráfico representa duas consultas diferentes. Nesse caso eu preciso saber se os detalhes são para os alunos não concluintes ou para os concluintes, pq isso muda qual consulta vai ser executada nos detalhes
-      var parametroDetalhes = data_table_concluintes.getValue(selectedItem.row, 1);
+      var colunaSelecionada = data_table_chart_concluintes.getValue(selectedItem.row, 0); //esse parametro é usado qnd o mesmo gráfico representa duas consultas diferentes. Nesse caso eu preciso saber se os detalhes são para os alunos não concluintes ou para os concluintes, pq isso muda qual consulta vai ser executada nos detalhes
+      var parametroDetalhes = data_table_chart_concluintes.getValue(selectedItem.row, 1);
       persistirParametros("colunaSelecionada", colunaSelecionada);
       persistirParametros("parametroDetalhes", parametroDetalhes); //não está sendo usado nessa consulta, pq eu listo todos os alunos da coluna selecionada
       persistirParametros("url_consulta", "/get_data_concluintes/"); 
@@ -589,10 +269,10 @@
     }
   }
 
-  function select_handler_tamanho_turmas() {
+  function select_handler_chart_tamanho_turmas() {
     var selectedItem = chart_tamanho_turmas.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data_table_tamanho_turmas.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_chart_tamanho_turmas.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_tamanho_turmas/"); 
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
@@ -601,10 +281,10 @@
     }
   }
 
-  function select_handler_discentes_evadidos() {
+  function select_handler_chart_discentes_evadidos() {
     var selectedItem = chart_discentes_evadidos.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data_table_discentes_evadidos.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_chart_discentes_evadidos.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_discentes_evadidos/"); 
       persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
@@ -612,7 +292,6 @@
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
   }
-
 </script>
 
 <div id="dashboards"> <!-- ÁREA DE PLOTAGEM DOS GRÁFICOS -->
@@ -626,4 +305,3 @@
 
 {% include 'ifAnalytics/detalhes.html' %}
 {% endblock content %}
-

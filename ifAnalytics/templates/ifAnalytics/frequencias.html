@@ -1,15 +1,9 @@
 {% extends 'ifAnalytics/base.html' %}
 
 {% block content %}
-
-<script>
-
-  let dados
-  let chart_div
-  let titulo_grafico
-
-  function renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId, turmaId){
-    //persistindo valores para serem utilizados na página de detalhes.
+<script> //RENDER GERAL PARA TODOS OS GRÁFICOS
+  function renderChartsFrequencia(chart_name, querySelector, campusId, ano, semestre, cursoId, turmaId){
+    //É preciso persistir esses dados aqui para que, assim que a função receber os parametros eles possam ser utilizados pela consulta de detalhes e atualizados sempre que os combos forem alterados e essa função for chamada
     persistirParametros("querySelector", querySelector); 
     persistirParametros("campusId", campusId); 
     persistirParametros("ano", ano); 
@@ -17,133 +11,94 @@
     persistirParametros("cursoId", cursoId); 
     persistirParametros("turmaId", turmaId); 
 
-    //pegando os dados da view "get_data_percentuais_frequencia" para popular o gráfico
-    $.ajax({
-     method: "GET",
-     url: '/get_data_percentuais_frequencia/', 
-     data: {
-     'campus_id' : campusId,
-     'curso_id' : cursoId,
-     'ano' : ano,
-     'semestre' : semestre,
-     'turma_id': turmaId,
-     'querySelector' : querySelector
-    },
-    success: function(data_from_view){
-     dados = data_from_view
-     label_linha_1 = "100% de frequência"
-     label_linha_2 = "95% a 100% de frequência"
-     label_linha_3 = "90% a 95% de frequência"
-     label_linha_4 = "85% a 90% de frequência"
-     label_linha_5 = "80% a 85% de frequência"
-     label_linha_6 = "75% a 80% de frequência"
-     label_linha_7 = "Menos de 75% de frequência"
-     label_linha_8 = "Alunos sem frequencia"
-     let dadosNovoArray = formataRetorno(dados, label_linha_1, label_linha_2, label_linha_3, label_linha_4, label_linha_5, label_linha_6, label_linha_7, label_linha_8);
-     tipo_coluna1 = 'string'
-     tipo_coluna2 = 'number'
-     coluna_1 = 'Percentual'
-     coluna_2 = 'Quantidade de Alunos'
-     titulo_grafico = 'Percentuais de Frequência'
-     chart_name = 'chart_percentuais_frequencia'
-     chart_div = 'pieChart_percentuais_frequencia'
-     google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div);});
-    },
-    error: function(error_data){
-     console.log("error")
-     console.log(error_data)
+    switch(chart_name) { //Define a URL da view específica de cada gráfico
+
+      case 'chart_percentuais_frequencia':  
+        url = '/get_data_percentuais_frequencia/'
+      break 
     }
+
+    $.ajax({ //passa os parametros que vieram da base.html para a view
+      method: "GET",
+      url: url, 
+      data: {
+        'campus_id' : campusId,
+        'curso_id' : cursoId,
+        'ano' : ano,
+        'semestre' : semestre,
+        'turma_id': turmaId,
+        'querySelector' : querySelector
+      },
+      success: function(data_from_view){ //pega os dados do retorno da view
+        dados = data_from_view
+        switch(chart_name) {
+
+          case 'chart_percentuais_frequencia': 
+
+            let label_linha_1 = "100% de frequência"
+            let label_linha_2 = "95% a 100% de frequência"
+            let label_linha_3 = "90% a 95% de frequência"
+            let label_linha_4 = "85% a 90% de frequência"
+            let label_linha_5 = "80% a 85% de frequência"
+            let label_linha_6 = "75% a 80% de frequência"
+            let label_linha_7 = "Menos de 75% de frequência"
+            let label_linha_8 = "Alunos sem frequencia"
+            let labels =[label_linha_1, label_linha_2, label_linha_3, label_linha_4, label_linha_5, label_linha_6, label_linha_7, label_linha_8]
+            let dadosNovoArray = formataRetorno(dados, labels);
+
+            google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Percentual', 'number', 'Quantidade de Alunos', 'Percentuais de Frequência', 'chart_percentuais_frequencia', 'pieChart_percentuais_frequencia');}); //chama a função que cria e popula uma dataTable, instancia, passa os dados e desenha o gráfico
+          break
+        }
+      },
+      error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+      }
     })
   }
+</script>
 
-  //Funções que desenham todos os gráficos
-  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo_grafico, chart_name, chart_div){
+<script> //CRIANDO E POPULANDO OS GRÁFICOS!
+  function drawGeralPizza(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo, chart_name, div){
+    titulo_grafico = titulo //var global (preciso delas para a função que centraliza o titulo dos gráficos)
+    chart_div = div //var global
+    
     let options = {
-     title: titulo_grafico,
-     backgroundColor:{ fill: '#E1F0DB'},
-     chartArea: {left: 50, top: 40, height: "80%", width: "100%"},
-     legend: {position: 'right', alignment: 'center', textStyle: {fontSize: 10}},
-     titleTextStyle: {fontSize:14, bold: true, color:'black'},
-     sliceVisibilityThreshold: 0,
+      title: titulo_grafico,
+      backgroundColor:{ fill: '#E1F0DB'},
+      chartArea: {left: 50, top: 40, height: "80%", width: "100%"},
+      legend: {position: 'right', alignment: 'center', textStyle: {fontSize: 10}},
+      titleTextStyle: {fontSize: 17, bold: true, color: 'black'},
+      sliceVisibilityThreshold: 0,
     };
 
-    //preciso criar cada gráfico individualmente para adicionar um listener para cada gráfico e detectar a interatividade individualmente. Da mesma forma cada gráfico precisa ter sua dataTable disponível para queja possível acessar o valor selecionado no gráfico pelo usuário
-    if (chart_name == "chart_percentuais_frequencia") { 
-      //cria a dataTable
-      data_table_percentuais_frequencias = new google.visualization.DataTable();
-      data_table_percentuais_frequencias.addColumn(tipo_coluna1, coluna_1);
-      data_table_percentuais_frequencias.addColumn(tipo_coluna2, coluna_2);
+    //CRIAÇÃO DAS DATATABLE (vale para todos os gráficos de pizza)
+    //cada gráfico precisa de sua data_table pois cada gráfico tem que ter um listener individual que detecta a interatividade. Da mesma forma cada gráfico precisa ter sua dataTable disponível para que seja possível acessar o valor selecionado no gráfico pelo usuário
+    this['data_table_' + chart_name]= new google.visualization.DataTable();
+    this['data_table_' + chart_name].addColumn(tipo_coluna1, coluna_1);
+    this['data_table_' + chart_name].addColumn(tipo_coluna2, coluna_2);
 
-      //popula a dataTable
-      for (let i = 0; i < dados.length; i++) {
-        data_table_percentuais_frequencias.addRows([dados[i]]);
-      }
-
-      //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico
-      chart_percentuais_frequencia = new google.visualization.PieChart(document.getElementById(chart_div));
-      google.visualization.events.addListener(chart_percentuais_frequencia, 'ready', titleCenter);
-      google.visualization.events.addListener(chart_percentuais_frequencia, 'select', select_handler_percentuais_frequencias);
-      chart_percentuais_frequencia.draw(data_table_percentuais_frequencias, options);
-    } 
-    else {
-      //Repetir lógica acima para outros gráficos, caso venham a existir
+    //POPULA DATA_TABLE (vale para todos os gráficos de coluna)
+    for (let i = 0; i < dados.length; i++) {
+      this['data_table_' + chart_name].addRows([dados[i]]);
     }
-  }
 
-  //Funções Gerais
-  function formataRetorno(dados, label_linha_1, label_linha_2, label_linha_3, label_linha_4, label_linha_5, label_linha_6, label_linha_7, label_linha_8){
-    //pega o retorno da consulta (que vem em uma linha) e quebra em duas colunas e varias linhas, adicionando o label da linha para poder gerar o grafico
-    let dadosNovo = dados[0].toString().split(",");
-    let posicao1 = [label_linha_1,parseInt(dadosNovo[0], 10)];
-    let posicao2 = [label_linha_2,parseInt(dadosNovo[1], 10)];
-    let posicao3 = [label_linha_3,parseInt(dadosNovo[2], 10)];
-    let posicao4 = [label_linha_4,parseInt(dadosNovo[3], 10)];
-    let posicao5 = [label_linha_5,parseInt(dadosNovo[4], 10)];
-    let posicao6 = [label_linha_6,parseInt(dadosNovo[5], 10)];
-    let posicao7 = [label_linha_7,parseInt(dadosNovo[6], 10)];
-    let posicao8 = [label_linha_8,parseInt(dadosNovo[7], 10)];
-    let dadosNovoArray= [posicao1, posicao2, posicao3, posicao4, posicao5, posicao6, posicao7, posicao8];
-    return dadosNovoArray;
+    //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico (vale para todos os gráficos de pizza)
+    this[chart_name] = new google.visualization.PieChart(document.getElementById(chart_div));
+    google.visualization.events.addListener(this[chart_name], 'ready', titleCenter); //chama a função que centraliza o titulo quando o gráfico ficar pronto.
+    google.visualization.events.addListener(this[chart_name], 'select', window['select_handler_' + chart_name]); //Listen for the 'select' event, and call my function selectHandler() (no caso select_handler_chart_XXXX, lá em baixo) when the user selects something on the chart.
+    this[chart_name].draw(this['data_table_' + chart_name], options);
   }
+</script>
 
-  function persistirParametros(chave, valor){
-    //persiste na seção os valores do parametros utilizados nas consultas da página de detalhes
-    sessionStorage.removeItem(chave);
-    sessionStorage.setItem(chave, valor);
-  }
-
-  function definirQuerySelector(querySelector){
-    //altera o querySelector para executar a consulta de detalhes correspondente
-    if (querySelector == "campus"){
-      persistirParametros("querySelector", "campus_detalhes");
-    } else if (querySelector == "periodo"){
-      persistirParametros("querySelector", "periodo_detalhes");
-    } else if(querySelector == "curso"){
-      persistirParametros("querySelector", "curso_detalhes");
-    } else if(querySelector == "turma"){
-      persistirParametros("querySelector", "turma_detalhes");
-    }
-    // window.location.href="{% url 'detalhes' %}"; //Redireciona para a página de detalhes
-    gerarDetalhamento();
-  }
-
-  function titleCenter() {
-    // Função que centraliza o título do gráfico
-    var chart_div_container = '#' + chart_div;
-    var $container = $(chart_div_container);
-    var svgWidth = $container.find('svg').width();
-    // var $titleElem = $container.find("text:contains(" + options.title + ")");
-    var $titleElem = $container.find("text:contains(" + titulo_grafico + ")");
-    var titleWidth = $titleElem.html().length * ($titleElem.attr('font-size')/2);
-    var xAxisAlign = (svgWidth - titleWidth)/2;
-    $titleElem.attr('x', xAxisAlign);
-  }
+<script> //FUNÇÕES HANDLER PARA INTERATIVIDADE DE CADA UM DOS GRÁFICOS
+  // É necessário fazer uma função por gráfico pq cada gráfico precisa de um listener para capturar a seleção do usuário no gráfico. As funções handler, pela documentação, não aceitam envio e recebimento de parametros (https://developers.google.com/chart/interactive/docs/events) e em cada função handler eu preciso saber o nome do gráfico para utilizar a função nome_do_grafico.getSelection(). Preciso saber qual o parametro de detalhe específico do gráfico para executar a consulta de detalhes e preciso tbm definir qual a URL da consulta que será executada nos detalhes. Por isso tive que repetir código, criando uma função para cada gráfico.
 
   //Funções handler para interatividade de cada um dos gráficos
-  function select_handler_percentuais_frequencias() {
+  function select_handler_chart_percentuais_frequencia() {
     var selectedItem = chart_percentuais_frequencia.getSelection()[0];
     if (selectedItem) {
-      var parametroDetalhes = data_table_percentuais_frequencias.getValue(selectedItem.row, 0);
+      var parametroDetalhes = data_table_chart_percentuais_frequencia.getValue(selectedItem.row, 0);
       
       if (parametroDetalhes == "100% de frequência") {
         persistirParametros("parametroDetalhes", 100);

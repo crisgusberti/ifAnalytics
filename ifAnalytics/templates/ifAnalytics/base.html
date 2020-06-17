@@ -9,6 +9,7 @@
 	<!-- <title>IfAnalytics</title> --> <!-- está sendo alterado dinamicamente pela função thisPage() abaixo -->
 	<link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
 	<link rel="stylesheet" href="{% static 'css/Estilos.css' %}">
+	<script src="{% static '/js/funcoesGerais.js' %}"></script> <!-- inclusão das Funções Gerais javasript utilizadas ao longo do sistema -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>	<!-- Scripts da biblioteca Google Charts -->
 	<script>google.charts.load('current', {'packages':['corechart', 'bar']});</script> <!-- Load Charts and the corechart and bar package from Google Charts. -->
@@ -150,21 +151,21 @@
 	    })
 
 		if (paginaAtual == 'geral') {
-				renderChartFormaIngresso(querySelector, campusId, ano, semestre);
-				renderChartStatusDiscente(querySelector, campusId, ano, semestre);
-				renderChartTotalMatriculas(querySelector, campusId, ano, semestre);
-				renderChartConcluintes(querySelector, campusId, ano, semestre);
-				renderChartTamanhoTurmas(querySelector, campusId, ano, semestre);
-				renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_forma_ingresso", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_status_discente", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_total_matriculas", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_concluintes", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_tamanho_turmas", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_discentes_evadidos", querySelector, campusId, ano, semestre);
 		}else if(paginaAtual == 'notas'){
-				renderChartNotasParciais(1, querySelector, campusId, ano, semestre);
-				renderChartNotasParciais(2, querySelector, campusId, ano, semestre);
-				renderChartMediasFinais(querySelector, campusId, ano, semestre);
-				renderChartDiscenteExame(querySelector, campusId, ano, semestre);
-				renderChartAprovadosReprovados(querySelector, campusId, ano, semestre);
-				renderChartStatusDisciplinas(querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_notas_parciais", 1, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_notas_parciais", 2, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_medias_finais", null, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_discentes_exame", null, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_aprovados_reprovados", null, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_status_disciplinas", null, querySelector, campusId, ano, semestre);
 		}else if(paginaAtual == 'Frequências'){
-				renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre);
+				renderChartsFrequencia("chart_percentuais_frequencia", querySelector, campusId, ano, semestre);
 		}
 		mostrarDiv("dashboards", true);
 		mostrarDiv("table", false);
@@ -196,21 +197,21 @@
 	  	})
 
 		if (paginaAtual == 'geral') {
-			renderChartFormaIngresso(querySelector, campusId, ano, semestre, cursoId);
-			renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId);
-			renderChartTotalMatriculas(querySelector, campusId, ano, semestre, cursoId);
-			renderChartConcluintes(querySelector, campusId, ano, semestre, cursoId);
-			renderChartTamanhoTurmas(querySelector, campusId, ano, semestre, cursoId);
-			renderChartDiscentesEvadidos(querySelector, campusId, ano, semestre, cursoId);
+			renderChartsGeral("chart_forma_ingresso", querySelector, campusId, ano, semestre, cursoId);
+		    renderChartsGeral("chart_status_discente", querySelector, campusId, ano, semestre, cursoId);
+			renderChartsGeral("chart_total_matriculas", querySelector, campusId, ano, semestre, cursoId);
+			renderChartsGeral("chart_concluintes", querySelector, campusId, ano, semestre, cursoId);
+			renderChartsGeral("chart_tamanho_turmas", querySelector, campusId, ano, semestre, cursoId);
+			renderChartsGeral("chart_discentes_evadidos", querySelector, campusId, ano, semestre, cursoId);
 		}else if(paginaAtual == 'notas'){
-			renderChartNotasParciais(1, querySelector, campusId, ano, semestre, cursoId);
-			renderChartNotasParciais(2, querySelector, campusId, ano, semestre, cursoId);
-			renderChartMediasFinais(querySelector, campusId, ano, semestre, cursoId);
-			renderChartDiscenteExame(querySelector, campusId, ano, semestre, cursoId);
-			renderChartAprovadosReprovados(querySelector, campusId, ano, semestre, cursoId);
-			renderChartStatusDisciplinas(querySelector, campusId, ano, semestre, cursoId);
+			renderChartsNota("chart_notas_parciais", 1, querySelector, campusId, ano, semestre, cursoId);
+			renderChartsNota("chart_notas_parciais", 2, querySelector, campusId, ano, semestre, cursoId);
+			renderChartsNota("chart_medias_finais", null, querySelector, campusId, ano, semestre, cursoId);
+			renderChartsNota("chart_discentes_exame", null, querySelector, campusId, ano, semestre, cursoId);
+			renderChartsNota("chart_aprovados_reprovados", null, querySelector, campusId, ano, semestre, cursoId);
+			renderChartsNota("chart_status_disciplinas", null, querySelector, campusId, ano, semestre, cursoId);
 		}else if(paginaAtual == 'Frequências'){
-			renderChartPercentuaisFrequencia(querySelector, campusId, ano, semestre, cursoId);
+			renderChartsFrequencia("chart_percentuais_frequencia", querySelector, campusId, ano, semestre, cursoId);
 		}
 		mostrarDiv("dashboards", true);
 		mostrarDiv("table", false);
@@ -228,21 +229,21 @@
 		querySelector = 'turma';
 
 		if (paginaAtual == 'geral') {
-			renderChartFormaIngresso(querySelector, null, ano, semestre, null, turmaId); 
-			renderChartStatusDiscente(querySelector, campusId, ano, semestre, cursoId, turmaId); 
-			renderChartTotalMatriculas(querySelector, null, ano, semestre, null, turmaId); 
-			renderChartConcluintes(querySelector, null, ano, semestre, null, turmaId); 
-			renderChartTamanhoTurmas(querySelector, null, ano, semestre, null, turmaId); 
-			renderChartDiscentesEvadidos(querySelector, null, ano, semestre, null, turmaId); 
+			renderChartsGeral("chart_forma_ingresso", querySelector, null, ano, semestre, null, turmaId); 
+			renderChartsGeral("chart_status_discente", querySelector, null, ano, semestre,null, turmaId);
+			renderChartsGeral("chart_total_matriculas", querySelector, null, ano, semestre, null, turmaId);
+			renderChartsGeral("chart_concluintes", querySelector, null, ano, semestre, null, turmaId);
+			renderChartsGeral("chart_tamanho_turmas", querySelector, null, ano, semestre, null, turmaId);
+            renderChartsGeral("chart_discentes_evadidos", querySelector, null, ano, semestre, null, turmaId);
 		}else if(paginaAtual == 'notas'){
-			renderChartNotasParciais(1, querySelector, null, ano, semestre, null, turmaId);
-			renderChartNotasParciais(2, querySelector, null, ano, semestre, null, turmaId);
-			renderChartMediasFinais(querySelector, null, ano, semestre, null, turmaId);
-			renderChartDiscenteExame(querySelector, null, ano, semestre, null, turmaId);
-			renderChartAprovadosReprovados(querySelector, null, ano, semestre, null, turmaId);
-			renderChartStatusDisciplinas(querySelector, null, ano, semestre, null, turmaId);
+			renderChartsNota("chart_notas_parciais", 1, querySelector, null, ano, semestre, null, turmaId);
+			renderChartsNota("chart_notas_parciais", 2, querySelector, null, ano, semestre, null, turmaId);
+			renderChartsNota("chart_medias_finais", null, querySelector, null, ano, semestre, null, turmaId);
+			renderChartsNota("chart_discentes_exame", null, querySelector, null, ano, semestre, null, turmaId);
+			renderChartsNota("chart_aprovados_reprovados", null, querySelector, null, ano, semestre, null, turmaId);
+			renderChartsNota("chart_status_disciplinas", null, querySelector, null, ano, semestre, null, turmaId);
 		}else if(paginaAtual == 'Frequências'){
-			renderChartPercentuaisFrequencia(querySelector, null, ano, semestre, null, turmaId);
+			renderChartsFrequencia("chart_percentuais_frequencia", querySelector, null, ano, semestre, null, turmaId);
 		}
 		mostrarDiv("dashboards", true);
 		mostrarDiv("table", false);
