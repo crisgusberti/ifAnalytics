@@ -37,7 +37,7 @@ nav#menu_superior a{
 	color: black;
 	text-decoration: none;
 	cursor: default;
-	display: block; /*isso faz a tag "a" ter a mesma largura do "a", consequentemente tudo fica como link clicável.*/
+	display: block; /*isso faz a tag "a" ter a mesma largura do "li", consequentemente tudo fica como link clicável.*/
 	padding: 10px;
 }
 nav#menu_superior a:hover{
