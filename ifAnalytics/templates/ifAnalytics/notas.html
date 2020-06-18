@@ -130,7 +130,7 @@
         'REPROVADO POR MÉDIA E POR FALTAS' : '#DB4437', //vermelho do google,
         'REPROVADO POR NOTA' : '#ff3377',
         'REPROVADO POR NOTA E FALTA' : 'red',
-        'CANCELADO' : '#000000',
+        'CANCELADO' : '#990099',
         'AGUARDANDO DEFERIMENTO' : '#ff66cc',
         'APROV ESTUD' : '#F4B400', //amarelo do google
         'CERTIF CONHEC' : '#339966',
@@ -148,10 +148,10 @@
 
       //cria um array do tamanho da tabela
       var slices = [];
-      for (var i = 0; i < data_table_chart_status_disciplinas.getNumberOfRows(); i++) {
+      for (var i = 0; i < this['data_table_' + chart_name].getNumberOfRows(); i++) {
         //percorre a tabela e bate o status com a cor mepeada na variável colors
         slices.push({
-          color: colors[data_table_chart_status_disciplinas.getValue(i, 0)]
+          color: colors[this['data_table_' + chart_name].getValue(i, 0)]
         });
       }
       // adiciona dentro da optios do gráfico o array slices com o mapeamento da cor pra cada status

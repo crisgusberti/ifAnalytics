@@ -115,6 +115,44 @@
       this['data_table_' + chart_name].addRows([dados[i]]);
     }
 
+    if (chart_name == "chart_status_discente") { //opção específica desse gráfico
+      //mapeamento fixo da cor de cada status
+        // https://stackoverflow.com/questions/46107128/google-visualization-set-pie-chart-slice-color
+        // https://stackoverflow.com/questions/13816621/fix-color-for-each-sector-of-google-pie-chart
+        // https://developers.google.com/chart/interactive/docs/gallery/piechart#removing-slices
+     
+      // cria um array colors mapeando a cor específica de cada status
+      var colors = {
+        // primeiras 20 cores do google charts http://there4.io/2012/05/02/google-chart-color-list/
+        'DESCONHECIDO' : '#000000',
+        'ATIVO' : '#3366CC', //azul do google 
+        'CADASTRADO' : '#FF9900',
+        'CONCLUÍDO' : '#0F9D58', //verde do google
+        'TRANCADO' : '#DB4437', //vermelho do google,
+        'CANCELADO' : '#990099',
+        'NÃO CADASTRADO' : '#F4B400', //amarelo do google 
+        'EM HOMOLOGAÇÃO' : '#ffcc99',
+        'DEFENDIDO' : '#4d4dff',
+        'PENDENTE DE CADASTRO' : '#6633CC',
+        'ATIVO - DEPENDÊNCIA' : '#AAAA11',
+        'FORMANDO' : '#33ccff',
+        'FORMADO' : '#0099C6',
+        'PRE_CADASTRADO' : '#e6e600',
+        'FALECIDO' : '#666699',
+      };
+
+      //cria um array do tamanho da tabela
+      var slices = [];
+      for (var i = 0; i < this['data_table_' + chart_name].getNumberOfRows(); i++) {
+        //percorre a tabela e bate o status com a cor mepeada na variável colors
+        slices.push({
+          color: colors[this['data_table_' + chart_name].getValue(i, 0)]
+        });
+      }
+      // adiciona dentro da optios do gráfico o array slices com o mapeamento da cor pra cada status
+      options['slices'] = slices;
+    }
+
     //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico (vale para todos os gráficos de pizza)
     this[chart_name] = new google.visualization.PieChart(document.getElementById(chart_div));
     google.visualization.events.addListener(this[chart_name], 'ready', titleCenter); //chama a função que centraliza o titulo quando o gráfico ficar pronto.
