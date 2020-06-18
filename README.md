@@ -7,7 +7,7 @@
 Preparação do ambiente:
 =======================
 - baixar o python: https://www.python.org/downloads/
-- clonar a aplicação do git, de preferencia no C:, digitando pelo CMD "git clone https://github.com/crisgusberti/IfAnalytics"
+- clonar a aplicação do git, de preferencia no C:, digitando pelo CMD "git clone https://github.com/crisgusberti/ifAnalytics"
 - pelo CMD entrar na pasta IfAnalytics e digitar o comando: "python -m venv venvIfAnalytics"
 - em seguida digitar: "venvIfAnalytics\Scripts\activate"
 - em seguida digitar: "python -m pip install --upgrade pip"
