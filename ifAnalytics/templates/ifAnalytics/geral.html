@@ -61,10 +61,14 @@
           break
 
           case 'chart_total_matriculas': 
-            dados.forEach(function (arrayItem) { //cria um terceiro item no array (tooltip das barras do gráfico)
-              arrayItem[0] = arrayItem[0] + ' '; //adiciona um espaço depois do numero da qtd disciplinas 
-              arrayItem[2] = arrayItem[1] + ' alunos matricularam-se em  ' + arrayItem[0] + ' disciplinas'; //concatena qnt de alunos (string) com qnt de disciplinas (number) e adiciona em um terceiro item no array (arrayItem[2]) que é especifico pro tooltip
-            });
+            if (querySelector == "turma") { //se a consulta for pra turma esse gráfico fica igual ao gráfico de tamanho das turmas
+              dados = [] //então ele será mostrado vazio pra não ficar redundante
+            } else {
+              dados.forEach(function (arrayItem) { //cria um terceiro item no array (tooltip das barras do gráfico)
+                arrayItem[0] = arrayItem[0] + ' '; //adiciona um espaço depois do numero da qtd disciplinas 
+                arrayItem[2] = arrayItem[1] + ' alunos matricularam-se em  ' + arrayItem[0] + ' disciplinas'; //concatena qnt de alunos (string) com qnt de disciplinas (number) e adiciona em um terceiro item no array (arrayItem[2]) que é especifico pro tooltip
+              });
+            }
             google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Disciplinas', 'number', 'Quantidade_Alunos', 'Quantidade de disciplinas em que os alunos se matricularam', 'Quantidade de disciplinas', 'Quantidade de alunos', 'chart_total_matriculados', 'columnChart_total_matriculas');});
           break
 
