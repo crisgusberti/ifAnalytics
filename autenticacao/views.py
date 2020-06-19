@@ -1,16 +1,30 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-import ldap
+import ldap, json, os
+
 
 def login(request):
+    usuarios = ler_tabela_usuarios()
+
     request.session['username'] = ''
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         if username == 'admin' and password == 'admin':
             request.session['username'] = username
+            request.session['campus'] = 0
+            request.session['curso'] = 0
             return redirect('/geral')
-        else:  #Tenta login no ldap
+        else:
+            #Verifica se é usuário autorizado na tabela
+            if username not in usuarios: 
+                return redirect('login')
+            else:
+                request.session['username'] = username
+                request.session['campus'] = usuarios[username]['campus_id'] #acessa os dados do json lido pela função ler_tabela_usuarios
+                request.session['curso'] = usuarios[username]['curso_id']
+
+            #Autentica no LDAP 
             username_ldap = 'uid=' + username + ',ou=People,dc=poa,dc=ifrs,dc=edu,dc=br'
             try:
                 conn = ldap.initialize('ldap://ldap.poa.ifrs.edu.br')
@@ -19,7 +33,6 @@ def login(request):
                 conn.simple_bind_s(username_ldap, password)
             except ldap.LDAPError:
                 return redirect('login')
-            request.session['username'] = username
             return redirect('/geral')
     else:
         return render(request,'login.html')
@@ -30,3 +43,10 @@ def logout(request):
     except KeyError:
         pass
     return redirect('login')
+
+def ler_tabela_usuarios():
+    file_path = os.path.join(os.path.dirname(__file__), 'tabela_usuarios.json') #define o caminho e o nome do arquivo
+    with open(file_path, "r", encoding="utf8") as usuarios_autenticados: #abre o arquivo somente leitura (parametro "r")
+        return json.load(usuarios_autenticados) #converte o json em um objeto python
+
+
