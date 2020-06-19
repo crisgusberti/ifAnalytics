@@ -4,7 +4,7 @@ import ldap, json, os
 
 
 def login(request):
-    usuarios = ler_tabela_usuarios()
+    usuarios = ler_usuarios_cadastrados()
 
     request.session['username'] = ''
     if request.method == 'POST':
@@ -21,7 +21,7 @@ def login(request):
                 return redirect('login')
             else:
                 request.session['username'] = username
-                request.session['campus'] = usuarios[username]['campus_id'] #acessa os dados do json lido pela função ler_tabela_usuarios
+                request.session['campus'] = usuarios[username]['campus_id'] #acessa os dados do json lido pela função ler_usuarios_cadastrados
                 request.session['curso'] = usuarios[username]['curso_id']
 
             #Autentica no LDAP 
@@ -44,9 +44,9 @@ def logout(request):
         pass
     return redirect('login')
 
-def ler_tabela_usuarios():
-    file_path = os.path.join(os.path.dirname(__file__), 'tabela_usuarios.json') #define o caminho e o nome do arquivo
-    with open(file_path, "r", encoding="utf8") as usuarios_autenticados: #abre o arquivo somente leitura (parametro "r")
-        return json.load(usuarios_autenticados) #converte o json em um objeto python
+def ler_usuarios_cadastrados():
+    file_path = os.path.join(os.path.dirname(__file__), 'usuarios_cadastrados.json') #define o caminho e o nome do arquivo
+    with open(file_path, "r", encoding="utf8") as usuarios_cadastrados: #abre o arquivo somente leitura (parametro "r")
+        return json.load(usuarios_cadastrados) #converte o json em um objeto python
 
 
