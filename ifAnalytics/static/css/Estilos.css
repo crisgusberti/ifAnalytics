@@ -17,13 +17,13 @@ div#cabecalho{
 
 /*====Tela de login====*/
 .login {
-	margin: 20px auto;
-	width: 300px;
-}
-.login-screen {
 	background-color: #FFF;
 	padding: 20px;
-	border-radius: 5px
+	border-radius: 5px;
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 .app-title {
 	text-align: center;

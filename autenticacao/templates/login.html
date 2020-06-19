@@ -19,27 +19,23 @@
 		<br><br><br><br><br>
 	</div>
 
-	<div class="login"> <!-- TEMPLATE DE LOGIN -->
-		<div class="login-screen">
-			<div class="app-title">
-				<h2>Entre no Sistema</h2>
+	<div class="login">  <!-- TEMPLATE DE LOGIN -->
+		<div class="app-title">
+			<h2>Entre no Sistema</h2>
+		</div>
+
+		<form class="login-form" method=POST>
+			{% csrf_token %}
+			<div class="control-group">
+				<input type="text" name=username placeholder="usuário">
 			</div>
 
-			<form method=POST>
-			{% csrf_token %}
-				<div class="login-form">
-					<div class="control-group">
-						<input type="text" name=username placeholder="usuário">
-					</div>
+			<div class="control-group">
+				<input type="password" name=password placeholder="senha">
+			</div>
 
-					<div class="control-group">
-						<input type="password" name=password placeholder="senha">
-					</div>
-
-					<input type=submit class="btn" value="Login">
-				</div>
-			</form>
-		</div>
+			<input type=submit class="btn" value="Login">
+		</form>
 	</div>
 
 	<script>
