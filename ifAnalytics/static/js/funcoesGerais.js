@@ -1,9 +1,8 @@
 //FUNÇÕES JS COMUNS À TODAS AS PÁGINAS. PARA NÃO REPETI-LAS EM TODAS AS PÁGINAS, CENTRALIZEI AQUI.
 
 
+//pega o retorno da consulta (que vem em uma linha) e quebra em X linhas, dependendo de quantos valores existem dentro da posição 0 do vetor dados, adicionando o label de cada linha para poder gerar o grafico
 function formataRetorno(dados, labels){
-    //pega o retorno da consulta (que vem em uma linha) e quebra em X linhas, dependendo de quantos valores existem dentro da posição 0 do vetor dados, adicionando o label de cada linha para poder gerar o grafico
-
     let dadosNovoArray = [];
     //dependendo do que foi selecionados nos combos, a consulta pode retornar vazia esse if/else faz uma verificação para evitar erros no console.
     if(dados == null || dados.length == 0){ //Se o retorno da consulta for vazio 
@@ -19,14 +18,14 @@ function formataRetorno(dados, labels){
 	}
 }
 
+//persiste na seção os valores do parametros utilizados nas consultas da página de detalhes
 function persistirParametros(chave, valor){
-	//persiste na seção os valores do parametros utilizados nas consultas da página de detalhes
 	sessionStorage.removeItem(chave);
 	sessionStorage.setItem(chave, valor);
 }
 
+//altera o querySelector para executar a consulta de detalhes correspondente
 function definirQuerySelector(querySelector){
-	//altera o querySelector para executar a consulta de detalhes correspondente
 	if (querySelector == "campus"){
 	  persistirParametros("querySelector", "campus_detalhes");
 	} else if (querySelector == "periodo"){
@@ -40,8 +39,8 @@ function definirQuerySelector(querySelector){
 	gerarDetalhamento(); // função da página de detalhes.html que pega os dados e monta a tabela de detalhes
 }
 
+//Função que centraliza o título do gráfico
 function titleCenter() {
-	// Função que centraliza o título do gráfico
 	var chart_div_container = '#' + chart_div;
 	var $container = $(chart_div_container);
 	var svgWidth = $container.find('svg').width();
@@ -52,6 +51,19 @@ function titleCenter() {
 	$titleElem.attr('x', xAxisAlign);
 }
 
+//função que me diz qual é a página atual
+function thisPage(){
 
+	var url = document.URL; //retorna a url da página
 
+	if (url[url.length-1] == "/"){ // remove última barra do endereço
+	  	url = url.substring(0, url.length-1);
+	}
 
+	var urlArr = url.split("/");//retorna um array da url separado pelas barras
+	var thisPage = urlArr[3]; //armazena em thisPage a posição 3 do array que é a posição ref. ao nome da página. Pq ele conta as barras do http:// na hora de splitar
+	if (thisPage == "frequencias") { //Correção do acento da palavra
+		thisPage = "Frequências";
+	}
+	return thisPage;
+}

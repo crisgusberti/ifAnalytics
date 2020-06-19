@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import ldap
 
-def index(request):
+def login(request):
     request.session['username'] = ''
     if request.method == 'POST':
         username = request.POST['username']
@@ -18,7 +18,7 @@ def index(request):
                 conn.set_option(ldap.OPT_REFERRALS, 0)
                 conn.simple_bind_s(username_ldap, password)
             except ldap.LDAPError:
-                return redirect('index')
+                return redirect('login')
             request.session['username'] = username
             return redirect('/geral')
     else:
@@ -29,4 +29,4 @@ def logout(request):
         request.session.flush()
     except KeyError:
         pass
-    return redirect('index')
+    return redirect('login')

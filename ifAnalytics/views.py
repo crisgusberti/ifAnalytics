@@ -7,31 +7,31 @@ from django.http import JsonResponse
 #Renderiza as paginas HTML para acesso pelos links do menu da direita
 def geral(request):
     if not request.session.get('username'): #verifica autenticação
-        return redirect('index') #se não está autenticado, redireciona para a página de login
+        return redirect('login') #se não está autenticado, redireciona para a página de login
     else:
         return render(request, 'ifAnalytics/geral.html') #só vai carregar a página se o usuário esta autenticado
 
 def notas(request):
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         return render(request, 'ifAnalytics/notas.html')
 
 def frequencias(request):
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         return render(request, 'ifAnalytics/frequencias.html')
 
 def suporte(request):
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         return render(request, 'ifAnalytics/suporte.html')
 
 def detalhes(request):
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         return render(request, 'ifAnalytics/detalhes.html')
 
@@ -46,7 +46,7 @@ def namedtuplefetchall(cursor):
 # montagem dos combobox que filtram os dados dos gráficos
 def consulta_campus(request):
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         with connection.cursor() as cursor: # o metodo cursos() do Django serve para fazer consultas SQL cruas
             cursor.execute("SELECT id_unidade, nome FROM comum.unidade WHERE unidade_responsavel = id_unidade AND id_unidade NOT IN (2, 605, 723) ORDER BY nome")
@@ -56,7 +56,7 @@ def consulta_campus(request):
 
 def consulta_cursos(request):
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') # aqui eu pego o campus_ID que vem da base.html na função Jquery/ajax que chama a URL "consulta_cursos" 
         with connection.cursor() as cursor:
@@ -67,7 +67,7 @@ def consulta_cursos(request):
 
 def consulta_periodos(request):
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id')
         with connection.cursor() as cursor:
@@ -78,7 +78,7 @@ def consulta_periodos(request):
 
 def consulta_turmas(request):
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') #pegando as variáveis passads por ajax da base.html no jquery de consulta_turmas
         ano = request.GET.get('ano')
@@ -93,7 +93,7 @@ def consulta_turmas(request):
 #views que fazem as consultas e retornam os dados dos gráficos
 def get_data_forma_ingresso(request): #Gráfico 1
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -137,7 +137,7 @@ def get_data_forma_ingresso(request): #Gráfico 1
 
 def get_data_status_discente(request): #Gráfico 2
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -193,7 +193,7 @@ def get_data_status_discente(request): #Gráfico 2
 
 def get_data_total_matriculas(request): #Gráfico 3
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -249,7 +249,7 @@ def get_data_total_matriculas(request): #Gráfico 3
 
 def get_data_concluintes(request): #Gráfico 4 e 5
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -350,7 +350,7 @@ def get_data_concluintes(request): #Gráfico 4 e 5
 
 def get_data_tamanho_turmas(request): #Gráfico 6
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -406,7 +406,7 @@ def get_data_tamanho_turmas(request): #Gráfico 6
 
 def get_data_discentes_evadidos(request): #Gráfico 7
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -463,7 +463,7 @@ def get_data_discentes_evadidos(request): #Gráfico 7
 #Página de notas
 def get_data_notas_parciais(request): #Gráfico 8
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -530,7 +530,7 @@ def get_data_notas_parciais(request): #Gráfico 8
 
 def get_data_medias_finais(request): #Gráfico 9
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -596,7 +596,7 @@ def get_data_medias_finais(request): #Gráfico 9
  
 def get_data_discentes_exame(request): #Gráfico 10
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -662,7 +662,7 @@ def get_data_discentes_exame(request): #Gráfico 10
 
 def get_data_aprovados_reprovados(request): #Gráfico 12
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -728,7 +728,7 @@ def get_data_aprovados_reprovados(request): #Gráfico 12
 
 def get_data_status_disciplina(request): #Gráfico 13
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')
@@ -785,7 +785,7 @@ def get_data_status_disciplina(request): #Gráfico 13
 #Página de Frequências
 def get_data_percentuais_frequencia(request): #Gráfico 14 e 15 e 16
     if not request.session.get('username'):
-        return redirect('index')
+        return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') 
         curso_id  = request.GET.get('curso_id')

@@ -249,23 +249,6 @@
 		mostrarDiv("table", false);
 	});
 
-	//função que me diz qual é a página atual
-	function thisPage(){
-
-		var url = document.URL; //retorna a url da página
-
-		if (url[url.length-1] == "/"){ // remove última barra do endereço
-		  	url = url.substring(0, url.length-1);
-		}
-
-		var urlArr = url.split("/");//retorna um array da url separado pelas barras
-		var thisPage = urlArr[3]; //armazena em thisPage a posição 3 do array que é a posição ref. ao nome da página. Pq ele conta as barras do http:// na hora de splitar
-		if (thisPage == "frequencias") { //Correção do acento da palavra
-			thisPage = "Frequências";
-		}
-		return thisPage;
-	}
-
 	var thisPage = thisPage();  // recebe a string da página atual
 	if (thisPage == "geral" || thisPage == "notas" || thisPage == "Frequências") { //não considera a página de detalhes pq ela não tem menu
 		document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página

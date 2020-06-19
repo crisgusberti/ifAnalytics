@@ -1,10 +1,50 @@
-<html>
+{% load static %} <!-- carregamento de arquivos estaticos Django -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="IfAnalytics">
+	<meta name="keywwords" content="IFRS, Analytics, SIGAA">
+	<meta name="author" content="Crístian Gusberti">
+	<!-- <title>IfAnalytics</title> --> <!-- está sendo alterado dinamicamente pela função thisPage() abaixo -->
+	<link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+	<link rel="stylesheet" href="{% static 'css/Estilos.css' %}">
+	<script src="{% static '/js/funcoesGerais.js' %}"></script> <!-- inclusão das Funções Gerais javasript utilizadas ao longo do sistema -->
+</head>
+
 <body>
-<form method=POST>
-{% csrf_token %}
-Username: <input type=text name=username> <br>
-Password: <input type=password name=password><br>
-<input type=submit>
-</form>
+	<div id="cabecalho">
+		<a href="https://ifrs.edu.br/"><img class="imagem_right" src="{% static 'images/logo.png' %}" height="90" width="70" alt="Logotipo IFRS"></a>
+		<img class="imagem_left" src="{% static 'images/logo_ifanalytics.png' %}" height="80" width="110" alt="Logotipo ifAnalytics">
+		<br><br><br><br><br>
+	</div>
+
+	<div class="login"> <!-- TEMPLATE DE LOGIN -->
+		<div class="login-screen">
+			<div class="app-title">
+				<h2>Entre no Sistema</h2>
+			</div>
+
+			<form method=POST>
+			{% csrf_token %}
+				<div class="login-form">
+					<div class="control-group">
+						<input type="text" name=username placeholder="usuário">
+					</div>
+
+					<div class="control-group">
+						<input type="password" name=password placeholder="senha">
+					</div>
+
+					<input type=submit class="btn" value="Login">
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		var paginaAtual = thisPage(); //Verifica qual é a página atual
+		document.title = paginaAtual.charAt(0).toUpperCase() + paginaAtual.substr(1).toLowerCase() + " - IfAnalytics"; //Altera o title da página dinamicamente de acordo com a página atual, deixando a primeira letra em maiúscula
+	</script>
 </body>
 </html>
