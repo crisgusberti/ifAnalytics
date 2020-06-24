@@ -1,26 +1,14 @@
 {
 	"schmitt": {
-		"campus_id": [
-			51
-		],
-		"curso_id": [
-			10
-		]
+		"campus_id": 31,
+		"curso_id": 0
 	},
 	"01789355060": {
-		"campus_id": [
-			49
-		],
-		"curso_id": [
-			20
-		]
+		"campus_id": 49,
+		"curso_id": 0
 	},
 	"0329185": {
-		"campus_id": [
-			38
-		],
-		"curso_id": [
-			15
-		]
+		"campus_id": 31,
+		"curso_id": 379430
 	}
 }
