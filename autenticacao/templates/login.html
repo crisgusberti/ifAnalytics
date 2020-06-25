@@ -38,6 +38,18 @@
 		</form>
 	</div>
 
+	<!-- mostra mensagens de erro de login -->
+	{% if messages %} <!-- pega o retorno do sistema de mensagens do django da view login--> 
+	    {% for m in messages %} <!-- não sei exatamente pq precisa de um for -->
+	        <div style="display: none;"> <!-- div apenas para poder pegar o conteúdo da mensagem retornada, a div não aparece -->
+				<p id="msg">{{ m }}</p> <!-- mensagem em si -->
+		        <script>
+		        	alert(document.getElementById("msg").innerText) //mostra o conteúdo da mensagem dentro do alert
+		        </script> 
+	        </div>
+	    {% endfor %}
+	{% endif %}
+
 	<script>
 		var paginaAtual = thisPage(); //Verifica qual é a página atual
 		document.title = paginaAtual.charAt(0).toUpperCase() + paginaAtual.substr(1).toLowerCase() + " - IfAnalytics"; //Altera o title da página dinamicamente de acordo com a página atual, deixando a primeira letra em maiúscula

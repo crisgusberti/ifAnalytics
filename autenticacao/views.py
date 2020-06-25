@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import ldap, json, os
+from django.contrib import messages
 
 
 def login(request):
@@ -18,6 +19,7 @@ def login(request):
         else:
             #Verifica se é usuário autorizado na tabela
             if username not in usuarios: 
+                messages.info(request, 'Usuário não autorizado') #sistema de mensagens do Django que retorna uma mensagem especifica
                 return redirect('login')
             else:
                 request.session['username'] = username
@@ -32,6 +34,7 @@ def login(request):
                 conn.set_option(ldap.OPT_REFERRALS, 0)
                 conn.simple_bind_s(username_ldap, password)
             except ldap.LDAPError:
+                messages.info(request, 'Usuário ou senha incorretos')
                 return redirect('login')
             return redirect('/geral')
     else:
