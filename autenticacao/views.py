@@ -13,8 +13,8 @@ def login(request):
         password = request.POST['password']
         if username == 'admin' and password == 'admin':
             request.session['username'] = username
-            request.session['campus'] = 0
-            request.session['curso'] = 0
+            request.session['campus'] = 'FULL_ACCESS'
+            request.session['curso'] = 'FULL_ACCESS'
             return redirect('/geral')
         else:
             #Verifica se é usuário autorizado na tabela

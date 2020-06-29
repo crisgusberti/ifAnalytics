@@ -48,14 +48,14 @@ def consulta_campus(request):
     if not request.session.get('username'):
         return redirect('login')
     else:
-        if request.session['campus'] != 0: #request.session['campus'] vem da view de autenticação e define o campus de quem fez login, restringindo o acesso apenas a esse campus.
+        if request.session['campus'] != 'FULL_ACCESS': #request.session['campus'] vem da view de autenticação e define o campus de quem fez login, restringindo o acesso apenas a esse campus.
             id_unidade = request.session['campus']
             with connection.cursor() as cursor: # o metodo cursos() do Django serve para fazer consultas SQL cruas
                 cursor.execute("SELECT id_unidade, nome FROM comum.unidade WHERE unidade_responsavel = %s AND id_unidade = %s ORDER BY nome", [id_unidade, id_unidade])
                 rows = namedtuplefetchall(cursor); # retorma o resultado da consulta SQL em tuplas nomeadas
                 context = {'campus': rows} # armazena em conxtext o resultado das consultas em um array "campus"
             return render(request, 'ifAnalytics/consulta_campus.html', context) # carrega no arquivo html o conteúdo de context
-        else:  #Se o campus for 0 a pessoa tem acesso a todos os campus
+        else:  #Se o campus for FULL_ACCESS a pessoa tem acesso a todos os campus
             with connection.cursor() as cursor: 
                 cursor.execute("SELECT id_unidade, nome FROM comum.unidade WHERE unidade_responsavel = id_unidade AND id_unidade NOT IN (2, 605, 723) ORDER BY nome")
                 rows = namedtuplefetchall(cursor); 
@@ -67,14 +67,14 @@ def consulta_cursos(request):
         return redirect('login')
     else:
         campus_id = request.GET.get('campus_id') # aqui eu pego o campus_ID que vem da base.html na função Jquery/ajax que chama a URL "consulta_cursos" 
-        if request.session['curso'] != 0: #request.session['curso'] vem da view de autenticação e define o curso de quem fez login (no caso de um coordenador), restringindo o acesso apenas a esse curso.
+        if request.session['curso'] != 'FULL_ACCESS': #request.session['curso'] vem da view de autenticação e define o curso de quem fez login (no caso de um coordenador), restringindo o acesso apenas a esse curso.
             id_curso = request.session['curso']
             with connection.cursor() as cursor:
                 cursor.execute("SELECT id_curso, nome FROM curso WHERE ativo IS TRUE AND nivel = 'G' AND id_unidade IN( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND id_curso = %s", [campus_id, id_curso]) # o campus_id e o id_curso pego na variavel acima servem de parametros para a consulta SQL e é substituído em "%s"
                 rows = namedtuplefetchall(cursor);
                 context = {'cursos': rows}
             return render(request, 'ifAnalytics/consulta_cursos.html', context)
-        else: #Se o curso for 0 a pessoa tem acesso a todos os cursos do campus
+        else: #Se o curso for FULL_ACCESS a pessoa tem acesso a todos os cursos do campus
             with connection.cursor() as cursor:
                 cursor.execute("SELECT id_curso, nome FROM curso WHERE ativo IS TRUE AND nivel = 'G' AND id_unidade IN( SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s))", [campus_id]) # o campus_id pego na variavel acima serve de parametro para a consulta SQL e é substituído em "%s"
                 rows = namedtuplefetchall(cursor);
