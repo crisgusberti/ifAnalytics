@@ -7,7 +7,7 @@ SELECT
 
 FROM ensino.matricula_componente mc
 	INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula
-	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+	--INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma --não estou usando esse join
 	INNER JOIN discente d ON d.id_discente = mc.id_discente
 	
 WHERE mc.ano= 2019 AND mc.periodo =1

@@ -3,6 +3,10 @@ SELECT id_unidade, nome FROM comum.unidade
 WHERE unidade_responsavel = id_unidade AND id_unidade NOT IN (2, 605, 723)
 ORDER BY nome
 
+-----NOVA VERSÃO que mostrar IFRS tbm. É ESSA QUE ESTÁ NO SISTEMA
+SELECT id_unidade, nome FROM comum.unidade WHERE unidade_responsavel = id_unidade AND id_unidade NOT IN (2, 723)
+ORDER BY CASE WHEN nome = 'INSTITUTO FEDERAL RIO GRANDE DO SUL' THEN 1 ELSE 2 END, nome
+-------------
 
 -- consulta para os cursos
 -- EXEMPLO: 31 é o id do unidade 'Campus Porto Alegre'
@@ -56,3 +60,19 @@ WHERE
 	AND c.id_curso = 197350
 
 GROUP BY mc.id_turma, codigo_turma, codigo_disciplina, ccd.nome
+
+
+----NOVA VERSÃO - QUE ESTÁ IMPLEMENTADA NO SISTEMA
+--não estou usando mais o campus_id pq ele busca do mesmo jeito e assim funciona caso o usuário tenha selecionado IFRS q é campus ID 605 e que se eu passar esse ID no função "dti_ifrs.montar_arvore_organiz" ele não traz nada 
+SELECT t.ano, t.periodo, mc.id_turma, t.codigo AS codigo_turma, cc.codigo as codigo_disciplina, ccd.nome 
+FROM ensino.matricula_componente mc 
+INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma 
+INNER JOIN ensino.componente_curricular cc ON cc.id_disciplina = t.id_disciplina 
+INNER JOIN graduacao.curriculo_componente ccu ON ccu.id_componente_curricular = cc.id_disciplina 
+INNER JOIN ensino.componente_curricular_detalhes ccd on ccd.id_componente_detalhes = cc.id_detalhe 
+INNER JOIN graduacao.curriculo cur ON cur.id_curriculo = ccu.id_curriculo 
+INNER JOIN curso c ON c.id_curso = cur.id_curso 
+WHERE t.ano = %s and t.periodo = %s 
+AND cc.nivel = 'G' 
+AND c.id_curso = %s 
+GROUP BY t.ano, t.periodo, mc.id_turma, codigo_turma, codigo_disciplina, ccd.nome
