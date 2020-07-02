@@ -61,6 +61,6 @@ WHERE d.nivel = 'G'
 	
 	AND sm.descricao = 'APROVADO'
 	
-GROUP BY matricula, discente, curso, disciplina, situacao, contato
+GROUP BY id_matricula_componente, matricula, discente, curso, disciplina, situacao, contato --esse id_matricula_componente está aqui pq sem ele da diferença entre o numero de 'EXCLUIDAS' no gráfico de contagem e de 'EXCLUIDAS' na tabela detalhes (não entendi pq, mas assim como está funciona)
 ORDER BY discente, situacao
 	

@@ -704,7 +704,7 @@ WHERE d.nivel = 'G'
 AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16)
 AND mc.ano = 2019 AND mc.periodo = 1 --passa período
 AND sm.descricao = 'APROVADO' --passa parametro detalhe
-GROUP BY matricula, discente, curso, disciplina, situacao, contato
+GROUP BY id_matricula_componente, matricula, discente, curso, disciplina, situacao, contato --esse id_matricula_componente está aqui pq sem ele da diferença entre o numero de 'EXCLUIDAS' no gráfico de contagem e de 'EXCLUIDAS' na tabela detalhes (não entendi pq, mas assim como está funciona)
 ORDER BY discente, situacao
 
 --DETALHES para CURSO E TURMA
@@ -721,7 +721,7 @@ AND mc.ano = 2019 AND mc.periodo = 1 --passa período
 --AND d.id_curso = 197350 --passa curso
 --AND mc.id_turma = 2892 --passa turma
 AND sm.descricao = 'APROVADO' --passa parametro detalhe
-GROUP BY matricula, discente, curso, disciplina, situacao, contato
+GROUP BY id_matricula_componente, matricula, discente, curso, disciplina, situacao, contato --esse id_matricula_componente está aqui pq sem ele da diferença entre o numero de 'EXCLUIDAS' no gráfico de contagem e de 'EXCLUIDAS' na tabela detalhes (não entendi pq, mas assim como está funciona)
 ORDER BY discente, situacao
 
 ===========
