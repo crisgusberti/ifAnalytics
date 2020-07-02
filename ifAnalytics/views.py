@@ -71,7 +71,7 @@ def consulta_cursos(request):
 				with connection.cursor() as cursor:
 					cursor.execute("SELECT c.id_curso, c.id_unidade, right(u.sigla, 3) AS campus, c.nome FROM curso c INNER JOIN comum.unidade u ON c.id_unidade = u.id_unidade WHERE c.ativo IS TRUE AND c.nivel = 'G' ORDER BY u.sigla, c.nome") #Lista todos os cursos do IFRS
 					rows = namedtuplefetchall(cursor);
-					context = {'cursos': rows}
+					context = {'cursos': rows, "mostrar_campus": "True"} #envia um segundo parametro ("mostrar_campus": "True") p/ o template
 				return render(request, 'ifAnalytics/consulta_cursos.html', context)
 		else: #se não for IFRS faz as verificações de acordo com as permissões cadastradas no json.
 			if request.session['curso'] == 'FULL_ACCESS': #request.session['curso'] vem da view de autenticação e define o curso de quem fez login (no caso de um coordenador). Se o curso for FULL_ACCESS a pessoa tem acesso a todos os cursos de um campus específico.

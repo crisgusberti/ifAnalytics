@@ -1,6 +1,10 @@
 
 <option value="000000">Curso</option> <!-- deixa a primeira opção sempre neutra -->
 {% for curso in cursos %}
-	<option value="{{ curso.id_curso }}">{{ curso.campus }} - {{ curso.nome }}</option>
+    {% if mostrar_campus %} <!-- mostra_campus vem da view consulta_cursos onde o context vem pra cá com um dicionário "cursos" e um parametro "mostrar_campus" -->
+       <option value="{{ curso.id_curso }}">{{ curso.campus }} - {{ curso.nome}}</option>
+    {% else %}
+       <option value="{{ curso.id_curso }}">{{ curso.nome }}</option>
+    {% endif %}
 {% endfor %}
 
