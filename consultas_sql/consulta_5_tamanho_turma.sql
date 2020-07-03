@@ -1,4 +1,4 @@
---Consulta Gráfico 6: Tamanho da Turma
+--Consulta Gráfico 5 (era 6): Tamanho da Turma
 
 WITH q1 AS(
 SELECT 

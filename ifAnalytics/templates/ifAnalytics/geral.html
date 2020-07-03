@@ -53,11 +53,11 @@
         switch(chart_name) {
 
           case 'chart_forma_ingresso': 
-            google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'string', 'Forma de ingresso', 'number', 'Alunos', 'Forma de Ingresso', 'chart_forma_ingresso', 'pieChart_forma_ingresso');}); //chama a função que cria e popula uma dataTable, instancia, passa os dados e desenha o gráfico
+            google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'string', 'Forma de ingresso', 'number', 'Alunos', '1 - Forma de Ingresso', 'chart_forma_ingresso', 'pieChart_forma_ingresso');}); //chama a função que cria e popula uma dataTable, instancia, passa os dados e desenha o gráfico
           break
 
           case 'chart_status_discente': 
-            google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'string', 'Status dos discentes', 'number', 'Quantidade de alunos', 'Status dos Discentes', 'chart_status_discente', 'pieChart_status_discente');});
+            google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'string', 'Status dos discentes', 'number', 'Quantidade de alunos', '2 - Status dos Discentes', 'chart_status_discente', 'pieChart_status_discente');});
           break
 
           case 'chart_total_matriculas': 
@@ -69,20 +69,20 @@
                 arrayItem[2] = arrayItem[1] + ' alunos matricularam-se em  ' + arrayItem[0] + ' disciplinas'; //concatena qnt de alunos (string) com qnt de disciplinas (number) e adiciona em um terceiro item no array (arrayItem[2]) que é especifico pro tooltip
               });
             }
-            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Disciplinas', 'number', 'Quantidade_Alunos', 'Quantidade de Disciplinas em que os Alunos se Matricularam', 'Quantidade de disciplinas', 'Quantidade de alunos', 'chart_total_matriculados', 'columnChart_total_matriculas');});
+            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Disciplinas', 'number', 'Quantidade_Alunos', '3 - Quantidade de Disciplinas em que os Alunos se Matricularam', 'Quantidade de disciplinas', 'Quantidade de alunos', 'chart_total_matriculados', 'columnChart_total_matriculas');});
           break
 
           case 'chart_concluintes': 
             let dadosNovoArray = formataRetorno(dados, labels =["Alunos Jubilados", "Alunos em Vias de Jubilar", "Alunos Formandos"]);
-            google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade', 'Jubilados, em Vias de Jubilar e Formandos', 'Situação dos alunos', 'Quantidade de alunos', 'chart_concluintes', 'columnChart_concluintes');}); 
+            google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade', '4 - Jubilados, em Vias de Jubilar e Formandos', 'Situação dos alunos', 'Quantidade de alunos', 'chart_concluintes', 'columnChart_concluintes');}); 
           break
           
           case 'chart_tamanho_turmas':  
-            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Disciplina', 'number', 'Alunos_matriculados', 'Tamanho da(s) Turma(s)', 'Disciplinas', 'Alunos matriculados', 'chart_tamanho_turmas', 'columnChart_tamanho_turmas');});
+            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Disciplina', 'number', 'Alunos_matriculados', '5 - Tamanho da(s) Turma(s)', 'Disciplinas', 'Alunos matriculados', 'chart_tamanho_turmas', 'columnChart_tamanho_turmas');});
           break
 
           case 'chart_discentes_evadidos':  
-            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Discentes Evadidos', 'number', 'Alunos_evadidos', 'Discentes Evadidos por Disciplina', 'Disciplinas', 'Alunos Evadidos', 'chart_discentes_evadidos', 'columnChart_discentes_evadidos');});
+            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Discentes Evadidos', 'number', 'Alunos_evadidos', '6 - Discentes Evadidos por Disciplina', 'Disciplinas', 'Alunos Evadidos', 'chart_discentes_evadidos', 'columnChart_discentes_evadidos');});
           break
         }
       },

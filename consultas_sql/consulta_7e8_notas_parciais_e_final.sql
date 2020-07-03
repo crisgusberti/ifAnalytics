@@ -1,4 +1,4 @@
---Consulta Gráfico 8 e 9: Notas Parciais e Média Final
+--Consulta Gráfico 7 e 8 (era 8 e 9): Notas Parciais e Média Final
 
 WITH Q1 AS (
 SELECT mc.id_matricula_componente, nu.nota_final_unidade, nu.unidade, mc.id_discente

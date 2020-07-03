@@ -1,4 +1,4 @@
---Gráfico 14 e 15 e 16: Percentuais de Frequências
+--Gráfico 12 (era 14 e 15 e 16): Percentuais de Frequências
 
 SELECT 
 	SUM (CASE WHEN mc.porcentagem_frequencia = 100 THEN 1 ELSE 0 END) AS total_100, 

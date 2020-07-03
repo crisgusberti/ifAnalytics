@@ -53,29 +53,29 @@
           case 'chart_notas_parciais': 
             dadosNovoArray = formataRetorno(dados, labels =["ACIMA DE 7", "ABAIXO DE 7"]);
             if (unidade == 1) {
-              google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', 'Notas Parciais Unidade 1', 'chart_notas_parciais1', 'pieChart_notas_parciais_unidade1');}); //chama a função que cria e popula uma dataTable, instancia, passa os dados e desenha o gráfico
+              google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', '7.1 - Notas Parciais Unidade 1', 'chart_notas_parciais1', 'pieChart_notas_parciais_unidade1');}); //chama a função que cria e popula uma dataTable, instancia, passa os dados e desenha o gráfico
             } else {
-              google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', 'Notas Parciais Unidade 2', 'chart_notas_parciais2', 'pieChart_notas_parciais_unidade2');});
+              google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', '7.2 - Notas Parciais Unidade 2', 'chart_notas_parciais2', 'pieChart_notas_parciais_unidade2');});
             }
           break
 
           case 'chart_medias_finais': 
             dadosNovoArray = formataRetorno(dados, labels =["ACIMA DE 5", "ABAIXO DE 5"]);
-            google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', 'Médias Finais', 'chart_medias_finais', 'pieChart_medias_finais');}); 
+            google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade de Alunos', '8 - Médias Finais', 'chart_medias_finais', 'pieChart_medias_finais');}); 
           break
           
           case 'chart_discentes_exame':  
             dadosNovoArray = formataRetorno(dados, labels =["DISCENTES QUE NÃO ESTÃO EM EXAME", "DISCENTES EM EXAME"]);
-            google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Discentes que não estão em exame', 'number', 'Discentes em exame', 'Discentes em Exame', 'chart_discentes_exame', 'pieChart_discentes_exame');});
+            google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Discentes que não estão em exame', 'number', 'Discentes em exame', '9 - Discentes em Exame', 'chart_discentes_exame', 'pieChart_discentes_exame');});
           break
 
           case 'chart_aprovados_reprovados':  
             dadosNovoArray = formataRetorno(dados, labels =["DISCENTES APROVADOS", "DISCENTES REPROVADOS"]);
-            google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Discentes Aprovados', 'number', 'Discentes Reprovados', 'Aprovados e Reprovados', 'chart_aprovados_reprovados', 'pieChart_aprovados_reprovados');});
+            google.charts.setOnLoadCallback(function() {drawGeralPizza(dadosNovoArray, 'string', 'Discentes Aprovados', 'number', 'Discentes Reprovados', '10 - Aprovados e Reprovados', 'chart_aprovados_reprovados', 'pieChart_aprovados_reprovados');});
           break
 
           case 'chart_status_disciplinas':  
-            google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'string', 'Status Disciplina', 'number', 'Quantidade Alunos', 'Status nas Disciplinas', 'chart_status_disciplinas', 'pieChart_status_disciplinas');});
+            google.charts.setOnLoadCallback(function() {drawGeralPizza(dados, 'string', 'Status Disciplina', 'number', 'Quantidade Alunos', '11 - Status nas Disciplinas', 'chart_status_disciplinas', 'pieChart_status_disciplinas');});
           break
         }
       },

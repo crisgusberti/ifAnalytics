@@ -1,4 +1,4 @@
--- Gráfico 10: Discentes em exame
+-- Gráfico 9 (era 10): Discentes em exame
 
 WITH Q1 AS (
 SELECT 

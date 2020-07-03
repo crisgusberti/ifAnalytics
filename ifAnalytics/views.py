@@ -408,7 +408,7 @@ def get_data_total_matriculas(request): #Gráfico 3
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
 
-def get_data_concluintes(request): #Gráfico 4 e 5
+def get_data_concluintes(request): #Gráfico 4
 	if not request.session.get('username'):
 		return redirect('login')
 	else:
@@ -601,7 +601,7 @@ def get_data_concluintes(request): #Gráfico 4 e 5
 						rows = cursor.fetchall();
 					return JsonResponse(rows, safe=False) 
 
-def get_data_tamanho_turmas(request): #Gráfico 6
+def get_data_tamanho_turmas(request): #Gráfico 5
 	if not request.session.get('username'):
 		return redirect('login')
 	else:
@@ -705,7 +705,7 @@ def get_data_tamanho_turmas(request): #Gráfico 6
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
 
-def get_data_discentes_evadidos(request): #Gráfico 7
+def get_data_discentes_evadidos(request): #Gráfico 6
 	if not request.session.get('username'):
 		return redirect('login')
 	else:
@@ -811,7 +811,7 @@ def get_data_discentes_evadidos(request): #Gráfico 7
 
 
 #Página de notas
-def get_data_notas_parciais(request): #Gráfico 8
+def get_data_notas_parciais(request): #Gráfico 7
 	if not request.session.get('username'):
 		return redirect('login')
 	else:
@@ -936,7 +936,7 @@ def get_data_notas_parciais(request): #Gráfico 8
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
 
-def get_data_medias_finais(request): #Gráfico 9
+def get_data_medias_finais(request): #Gráfico 8
 	if not request.session.get('username'):
 		return redirect('login')
 	else:
@@ -1060,7 +1060,7 @@ def get_data_medias_finais(request): #Gráfico 9
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
  
-def get_data_discentes_exame(request): #Gráfico 10
+def get_data_discentes_exame(request): #Gráfico 9
 	if not request.session.get('username'):
 		return redirect('login')
 	else:
@@ -1184,7 +1184,7 @@ def get_data_discentes_exame(request): #Gráfico 10
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
 
-def get_data_aprovados_reprovados(request): #Gráfico 12
+def get_data_aprovados_reprovados(request): #Gráfico 10
 	if not request.session.get('username'):
 		return redirect('login')
 	else:
@@ -1308,7 +1308,7 @@ def get_data_aprovados_reprovados(request): #Gráfico 12
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
 
-def get_data_status_disciplina(request): #Gráfico 13
+def get_data_status_disciplina(request): #Gráfico 11
 	if not request.session.get('username'):
 		return redirect('login')
 	else:
@@ -1413,7 +1413,7 @@ def get_data_status_disciplina(request): #Gráfico 13
 				return JsonResponse(rows, safe=False)	
 
 #Página de Frequências
-def get_data_percentuais_frequencia(request): #Gráfico 14 e 15 e 16
+def get_data_percentuais_frequencia(request): #Gráfico 12
 	if not request.session.get('username'):
 		return redirect('login')
 	else:

@@ -1,4 +1,4 @@
--- Consulta Gráficos 4 e 5: Concluíntes e não concluíntes
+-- Consulta Gráficos 4 (era 4 e 5): Concluíntes e não concluíntes
 
 -----  CONSIDERANDO CAMPUS/CURSO
 SELECT 
