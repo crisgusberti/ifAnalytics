@@ -166,7 +166,7 @@ ORDER BY sd.descricao, d.nivel, c.nome, nome_pessoa
 
 
 =====================================================
---CONSULTA DETALHES STATUS DOS ALUNOS, FEITA POR MIM!
+--CONSULTA DETALHES STATUS DOS ALUNOS, FEITA POR MIM! --não estão mais sendo usadas
 SELECT d.matricula, p.nome AS discente, c.nome AS curso, sd.descricao AS status, p.email AS contato
 FROM discente d
 INNER JOIN status_discente sd ON sd.status = d.status 
@@ -192,4 +192,80 @@ AND d.id_curso =  197350
 --parametro detalhes
 AND sd.descricao = 'ATIVO'
 
+ORDER BY discente
+
+
+===============================================================
+--NOVAS VERSÕES FEITAS POR MIM --NÃO ESTÃO MAIS SENDO USADAS
+
+--CONTAGEM para campus e curso
+SELECT sd.descricao, COUNT(d.*) AS total_alunos 
+FROM discente d 
+INNER JOIN status_discente sd ON sd.status = d.status 
+WHERE d.nivel IN ('G')
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
+AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(49))
+--AND d.id_curso = 211165 --lic matematica
+GROUP BY sd.status
+ORDER BY sd.descricao
+
+--CONTAGEM para TURMA
+SELECT sd.descricao, COUNT(d.*) AS total_alunos 
+FROM discente d 
+INNER JOIN status_discente sd ON sd.status = d.status 
+INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente 
+INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+WHERE d.nivel IN ('G') 
+AND t.ano = 2019 and t.periodo = 1 --pega ano/periodo de outro lugar
+AND mc.id_turma = 3478
+GROUP BY sd.status ORDER BY sd.descricao
+
+
+--DETALHES --NÃO ESTÃO MAIS SENDO USADAS
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, sd.descricao AS status, p.email AS contato
+FROM discente d
+INNER JOIN status_discente sd ON sd.status = d.status 
+INNER JOIN curso c ON c.id_curso = d.id_curso
+INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa
+--INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente --para a consulta da turma, decomentar o join abaixo
+WHERE d.nivel IN ('G')
+AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
+AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(49))
+--AND d.id_curso =  211165
+--AND mc.id_turma = 3511
+AND sd.descricao = 'ATIVO'
+ORDER BY discente
+
+
+============================
+ -- CONTAGEM NOVA VERSÃO UNIFICADA PARA CAMPUS/CURSO/TURMA !!!!!!!!!!!!!!!!!!!!!QUE ESTÃO IMPLEMENTADAS NO SISTEMA!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SELECT sd.descricao, COUNT(distinct d.*) AS total_alunos 
+FROM discente d 
+INNER JOIN status_discente sd ON sd.status = d.status 
+INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente 
+INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+WHERE d.nivel IN ('G')
+AND t.ano = 2019 and t.periodo = 1
+AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(49))
+--AND d.id_curso = 211165 --lic matematica
+--AND mc.id_turma = 3511
+GROUP BY sd.status
+ORDER BY sd.descricao
+
+
+-- DETALHES NOVA VERSÃO UNIFICADA PARA CAMPUS/CURSO/TURMA !!!!!!!!!!!!!!!!!!!!!QUE ESTÃO IMPLEMENTADAS NO SISTEMA!!!!!!!!!!!!!!!!!!!!!!!!!!!
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, sd.descricao AS status, p.email AS contato
+FROM discente d
+INNER JOIN status_discente sd ON sd.status = d.status 
+INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente 
+INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+INNER JOIN curso c ON c.id_curso = d.id_curso
+INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa
+WHERE d.nivel IN ('G')
+AND t.ano = 2019 and t.periodo = 1
+AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(49))
+--AND d.id_curso =  211165 --lic matematica
+--AND mc.id_turma = 3511
+AND sd.descricao = 'ATIVO'
+GROUP BY d.matricula, discente, curso, sd.descricao, contato
 ORDER BY discente

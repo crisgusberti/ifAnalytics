@@ -82,59 +82,52 @@ ORDER BY discente
 
 ===========
 -- Consulta STATUS DISCENTE
---para campus
-SELECT sd.descricao, COUNT(d.*) AS total_alunos
+SELECT sd.descricao, COUNT(distinct d.*) AS total_alunos 
 FROM discente d 
 INNER JOIN status_discente sd ON sd.status = d.status 
-WHERE d.nivel IN ('G') 
-AND d.ano_ingresso = 2019 --passar ano
-AND d.periodo_ingresso = 1 --passar período
-GROUP BY sd.status ORDER BY sd.descricao
-
---para curso (Não difere da consulta para outros campi)
-SELECT sd.descricao, COUNT(d.*) AS total_alunos 
-FROM discente d 
-INNER JOIN status_discente sd ON sd.status = d.status 
-WHERE d.id_curso = %s  --passar curso
-AND d.ano_ingresso = %s --passar ano
-AND d.periodo_ingresso = %s --passar período
-GROUP BY sd.status ORDER BY sd.descricao
-
---para turma (Não difere da consulta para outros campi)
-SELECT sd.descricao, COUNT(distinct d.id_discente) AS total_alunos 
-FROM discente d 
-INNER JOIN status_discente sd ON sd.status = d.status  
 INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente 
-WHERE d.status NOT IN (2, 3, 6, 16, 9, 10, 13) 
-AND mc.id_turma = %s --passa turma
-GROUP BY sd.status ORDER BY sd.descricao
+INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
+WHERE d.nivel IN ('G')
+AND t.ano = 2019 and t.periodo = 1
+--AND d.id_curso = 211165 --lic matematica
+--AND mc.id_turma = 3511
+GROUP BY sd.status
+ORDER BY sd.descricao
 
 -----------------------
 -- Consulta DETALHES STATUS DISCENTE (PARA CAMPUS)
 SELECT d.matricula, p.nome AS discente, (c.nome || ' (' || m.nome || ')') AS curso, sd.descricao AS status, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, sd.descricao AS status, p.email AS contato
 FROM discente d
 INNER JOIN status_discente sd ON sd.status = d.status 
+INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente 
+INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
 INNER JOIN curso c ON c.id_curso = d.id_curso
 INNER JOIN comum.municipio m ON c.id_municipio = m.id_municipio
 INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa
 WHERE d.nivel IN ('G')
-AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1 --passa período - turma não leva ano e período
-AND sd.descricao = 'ATIVO' --passa paramentro detalhe
+AND t.ano = 2019 and t.periodo = 1
+--AND d.id_curso =  211165 --lic matematica
+--AND mc.id_turma = 3511
+AND sd.descricao = 'ATIVO'
+GROUP BY d.matricula, discente, curso, sd.descricao, contato
 ORDER BY discente
+
 
 --DETALHES para curso e turma
 SELECT d.matricula, p.nome AS discente, c.nome AS curso, sd.descricao AS status, p.email AS contato
 FROM discente d
 INNER JOIN status_discente sd ON sd.status = d.status 
+INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente 
+INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
 INNER JOIN curso c ON c.id_curso = d.id_curso
 INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa
---para a consulta da turma, decomentar o join abaixo
---INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente
 WHERE d.nivel IN ('G')
-AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1 --passa período - turma não leva ano e período
---AND d.id_curso =  197350 --passa curso
---AND mc.id_turma = 2889 --passa turma
-AND sd.descricao = 'ATIVO' --passa paramentro detalhe
+AND t.ano = 2019 and t.periodo = 1
+--AND d.id_curso =  211165 --lic matematica
+--AND mc.id_turma = 3511
+AND sd.descricao = 'ATIVO'
+GROUP BY d.matricula, discente, curso, sd.descricao, contato
 ORDER BY discente
 
 
