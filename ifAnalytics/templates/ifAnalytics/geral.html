@@ -76,9 +76,9 @@
             let dadosNovoArray = formataRetorno(dados, labels =["Alunos Jubilados", "Alunos em Vias de Jubilar", "Alunos Formandos"]);
             google.charts.setOnLoadCallback(function() {drawGeralColuna(dadosNovoArray, 'string', 'Situação', 'number', 'Quantidade', '4 - Jubilados, em Vias de Jubilar e Formandos', 'Situação dos alunos', 'Quantidade de alunos', 'chart_concluintes', 'columnChart_concluintes');}); 
           break
-          
+
           case 'chart_tamanho_turmas':  
-            google.charts.setOnLoadCallback(function() {drawGeralColuna(dados, 'string', 'Disciplina', 'number', 'Alunos_matriculados', '5 - Tamanho da(s) Turma(s)', 'Disciplinas', 'Alunos matriculados', 'chart_tamanho_turmas', 'columnChart_tamanho_turmas');});
+            google.charts.setOnLoadCallback(function() {drawGeralComboChart(dados, 'string', 'Disciplina', 'number', 'Alunos_matriculados', '5 - Tamanho da(s) Turma(s)', 'Disciplinas', 'Alunos matriculados', 'chart_tamanho_turmas', 'comboChart_tamanho_turmas');});
           break
 
           case 'chart_discentes_evadidos':  
@@ -249,6 +249,87 @@
     //DESENHA O GRÁFICO (vale para todos os gráficos de coluna)
     this[chart_name].draw(view, options);//passando a view no lugar da DataTable
   }
+
+
+  function drawGeralComboChart(dados, tipo_coluna1, coluna_1, tipo_coluna2, coluna_2, titulo, titulo_hAxis, titulo_vAxis, chart_name, div) {
+    titulo_grafico = titulo //var global (preciso delas para a função que centraliza o titulo dos gráficos)
+    chart_div = div //var global
+
+    //DEFININDO AS OPÇÕES DO GRÁFICO
+    var options = {
+      title : titulo,
+      hAxis: {
+        title: titulo_hAxis,
+        textStyle: {
+          fontsize: 7,
+        },
+      },
+      vAxis: {
+        title: titulo_vAxis,
+        viewWindow:{ //Impede valores negativos 
+          min: 0
+        },
+      },
+      seriesType: 'bars',
+      series: {1: {type: 'line', }}, //define qual serie vai ser em um tipo de gráfico diferente
+      backgroundColor:{ fill: '#E1F0DB'},
+      chartArea: {left: 45, top: 40, height: 250, width: "100%"},
+      legend: {position: 'none'},
+      titleTextStyle: {fontSize: 17, bold: true, color:'black'},
+    };
+    
+    //CRIAÇÃO DAS DATATABLE (vale para todos os gráficos combochart)
+    //cada gráfico precisa de sua data_table pois cada gráfico tem que ter um listener individual que detecta a interatividade. Da mesma forma cada gráfico precisa ter sua dataTable disponível para que seja possível acessar o valor selecionado no gráfico pelo usuário
+    this['data_table_' + chart_name]= new google.visualization.DataTable();
+    this['data_table_' + chart_name].addColumn(tipo_coluna1, coluna_1);
+    this['data_table_' + chart_name].addColumn(tipo_coluna2, coluna_2);
+    this['data_table_' + chart_name].addColumn('number', 'Média Geral de Matriculas');
+    this['data_table_' + chart_name].addColumn({type: 'string', role: 'tooltip'}); //coluna para a legenda (tooltip) da linha da média no gráfico
+
+    //ALTERA TAMANHO DO GRÁFICO
+    if (querySelector == "periodo" || querySelector == "curso"){ //se for periodo ou curso mostra o gráfico grande e altera algumas opções
+      options.hAxis.textStyle['fontSize'] = 7 //seta o tamanho de fonte dos labels do eixo horizontal
+      options.hAxis['slantedText'] = 'True' //forca a inclinação da legenda do eixo horizontal
+      options.hAxis['slantedTextAngle'] = 60 //define o angulo de inclinação dessa legenda
+      document.getElementById(chart_div).style.width = '1275px'; //aumenta o tamanho do gráfico
+      document.getElementById(chart_div).style.height = '450px';
+    } else { //mostra gráfico pequeno
+      var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
+      element.style.removeProperty("width");
+      element.style.removeProperty("height");
+    }
+
+    //CÁLCULO DA MÉDIA e insersão da 3ª coluna com o valor da média e 4ª coluna com a legenda
+    let total_alunos = 0;
+    for (let i = 0; i < dados.length; i++) { 
+      total_alunos = total_alunos + dados[i][1] //soma todos os valores numericos (qnt alunos de todas as turmas)
+    }
+    let media = total_alunos/dados.length
+    for (let i = 0; i < dados.length; i++) {
+      dados[i][2] = parseFloat(media.toFixed(2)) //adiciona a média na posição 2 do array (posição0 é nomeTurma, posição1 é qntAlunos, e posição2 é média)
+      dados[i][3] = "Média Geral de Matrículas no Período: " + dados[i][2] //adiciona na terceira posição (que vai ser a quarta coluna da tabela) a legenda
+    }
+
+    //POPULA DATA_TABLE (vale para todos os gráficos combochart)
+    for (let i = 0; i < dados.length; i++) {
+      this['data_table_' + chart_name].addRows([dados[i]]);
+    }
+
+    //CRIA VIEW (vale para todos os gráficos combochart)
+    //Para adicionar labels dentro das colunas é preciso criar essa view e adicionar ela como parametro na função que desenha o gráfico (mais abaixo), não mais a DataTable, essa agora é um parametro da view
+    var view = new google.visualization.DataView(this['data_table_' + chart_name]);
+    view.setColumns([0, 1, { calc: "stringify", sourceColumn: 1, type: "string", role: "annotation" }, 2, 3]);
+ 
+    //CRIA O GRÁFICO (vale para todos os gráficos combochart)
+    this[chart_name]  = new google.visualization.ComboChart(document.getElementById(chart_div));
+
+    //ADICIONA LISTENER(vale para todos os gráficos combochart)
+    google.visualization.events.addListener(this[chart_name], 'ready', titleCenter); //listener que centraliza o titulo
+    google.visualization.events.addListener(this[chart_name], 'select', window['select_handler_' + chart_name]); //lister para interatividade
+    
+    //DESENHA O GRÁFICO (vale para todos os gráficos combochart)
+    this[chart_name].draw(view, options);//passando a view no lugar da DataTable
+  }
 </script>
 
 <script> //FUNÇÕES HANDLER PARA INTERATIVIDADE DE CADA UM DOS GRÁFICOS
@@ -341,7 +422,7 @@
   <div id="pieChart_status_discente" class="grafico alinha_grafico_direita"></div>
   <div id="columnChart_total_matriculas" class="grafico alinha_grafico_esquerda"></div>
   <div id="columnChart_concluintes" class="grafico alinha_grafico_direita"></div>
-  <div id="columnChart_tamanho_turmas" class="grafico alinha_grafico_esquerda"></div>
+  <div id="comboChart_tamanho_turmas" class="grafico alinha_grafico_esquerda"></div>
   <div id="columnChart_discentes_evadidos" class="grafico alinha_grafico_direita"></div>
 </div>
 
