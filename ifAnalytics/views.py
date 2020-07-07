@@ -423,22 +423,22 @@ def get_data_concluintes(request): #Gráfico 4
 		if campus_id == '605': #lista de todo o IFRS
 			if query_selector == "campus" or query_selector == "periodo":
 				with connection.cursor() as cursor:
-					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) GROUP BY d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
-					parametros = [anoSemestre, anoSemestre]
+					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) GROUP BY d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
+					parametros = [anoSemestre, anoSemestre, anoSemestre]
 					cursor.execute(sql_string, parametros)
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
 			if query_selector == "curso":
 				with connection.cursor() as cursor:
-					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_curso = %s GROUP BY d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
-					parametros = [curso_id, anoSemestre, anoSemestre]
+					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_curso = %s GROUP BY d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
+					parametros = [curso_id, anoSemestre, anoSemestre, anoSemestre]
 					cursor.execute(sql_string, parametros)
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
 			if query_selector == "turma":
 				with connection.cursor() as cursor:
-					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_turma = %s GROUP BY d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
-					parametros = [turma_id, anoSemestre, anoSemestre]
+					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_turma = %s GROUP BY d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
+					parametros = [turma_id, anoSemestre, anoSemestre, anoSemestre]
 					cursor.execute(sql_string, parametros)
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False) 
@@ -447,21 +447,22 @@ def get_data_concluintes(request): #Gráfico 4
 			if coluna_selecionada == "Alunos Formandos": #detalhes para coluna de CONCLUINTES
 				if query_selector == "campus_detalhes" or query_selector == "periodo_detalhes":
 					with connection.cursor() as cursor:
-						sql_string = "SELECT d.matricula, p.nome AS discente, (c.nome || ' (' || m.nome || ')') AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso INNER JOIN comum.municipio m ON c.id_municipio = m.id_municipio WHERE d.nivel = 'G' AND d.status = 8 GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
-						cursor.execute(sql_string)
+						sql_string = "SELECT d.matricula, p.nome AS discente, (c.nome || ' (' || m.nome || ')') AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso INNER JOIN comum.municipio m ON c.id_municipio = m.id_municipio WHERE d.nivel = 'G' AND d.status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
+						parametros = [anoSemestre]
+						cursor.execute(sql_string, parametros)
 						rows = cursor.fetchall();
 					return JsonResponse(rows, safe=False)
 				if query_selector == "curso_detalhes":
 					with connection.cursor() as cursor:
-						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND d.id_curso = %s GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
-						parametros = [curso_id]
+						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') AND d.id_curso = %s GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
+						parametros = [anoSemestre, curso_id]
 						cursor.execute(sql_string, parametros)
 						rows = cursor.fetchall();
 					return JsonResponse(rows, safe=False)
 				if query_selector == "turma_detalhes":
 					with connection.cursor() as cursor:
-						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND mc.id_turma = %s GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
-						parametros = [turma_id]
+						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') AND mc.id_turma = %s GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
+						parametros = [anoSemestre, turma_id]
 						cursor.execute(sql_string, parametros)
 						rows = cursor.fetchall();
 					return JsonResponse(rows, safe=False) 
@@ -513,22 +514,22 @@ def get_data_concluintes(request): #Gráfico 4
 		else: #lista apenas dos parametros especificados
 			if query_selector == "campus" or query_selector == "periodo":
 				with connection.cursor() as cursor:
-					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) group by d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
-					parametros = [campus_id, anoSemestre, anoSemestre]
+					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) group by d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
+					parametros = [campus_id, anoSemestre, anoSemestre, anoSemestre]
 					cursor.execute(sql_string, parametros)
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
 			if query_selector == "curso":
 				with connection.cursor() as cursor:
-					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.id_curso = %s group by d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
-					parametros = [campus_id, curso_id, anoSemestre, anoSemestre]
+					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.id_curso = %s group by d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
+					parametros = [campus_id, curso_id, anoSemestre, anoSemestre, anoSemestre]
 					cursor.execute(sql_string, parametros)
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False)
 			if query_selector == "turma":
 				with connection.cursor() as cursor:
-					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_turma = %s group by d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
-					parametros = [turma_id, anoSemestre, anoSemestre]
+					sql_string = "WITH q1 AS(SELECT d.id_discente, d.prazo_conclusao, d.status FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente WHERE d.nivel = 'G' AND d.status NOT IN (-1, 2, 3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16) AND mc.id_turma = %s group by d.id_discente) SELECT SUM (CASE WHEN prazo_conclusao < %s THEN 1 ELSE 0 END) AS alunos_jubilados, SUM (CASE WHEN prazo_conclusao = %s AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, SUM (CASE WHEN status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') THEN 1 ELSE 0 END) AS alunos_formandos FROM q1"
+					parametros = [turma_id, anoSemestre, anoSemestre, anoSemestre]
 					cursor.execute(sql_string, parametros)
 					rows = cursor.fetchall();
 				return JsonResponse(rows, safe=False) 
@@ -537,22 +538,22 @@ def get_data_concluintes(request): #Gráfico 4
 			if coluna_selecionada == "Alunos Formandos": #detalhes para coluna de CONCLUINTES
 				if query_selector == "campus_detalhes" or query_selector == "periodo_detalhes":
 					with connection.cursor() as cursor:
-						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
-						parametros = [campus_id]
+						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
+						parametros = [anoSemestre, campus_id]
 						cursor.execute(sql_string, parametros)
 						rows = cursor.fetchall();
 					return JsonResponse(rows, safe=False)
 				if query_selector == "curso_detalhes":
 					with connection.cursor() as cursor:
-						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.id_curso = %s GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
-						parametros = [campus_id, curso_id]
+						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(%s)) AND d.id_curso = %s GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
+						parametros = [anoSemestre, campus_id, curso_id]
 						cursor.execute(sql_string, parametros)
 						rows = cursor.fetchall();
 					return JsonResponse(rows, safe=False)
 				if query_selector == "turma_detalhes":
 					with connection.cursor() as cursor:
-						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND mc.id_turma = %s GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
-						parametros = [turma_id]
+						sql_string = "SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato FROM ensino.matricula_componente mc INNER JOIN discente d ON d.id_discente = mc.id_discente INNER JOIN comum.pessoa p ON p.id_pessoa = d.id_pessoa INNER JOIN curso c ON c.id_curso = d.id_curso WHERE d.nivel = 'G' AND d.status = 8 AND %s = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') AND mc.id_turma = %s GROUP BY matricula, discente, curso, d.prazo_conclusao, contato ORDER BY discente"
+						parametros = [anoSemestre, turma_id]
 						cursor.execute(sql_string, parametros)
 						rows = cursor.fetchall();
 					return JsonResponse(rows, safe=False) 

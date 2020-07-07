@@ -74,7 +74,7 @@ FROM q1
 
 ================================================ --VERSÃO IMPLANTADA NO SISTEMA!!!!!!
 --CONSULTA OFICIAL DO GRÁFICO COM 3 COLUAS, UMA PARA CADA INDICADOR (JUBILADOS. EM VIAS DE JUBILAR. FORMANDOS)
--- da versão  anterior para essa apenas foi adicionado a linha do SUM CASE prazo_conclusão = XXX AND status != 8
+-- da versão  anterior para essa apenas foi adicionado a linha do SUM CASE prazo_conclusão = XXX AND status != 8 além de alterar a consulta para os formandos
 
 WITH q1 AS(
 SELECT d.id_discente, d.prazo_conclusao, d.status --preciso do ID pra grupar e não contar repetido e das outras duas colunas pq são elas que vão ser somadas no select abaixo
@@ -100,7 +100,7 @@ group by d.id_discente
 SELECT 
 	SUM (CASE WHEN prazo_conclusao < 20201 THEN 1 ELSE 0 END) AS alunos_jubilados, --passar mesmo ano e periodo somente aqui
 	SUM (CASE WHEN prazo_conclusao = 20201 AND status !=8 THEN 1 ELSE 0 END) AS alunos_quase_formandos, --alunos q tem prazo de conclusão o ano/semestre atual e não são formandos
-	SUM (CASE WHEN status = 8 THEN 1 ELSE 0 END) AS alunos_formandos --não considero o prazo_conclusão pq só quero saber os alunos que são formandos, independente de prazo.
+	SUM (CASE WHEN status = 8 AND 20201 = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') THEN 1 ELSE 0 END) AS alunos_formandos -- além do aluno ser status 8 (formando) ele só vai contar se o ano/periodo selecionado for igual ao ano/periodo do calendário atualmente vigente para o IFRS. Se eu não fizer esse segundo teste, ele vai trazer formandos retroativos, ou seja, vai trazer todos os alunos com status 8 independente do período que for selecionado, e isso está errado pois o formando de 20201 não estava formando em 20192, por exemplo.
 FROM q1
 
 
@@ -152,7 +152,9 @@ FROM ensino.matricula_componente mc
 
 WHERE d.nivel = 'G'
 	
-	AND d.status = 8 --não considero o prazo_conclusão pq só quero saber os alunos que são formandos, independente de prazo.
+	AND d.status = 8
+
+	AND 20201 = (SELECT cast(cast(ano as varchar) || cast(periodo as varchar) as integer) as ano_periodo FROM comum.calendario_academico WHERE nivel = 'G' AND id_unidade = 605 AND vigente = 'true') --passa ano/periodo aqui
 	
     -- busca o campus
 	AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_organiz(49)) --caxias
