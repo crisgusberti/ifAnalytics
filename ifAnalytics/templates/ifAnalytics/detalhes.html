@@ -73,31 +73,6 @@
 		mostrarDiv("table", true);
 	}
 
-
-	//Função que oculta ou mostra a div dos gráficos ou da tabela de detalhes. Essa função é necessária para mostrar, alternadamente, os gráficos ou a tabela de detalhes na mesma página, permitindo assim usar os combos e as seleções já feitas sempre
-	function mostrarDiv(id_elemento, visibilidade) {
-		if (visibilidade == true){
-			document.getElementById(id_elemento).style.display = 'block';
-
-			alterarAlturaMenuLateral(id_elemento); //toda vez que a div dos gráficos ou da tabela é mostrada, a altura do menu lateral é recalculada e alterada
-		}else{
-			document.getElementById(id_elemento).style.display = 'none';
-		}
-	}
-
-
-	// Como eu não consegui, apenas com CSS, alterar dinamicamente a altura da div do menu lateral para que sempre esteja do mesmo tamanho da div dashboards e da div da tabela detalhes, tive que fazer a função abaixo 
-	function alterarAlturaMenuLateral(elemento){
-	 	let height_filtros = document.getElementById("filtros").offsetHeight; //pega a altura da div filtos (combos)
-	 	let height_elemento = document.getElementById(elemento).offsetHeight; //pega a altura do elemento em questão (div dashboards ou table)
-	 	let heigth_total = height_elemento + height_filtros; //soma a altura dos combos com a do elemento
-	 	if (heigth_total <  1098.8) { //define uma altura mínima para a página
-	 		heigth_total =  1098.8;
-	 	}
-		document.getElementById("menu_esquerda").style.height = heigth_total + "px"; // seta a soma das alturas no menu lateral
-	}
-
-
 	//Sem essa função, ao gerar uma tabela com outra fatia do gráfico, ficam dados da tabela antiga
 	function limparTabela(){
 		let tabela_vazia = "<table><thead></thead><tbody></tbody></table>" //estrutura de uma tabela vazia

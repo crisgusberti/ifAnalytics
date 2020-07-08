@@ -115,7 +115,7 @@ nav#menu_esquerda {
 	width:180px;
 	float: left;
 	margin-top: 10px;
-	height: 1098.8px; /*altura inicial da página*/
+	height: 1257px; /*altura inicial da página*/ /*ATENÇÂO!! Esse mesmo valor está fixo no arquivo funcoesGerais.js e geral.html*/ 
 }
 nav#menu_esquerda ul{
 	padding-left: 2px;

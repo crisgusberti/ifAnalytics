@@ -218,10 +218,12 @@
         options.hAxis['slantedTextAngle'] = 60 //define o angulo de inclinação dessa legenda
         document.getElementById(chart_div).style.width = '1275px'; //aumenta o tamanho do gráfico
         document.getElementById(chart_div).style.height = '450px';
+        alterarAlturaMenuLateral("dashboards"); //altera o tamanho do menu lateral da esquerda
       } else { //mostra gráfico pequeno
         var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
         element.style.removeProperty("width");
         element.style.removeProperty("height");
+        document.getElementById("menu_esquerda").style.height = "1257px"; //altera o tamanho do menu lateral da esquerda. Deveria ser a função alterarAlturaMenuLateral mas com ela não da certo, não sei pq.
       }
     }
 

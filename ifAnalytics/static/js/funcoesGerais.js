@@ -53,17 +53,35 @@ function titleCenter() {
 
 //função que me diz qual é a página atual
 function thisPage(){
-
 	var url = document.URL; //retorna a url da página
-
 	if (url[url.length-1] == "/"){ // remove última barra do endereço
 	  	url = url.substring(0, url.length-1);
 	}
-
 	var urlArr = url.split("/");//retorna um array da url separado pelas barras
 	var thisPage = urlArr[3]; //armazena em thisPage a posição 3 do array que é a posição ref. ao nome da página. Pq ele conta as barras do http:// na hora de splitar
 	if (thisPage == "frequencias") { //Correção do acento da palavra
 		thisPage = "Frequências";
 	}
 	return thisPage;
+}
+
+//Função que oculta ou mostra a div dos gráficos ou da tabela de detalhes. Essa função é necessária para mostrar, alternadamente, os gráficos ou a tabela de detalhes na mesma página, permitindo assim usar os combos e as seleções já feitas sempre
+function mostrarDiv(id_elemento, visibilidade) {
+	if (visibilidade == true){
+		document.getElementById(id_elemento).style.display = 'block';
+		alterarAlturaMenuLateral(id_elemento); //toda vez que a div dos gráficos ou da tabela é mostrada, a altura do menu lateral é recalculada e alterada
+	}else{
+		document.getElementById(id_elemento).style.display = 'none';
+	}
+}
+
+// Como eu não consegui, apenas com CSS, alterar dinamicamente a altura da div do menu lateral para que sempre esteja do mesmo tamanho da div dashboards e da div da tabela detalhes, tive que fazer a função abaixo 
+function alterarAlturaMenuLateral(elemento){
+ 	let height_filtros = document.getElementById("filtros").offsetHeight; //pega a altura da div filtos (combos)
+ 	let height_elemento = document.getElementById(elemento).offsetHeight; //pega a altura do elemento em questão (div dashboards ou table)
+ 	let heigth_total = height_elemento + height_filtros; //soma a altura dos combos com a do elemento
+ 	if (heigth_total <  1257) { //define uma altura mínima para a página
+ 		heigth_total =  1257;
+ 	}
+	document.getElementById("menu_esquerda").style.height = heigth_total + "px"; // seta a soma das alturas no menu lateral
 }
