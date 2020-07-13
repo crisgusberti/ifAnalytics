@@ -1,385 +1,385 @@
 /*====Estrutura Geral====*/
-html, body {
-	position: relative;
-    overflow: auto;
-    height: 100%;
-    margin: 0px; 
-    padding: 0px;
-}
-body{
-	background-color: #ECFDF0;
-	padding-left: 5px; /*sugestão marcelo*/
-	padding-right: 5px; /*sugestão marcelo*/
-}
+	html, body {
+		position: relative;
+	    overflow: auto;
+	    height: 100%;
+	    margin: 0px; 
+	    padding: 0px;
+	}
+	body{
+		background-color: #ECFDF0;
+		padding-left: 5px; /*sugestão marcelo*/
+		padding-right: 5px; /*sugestão marcelo*/
+	}
 
 /*====Modal====*/
-:root {
-	--modal-duration: 1s;
-	--modal-color: #4CAF50;
-}
-.modal {
-	font-family: helvetica;
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	height: 100%;
-	width: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.5);
-}
-.modal-content {
-	margin: 10% auto;
-	width: 60%;
-	box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
-	animation-name: modalopen;
-	animation-duration: var(--modal-duration);
-}
-.modal-header h2,
-.modal-footer h3 {
-	margin: 0;
-}
-.modal-header {
-	background: var(--modal-color);
-	padding: 15px;
-	color: #fff;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-}
-.modal-body {
-	padding: 10px 20px;
-	background: #fff;
-}
-.modal-footer {
-	background: var(--modal-color);
-	padding: 10px;
-	color: #fff;
-	text-align: center;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-}
-.close {
- 	color: #ccc;
-	float: right;
-	font-size: 30px;
-	color: #fff;
-}
-.close:hover,
-.close:focus {
-	color: #000;
-	text-decoration: none;
-	cursor: pointer;
-}
-@keyframes modalopen {
-	from {
-    	opacity: 0;
-  	}
-  	to {
-    	opacity: 1;
-  	}
-}
+	:root {
+		--modal-duration: 1s;
+		--modal-color: #4CAF50;
+	}
+	.modal {
+		font-family: helvetica;
+		display: none;
+		position: fixed;
+		z-index: 1;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		overflow: auto;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+	.modal-content {
+		margin: 10% auto;
+		width: 60%;
+		box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+		animation-name: modalopen;
+		animation-duration: var(--modal-duration);
+	}
+	.modal-header h2,
+	.modal-footer h3 {
+		margin: 0;
+	}
+	.modal-header {
+		background: var(--modal-color);
+		padding: 15px;
+		color: #fff;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+	}
+	.modal-body {
+		padding: 10px 20px;
+		background: #fff;
+	}
+	.modal-footer {
+		background: var(--modal-color);
+		padding: 10px;
+		color: #fff;
+		text-align: center;
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
+	.close {
+	 	color: #ccc;
+		float: right;
+		font-size: 30px;
+		color: #fff;
+	}
+	.close:hover,
+	.close:focus {
+		color: #000;
+		text-decoration: none;
+		cursor: pointer;
+	}
+	@keyframes modalopen {
+		from {
+	    	opacity: 0;
+	  	}
+	  	to {
+	    	opacity: 1;
+	  	}
+	}
 
 /*====cabeçalho====*/
-div#cabecalho{
-	margin-left: 3px;
-}
+	div#cabecalho{
+		margin-left: 3px;
+	}
 
 /*====Tela de login====*/
-.login {
-	background-color: #FFF;
-	padding: 20px;
-	border-radius: 5px;
-	position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-.app-title {
-	text-align: center;
-	color: black;
-	font-family: helvetica;
-	color: #606060;
-}
-.login-form {
-	text-align: center;
-}
-.control-group {
-	margin-bottom: 10px;
-}
-input {
-	text-align: center;
-	background-color: #ECF0F1;
-	border: 2px solid transparent;
-	border-radius: 3px;
-	font-size: 16px;
-	font-weight: 200;
-	padding: 10px 0;
-	width: 250px;
-	transition: border .5s;
-}
-input:focus {
-	border: 2px solid #4CAF50;
-	box-shadow: none;
-	outline: none;
-}
-.btn {
-	border: 2px solid transparent;
-	background: #4CAF50;
-	color: #ffffff;
-	font-size: 16px;
-	line-height: 25px;
-	padding: 10px 0;
-	text-decoration: none;
-	text-shadow: none;
-	border-radius: 3px;
-	box-shadow: none;
-	transition: 0.25s;
-	display: block;
-	width: 250px;
-	margin: 0 auto;
-}
-.btn:hover {
-	background: #43A047;
-}
+	.login {
+		background-color: #FFF;
+		padding: 20px;
+		border-radius: 5px;
+		position: absolute;
+	    left: 50%;
+	    top: 50%;
+	    transform: translate(-50%, -50%);
+	}
+	.app-title {
+		text-align: center;
+		color: black;
+		font-family: helvetica;
+		color: #606060;
+	}
+	.login-form {
+		text-align: center;
+	}
+	.control-group {
+		margin-bottom: 10px;
+	}
+	input {
+		text-align: center;
+		background-color: #ECF0F1;
+		border: 2px solid transparent;
+		border-radius: 3px;
+		font-size: 16px;
+		font-weight: 200;
+		padding: 10px 0;
+		width: 250px;
+		transition: border .5s;
+	}
+	input:focus {
+		border: 2px solid #4CAF50;
+		box-shadow: none;
+		outline: none;
+	}
+	.btn {
+		border: 2px solid transparent;
+		background: #4CAF50;
+		color: #ffffff;
+		font-size: 16px;
+		line-height: 25px;
+		padding: 10px 0;
+		text-decoration: none;
+		text-shadow: none;
+		border-radius: 3px;
+		box-shadow: none;
+		transition: 0.25s;
+		display: block;
+		width: 250px;
+		margin: 0 auto;
+	}
+	.btn:hover {
+		background: #43A047;
+	}
 
 /*====Menu Superior====*/
-nav#menu_superior ul{
-	background-color: #E1F0DB;
-	list-style: none;
-	margin: 0px;
-	padding-left: 0px;
-	border-bottom: 0.5px solid  #999999;
-	border-top: 0.5px solid  #999999;
-}
-nav#menu_superior li{
-	display: inline-block;
-	color: #999999;
-	font-family: helvetica;
-}
-nav#menu_superior li:hover{
-	background-color: #606060;
-}
-nav#menu_superior a{
-	/*color: grey;*/ /*cor original*/
-	color: black;
-	text-decoration: none;
-	cursor: default;
-	display: block; /*isso faz a tag "a" ter a mesma largura do "li", consequentemente tudo fica como link clicável.*/
-	padding: 10px;
-}
-nav#menu_superior a:hover{
-	color: white;
-}
-.alinhaDireita{
-	float: right;
-}
+	nav#menu_superior ul{
+		background-color: #E1F0DB;
+		list-style: none;
+		margin: 0px;
+		padding-left: 0px;
+		border-bottom: 0.5px solid  #999999;
+		border-top: 0.5px solid  #999999;
+	}
+	nav#menu_superior li{
+		display: inline-block;
+		color: #999999;
+		font-family: helvetica;
+	}
+	nav#menu_superior li:hover{
+		background-color: #606060;
+	}
+	nav#menu_superior a{
+		/*color: grey;*/ /*cor original*/
+		color: black;
+		text-decoration: none;
+		cursor: default;
+		display: block; /*isso faz a tag "a" ter a mesma largura do "li", consequentemente tudo fica como link clicável.*/
+		padding: 10px;
+	}
+	nav#menu_superior a:hover{
+		color: white;
+	}
+	.alinhaDireita{
+		float: right;
+	}
 
 /*====Menu Esquerda====*/
-nav#menu_esquerda {
-	background-color: #E1F0DB;
-	border: 0.5px solid #999999;
-	/*border-top-right-radius: 5px;*/ /*com o padding-left: (sugestão do marcelo) o radius tem q ser aplicado em todos os cantos*/
-	border-radius: 5px;
-	font-family: helvetica;
-	width:180px;
-	float: left;
-	margin-top: 10px;
-	height: 1257px; /*altura inicial da página*/ /*ATENÇÂO!! Esse mesmo valor está fixo no arquivo funcoesGerais.js e geral.html*/ 
-}
-nav#menu_esquerda ul{
-	padding-left: 2px;
-}
-nav#menu_esquerda li{
-	color: #999999;
-	list-style: none;
-}
-nav#menu_esquerda li:hover{
-	background-color: #606060;
-}
-nav#menu_esquerda a{
-	cursor: default;
-	/*color: grey;*/ /*cor original*/
-	color: black;
-	text-decoration: none;
-	line-height: 1.5;
-	display: block; /*isso faz a tag "a" ter a mesma largura do "li", consequentemente tudo fica como link clicável.*/
-	padding: 3px;
-}
-nav#menu_esquerda a:hover{
-	color: white;
-}
-.active{
-	background-color: #606060;
-}
-.active a{
-	color: white !important;
-}
-.preencher{
-	background-color: #B9DCBB;
-	border: 0.5px solid #999999;
-	border-top-right-radius: 5px;
-	padding: 3px;
-	/*opacity: 0.75;*/ /*sugestão marcelo remover*/
-}
-.icone_menu{
-	float: right;
-	max-width:20px;
-    opacity: 0.5;
-}
-.icone_menu_opaco{
-	float: right;
-	max-width:20px;
-	opacity: 150;
-}
-.negrito{
-	font-weight:bold;
-}
+	nav#menu_esquerda {
+		background-color: #E1F0DB;
+		border: 0.5px solid #999999;
+		/*border-top-right-radius: 5px;*/ /*com o padding-left: (sugestão do marcelo) o radius tem q ser aplicado em todos os cantos*/
+		border-radius: 5px;
+		font-family: helvetica;
+		width:180px;
+		float: left;
+		margin-top: 10px;
+		height: 1257px; /*altura inicial da página*/ /*ATENÇÂO!! Esse mesmo valor está fixo no arquivo funcoesGerais.js e geral.html*/ 
+	}
+	nav#menu_esquerda ul{
+		padding-left: 2px;
+	}
+	nav#menu_esquerda li{
+		color: #999999;
+		list-style: none;
+	}
+	nav#menu_esquerda li:hover{
+		background-color: #606060;
+	}
+	nav#menu_esquerda a{
+		cursor: default;
+		/*color: grey;*/ /*cor original*/
+		color: black;
+		text-decoration: none;
+		line-height: 1.5;
+		display: block; /*isso faz a tag "a" ter a mesma largura do "li", consequentemente tudo fica como link clicável.*/
+		padding: 3px;
+	}
+	nav#menu_esquerda a:hover{
+		color: white;
+	}
+	.active{
+		background-color: #606060;
+	}
+	.active a{
+		color: white !important;
+	}
+	.preencher{
+		background-color: #B9DCBB;
+		border: 0.5px solid #999999;
+		border-top-right-radius: 5px;
+		padding: 3px;
+		/*opacity: 0.75;*/ /*sugestão marcelo remover*/
+	}
+	.icone_menu{
+		float: right;
+		max-width:20px;
+	    opacity: 0.5;
+	}
+	.icone_menu_opaco{
+		float: right;
+		max-width:20px;
+		opacity: 150;
+	}
+	.negrito{
+		font-weight:bold;
+	}
 
 /*====Div dos filtros====*/
-div#filtros{
-	margin-left:200px;
-	margin-top: 10px;
-	color:Black;
-	font-family: helvetica;
-	background-color: #ECFCF1;
-}
-.combobox {
-	padding: 3px;
-	font-size: 14px;
-	border-width: 1px;
-	border-color: #999999;
-	background-color: #B9DCBB;
-	/*color: grey;*/ /*cor original*/
-	color: black;
-	border-style: solid;
-	border-radius: 7px;
-	width:97%;
-	/*opacity: 0.75;*/ /*sugestão marcelo remover*/
-	text-align-last: center;
-}
-select#campus{
-	width: 76%;
-}
-select#periodo{
-	width: 20.6%;
-}
-.combobox:focus {
-	outline:none;
-}
+	div#filtros{
+		margin-left:200px;
+		margin-top: 10px;
+		color:Black;
+		font-family: helvetica;
+		background-color: #ECFCF1;
+	}
+	.combobox {
+		padding: 3px;
+		font-size: 14px;
+		border-width: 1px;
+		border-color: #999999;
+		background-color: #B9DCBB;
+		/*color: grey;*/ /*cor original*/
+		color: black;
+		border-style: solid;
+		border-radius: 7px;
+		width:97%;
+		/*opacity: 0.75;*/ /*sugestão marcelo remover*/
+		text-align-last: center;
+	}
+	select#campus{
+		width: 76%;
+	}
+	select#periodo{
+		width: 20.6%;
+	}
+	.combobox:focus {
+		outline:none;
+	}
 
 /*====Div Dashboards====*/
-div#dashboards {
-	margin-left: 200px;
-	color:Black;
-	font-family: helvetica;
-	background-color: #ECFCF1;
-	overflow: hidden;
-}
+	div#dashboards {
+		margin-left: 200px;
+		color:Black;
+		font-family: helvetica;
+		background-color: #ECFCF1;
+		overflow: hidden;
+	}
 
-.grafico{
-	width: 620px;
-	height: 350px;
-	margin-top: 28px;
-}
+	.grafico{
+		width: 620px;
+		height: 350px;
+		margin-top: 28px;
+	}
 
-.grafico svg{ /*deixa o retangulo do gráfico com bordas arredondadas*/
-	border-radius: 7px;
-	border: solid;
-	border-color: grey;
-	border-width: 1px;
-}
+	.grafico svg{ /*deixa o retangulo do gráfico com bordas arredondadas*/
+		border-radius: 7px;
+		border: solid;
+		border-color: grey;
+		border-width: 1px;
+	}
 
-.alinha_grafico_direita{
-	display: inline-block;
-	margin-right: 28px;
-}
-.alinha_grafico_esquerda{
-	display: inline-block;
-	margin-right: 28px;
-}
+	.alinha_grafico_direita{
+		display: inline-block;
+		margin-right: 28px;
+	}
+	.alinha_grafico_esquerda{
+		display: inline-block;
+		margin-right: 28px;
+	}
 
 /*====Tabela Detalhes====*/
-div#table{
-	display: none; /*ao carregar a página o display é none pois a div dos dashboards deve ser mostrada. Dps isso é controlado pela função mostrarDiv*/
-	margin-left: 200px;
-	padding-top: 28px;
-	color:Black;
-	font-family: helvetica;
-	font-size: 14px;
-	background-color: #ECFCF1;
-	padding-right: 10px;
-}
-table, th, td {
-	border: 1px solid #999999;
-	border-collapse: collapse;
-}
-table{
-	width: 98%;
-}
-th {
-	height: 50px;
-	background-color: rgba(185, 220, 187, 0.7); /*Equivalente a cor #B9DCBB com 0.75 de opacity*/
-}
-td {
-	padding: 3px;
-}
+	div#table{
+		display: none; /*ao carregar a página o display é none pois a div dos dashboards deve ser mostrada. Dps isso é controlado pela função mostrarDiv*/
+		margin-left: 200px;
+		padding-top: 28px;
+		color:Black;
+		font-family: helvetica;
+		font-size: 14px;
+		background-color: #ECFCF1;
+		padding-right: 10px;
+	}
+	table, th, td {
+		border: 1px solid #999999;
+		border-collapse: collapse;
+	}
+	table{
+		width: 98%;
+	}
+	th {
+		height: 50px;
+		background-color: rgba(185, 220, 187, 0.7); /*Equivalente a cor #B9DCBB com 0.75 de opacity*/
+	}
+	td {
+		padding: 3px;
+	}
 
-tr:nth-child(even) {
-	background-color: #D3F3D4;
-}
+	tr:nth-child(even) {
+		background-color: #D3F3D4;
+	}
 
-tr:hover{
-	background-color: #DFE8DB;
-}
+	tr:hover{
+		background-color: #DFE8DB;
+	}
 
-#btn_voltar{
-	font-family: helvetica;
-	font-size: 14px;
-	margin-bottom: 8px;
-	margin-top: 8px;
-	text-align: right; 
-	width: 98%;
-}
+	#btn_voltar{
+		font-family: helvetica;
+		font-size: 14px;
+		margin-bottom: 8px;
+		margin-top: 8px;
+		text-align: right; 
+		width: 98%;
+	}
 
-#btn_voltar input{
-	border: 0.5px solid #999999;
-	border-radius: 5px;
-	/*color: grey;*/ /*cor original*/
-	color: black;
-	/*tamanho do botão voltar*/ /*sugestão marcelo*/
-	width: 90px;
-	height: 30px;
-	font-size: 18px;
-	padding: 0px;
-}
+	#btn_voltar input{
+		border: 0.5px solid #999999;
+		border-radius: 5px;
+		/*color: grey;*/ /*cor original*/
+		color: black;
+		/*tamanho do botão voltar*/ /*sugestão marcelo*/
+		width: 90px;
+		height: 30px;
+		font-size: 18px;
+		padding: 0px;
+	}
 
-#btn_voltar input:hover{
-	background-color: #606060;
-	color: white;
-}
+	#btn_voltar input:hover{
+		background-color: #606060;
+		color: white;
+	}
 
 /*====Logo IFRS====*/
-.imagem_right{
-	float: right;
-}
+	.imagem_right{
+		float: right;
+	}
 
-.imagem_left{
-	float: left;
-	padding-top: 7px;
-}
+	.imagem_left{
+		float: left;
+		padding-top: 7px;
+	}
 
 /*====Rodapé====*/
-#rodape{
-	margin-left: 3px;
-	clear:both;
-	text-align:left;
-	font-family: helvetica;
-	font-size: small;
-	color: grey;
-	padding-top: 10px;
-	padding-bottom: 5px;
-}
+	#rodape{
+		margin-left: 3px;
+		clear:both;
+		text-align:left;
+		font-family: helvetica;
+		font-size: small;
+		color: grey;
+		padding-top: 10px;
+		padding-bottom: 5px;
+	}
 
 /*Comando para resolver bug do tooltip piscando em fatias pequenas dos gráficos*/
 /*Fonte: https://github.com/google/google-visualization-issues/issues/2162*/
