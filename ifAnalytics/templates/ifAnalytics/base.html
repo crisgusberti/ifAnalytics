@@ -16,6 +16,65 @@
 </head>
 
 <body>
+	
+	<div id="my-modal" class="modal"> <!-- Modal -->
+	    <div class="modal-content">
+			<div class="modal-header">
+				<span class="close">&times;</span>
+				<h2>Antes de Começar...</h2>
+			</div>
+	      	<div class="modal-body">
+				<h3>Algumas informações importantes sobre o funcionamento do sistema</h3>
+				<ul>
+					<li>O sistema foi projetado para funcionar <u>SEM</u> que seja necessário utilizar o botão voltar do navegador. Para navegar <u>UTILIZE APENAS</u> os menus e botões do próprio sistema.</li><br>
+
+					<li>Utilize as caixas de seleção na seguinte ordem: <b>Campus > Período > Curso > Turma</b>. Por terem seu preenchimento realizado de forma dinâmica, a alteração de uma opção já selecionada, altera as seleções posteriores.</li><br>
+
+					<li>Os gráficos são mostrados dinâmicamente de acordo com as opções selecionadas. Caso tenha dúvidas sobre as informações mostradas consulte a página de suporte <u>[COLOCAR LINK AQUI!!].</u></li><br>
+
+					<li>Você pode obter mais detalhes sobre as informações exibidas nos gráficos clicando sobre elas.</li><br>
+
+					<li>Por ser um protótipo ainda em faze de testes as informações exibidas nos gráficos podem não estar suficientemente acuradas e <u>apresentarem divergências com a realidade</u>. É importante ter em mente que a base de testes utilizada contém informações até o dia 05/04/2020.</li><br>
+
+					<li>O IfAnalytics é produto de uma dissertação de mestrado do MPIE - Mestrado Profissional em Informática na Educação do IFRS Campus Porto Alegre. Incentive a educação, incentive a pesquisa.</li>
+				</ul>
+	      	</div>
+	      	<div class="modal-footer">
+	      		<h3>IfAnalytics</h3>
+	      	</div>
+	    </div>
+	</div>
+
+
+	<script> //Scripts do modal
+		// Get DOM Elements
+		const modal = document.querySelector('#my-modal');
+		const closeBtn = document.querySelector('.close');
+
+		// Events
+		window.addEventListener('load', openModal) 
+		closeBtn.addEventListener('click', closeModal);
+		window.addEventListener('click', outsideClick);
+
+		// Open
+		function openModal() {
+		  modal.style.display = 'block';
+		}
+
+		// Close
+		function closeModal() {
+		  modal.style.display = 'none';
+		}
+
+		// Close If Outside Click
+		function outsideClick(e) {
+		  if (e.target == modal) {
+		    modal.style.display = 'none';
+		  }
+		}
+	</script>
+
+
 	<div id="cabecalho">
 		<a href="https://ifrs.edu.br/"><img class="imagem_right" src="{% static 'images/logo.png' %}" height="90" width="70" alt="Logotipo IFRS"></a>
 		<img class="imagem_left" src="{% static 'images/logo_ifanalytics.png' %}" height="80" width="110" alt="Logotipo ifAnalytics">
