@@ -40,19 +40,39 @@
 				</ul>
 	      	</div>
 	      	<div class="modal-footer">
-	      		<h3>IfAnalytics</h3>
+	      		<!-- <h3>IfAnalytics</h3> -->
+	      		<form class="modal-checkbox">
+  					<input type="checkbox" id="modal-checkbox" class="modal-checkbox" />
+					<label for="modal-checkbox">Não mostrar novamente</label>
+				</form>
 	      	</div>
 	    </div>
 	</div>
 
 
 	<script> //Scripts do modal
+		
+		$(document).ready(function() {
+
+		   	if (localStorage.getItem("exibirModal") == null || localStorage.getItem("exibirModal") == "true") {
+			    openModal(); //abre o modal se não existir variável salva ou se ela for true
+			}
+		
+			$("#modal-checkbox").change(function() { //monitora quando o checkbox for modificado
+				if ($(this).prop("checked") == true) { //se for checkado
+					localStorage.setItem("exibirModal", "false"); //salva a variável false pra não exibir o modal novamente
+				} else{ //se não for checkado
+					localStorage.setItem("exibirModal", "true"); //salva a variável true para exibir o modal novamente
+				}
+			});
+		});
+
 		// Get DOM Elements
 		const modal = document.querySelector('#my-modal');
 		const closeBtn = document.querySelector('.close');
 
 		// Events
-		window.addEventListener('load', openModal) 
+		//window.addEventListener('load', openModal) Não abre mais ao carregar a página, mas sim de acordo com a var do localStorage
 		closeBtn.addEventListener('click', closeModal);
 		window.addEventListener('click', outsideClick);
 

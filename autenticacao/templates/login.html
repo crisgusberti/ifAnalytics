@@ -27,11 +27,11 @@
 		<form class="login-form" method=POST>
 			{% csrf_token %}
 			<div class="control-group">
-				<input type="text" name=username placeholder="usuário">
+				<input type="text" class="input-login" name=username placeholder="usuário">
 			</div>
 
 			<div class="control-group">
-				<input type="password" name=password placeholder="senha">
+				<input type="password" class="input-login" name=password placeholder="senha">
 			</div>
 
 			<input type=submit class="btn" value="Login">
