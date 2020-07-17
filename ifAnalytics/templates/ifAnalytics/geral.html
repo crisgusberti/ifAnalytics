@@ -144,6 +144,21 @@
         'PRE_CADASTRADO' : '#e6e600',
         'FALECIDO' : '#666699',
       };
+    }else if (chart_name == "chart_forma_ingresso") {
+      var colors = {
+        '1 -  ACESSO UNIVERSAL': '#3366CC', //azul do google
+        '2 -  ENS. PUBLICO - RENDA INFERIOR PRETO PARDO INDIO PCD': '#cc99ff',
+        '3 -  ENS. PUBLICO - RENDA INFERIOR PRETO PARDO INDIO': '#990099',
+        '4 -  ENS. PUBLICO - RENDA INFERIOR PCD': '#F4B400', //amarelo do google 
+        '5 -  ENS. PUBLICO - RENDA INFERIOR': '#0F9D58', //verde do google
+        '6 -  ENS. PUBLICO - RENDA SUPERIOR PRETO PARDO INDIO PCD': '#0099C6',
+        '7 -  ENS. PUBLICO - RENDA SUPERIOR PRETO PARDO INDIO': '#ff8080',
+        '8 -  ENS. PUBLICO - RENDA SUPERIOR PCD': '#6633CC',
+        '9 -  ENS. PUBLICO - RENDA SUPERIOR': '#AAAA11',
+        '10 -  PORTADOR DEFICIENCIA': '#33ccff',
+        '11 - PROCESSO ESPECIAL - INDIGENA': '#e6e600',
+      };
+    }
 
       //cria um array do tamanho da tabela
       var slices = [];
@@ -155,7 +170,7 @@
       }
       // adiciona dentro da optios do gráfico o array slices com o mapeamento da cor pra cada status
       options['slices'] = slices;
-    }
+
 
     //cria o gráfico, adiciona o listner para interatividade, centraliza o título e desenha o gráfico (vale para todos os gráficos de pizza)
     this[chart_name] = new google.visualization.PieChart(document.getElementById(chart_div));
