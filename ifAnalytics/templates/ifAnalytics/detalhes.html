@@ -71,6 +71,7 @@
 
 		mostrarDiv("dashboards", false); //oculta os dashboards e mostra a tabela de detalhes
 		mostrarDiv("table", true);
+		scrollTop();
 	}
 
 	//Sem essa função, ao gerar uma tabela com outra fatia do gráfico, ficam dados da tabela antiga
@@ -88,6 +89,11 @@
 			data_from_view[i][3] = periodo_formatado;
 		}
 		return data_from_view;
+	}
+
+	//função que rola a página de volta para o topo
+	function scrollTop(){
+		$('html, body').animate({scrollTop: '0px'}, 0); 
 	}
 
 </script>
