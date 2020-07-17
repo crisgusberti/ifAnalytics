@@ -44,7 +44,7 @@ AND d.ano_ingresso = 2019 AND d.periodo_ingresso = 1
 --AND mc.id_turma = 2892
 
 GROUP BY mi.id_modalidade_ingresso
-ORDER BY mi.descricao
+ORDER BY CAST (SUBSTR(mi.descricao, 1, 2) AS integer) --ordena de acordo com os numeros da descrição, assim aparece corretamente na legenda do gráfico (o "10 - Portador de deficiência" por ultimo não antes do "1 - Acesso universal")
 
 
 ===============
