@@ -189,7 +189,7 @@
 		width:180px;
 		float: left;
 		margin-top: 10px;
-		height: 1257px; /*altura inicial da página*/ /*ATENÇÂO!! Esse mesmo valor está fixo no arquivo funcoesGerais.js e geral.html*/ 
+		height: 1290px; /*altura inicial da página*/ /*ATENÇÂO!! Esse mesmo valor está fixo no arquivo funcoesGerais.js*/ 
 	}
 	nav#menu_esquerda ul{
 		padding-left: 2px;
@@ -258,15 +258,15 @@
 		color: black;
 		border-style: solid;
 		border-radius: 7px;
-		width:97%;
+		width:99%;
 		/*opacity: 0.75;*/ /*sugestão marcelo remover*/
 		text-align-last: center;
 	}
 	select#campus{
-		width: 76%;
+		width: 75%;
 	}
 	select#periodo{
-		width: 20.6%;
+		width: 23.5%;
 	}
 	.combobox:focus {
 		outline:none;
@@ -274,17 +274,18 @@
 
 /*====Div Dashboards====*/
 	div#dashboards {
-		margin-left: 200px;
+		padding-left: 1%;
 		color:Black;
 		font-family: helvetica;
 		background-color: #ECFCF1;
 		overflow: hidden;
+		padding-right: 1%;
 	}
 
 	.grafico{
-		width: 620px;
+		width: 47%;
 		height: 350px;
-		margin-top: 28px;
+		margin-top: 3%;
 	}
 
 	.grafico svg{ /*deixa o retangulo do gráfico com bordas arredondadas*/
@@ -296,12 +297,40 @@
 
 	.alinha_grafico_direita{
 		display: inline-block;
-		margin-right: 28px;
+
 	}
 	.alinha_grafico_esquerda{
 		display: inline-block;
-		margin-right: 28px;
+		margin-right: 5.5%;
 	}
+
+	/*os comandos @media only abaixo servem pra fixar o tamanho dos gráficos a partir de determinadas larguras da tela. Serve para responsividade*/
+	@media only screen and (min-width: 3500px){
+		.grafico{
+			max-width: 620px;
+		}
+		.alinha_grafico_direita{
+			margin-right: 5.5%;
+		}
+	 }
+
+	@media only screen and (min-width: 2500px){
+		.grafico{
+			max-width: 620px;
+		}
+		.alinha_grafico_direita{
+			margin-right: 5.5%;
+		}
+	 }
+
+	/*	@media only screen and (min-width: 2200px){
+			.grafico{
+				max-width: 620px;
+			}
+			.alinha_grafico_direita{
+				margin-right: 5.5%;
+			}
+		}*/
 
 /*====Tabela Detalhes====*/
 	div#table{

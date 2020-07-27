@@ -6,6 +6,7 @@
 	<meta name="description" content="IfAnalytics">
 	<meta name="keywwords" content="IFRS, Analytics, SIGAA">
 	<meta name="author" content="Crístian Gusberti">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- alguma coisa util para desing responsivo https://tableless.com.br/design-responsivo-na-pratica-2-layout-ao-html/ -->
 	<!-- <title>IfAnalytics</title> --> <!-- está sendo alterado dinamicamente pela função thisPage() abaixo -->
 	<link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
 	<link rel="stylesheet" href="{% static 'css/Estilos.css' %}">
@@ -164,6 +165,14 @@
 <script>
 	var paginaAtual = thisPage(); //Verifica qual é a página atual para chamar as funções pertinentes
 	var querySelector; //Identifica qual query deverá ser executada na views.py
+	var campusId;
+	var cursoId;  
+	var periodo;
+	var arrayString;
+	var ano;
+	var semestre;
+	var turmaId;
+
 	document.title = paginaAtual.charAt(0).toUpperCase() + paginaAtual.substr(1).toLowerCase() + " - IfAnalytics"; //Altera o title da página dinamicamente de acordo com a página atual, deixando a primeira letra em maiúscula
 
 	//popula select Campus
@@ -182,7 +191,7 @@
 		$('#dashboards').html(div_dashboards_vazia); //ao mudar o combo campus, substitui o que está dentro da div dashboards pelo html vazio armazenado acima
 		$('#turma').html('<option value="000000">Turma</option>'); //limpa combo turma ao alterar campus
 		$('#curso').html('<option value="000000">Curso</option>'); //limpa combo curso ao alterar campus
-		let campusId = $("#campus").val();
+		campusId = $("#campus").val();
 		passaCurso = false;
 
 		if (campusId == 11 || campusId == 20 || campusId == 35) { //Aviso para os campus Bento, Canoas e Rio Grande
@@ -208,12 +217,12 @@
 
 	//detecta alteração no combo periodo e chama funções do geral/notas/frequencias.html além de popular cursos
 	$('#periodo').change(function() {
-		let campusId = $("#campus").val();
-		let cursoId = $("#curso").val();  
-		let periodo = $(this).val();
-		let arrayString = periodo.split("/");
-		let ano = arrayString[0];
-		let semestre = arrayString[1];
+		campusId = $("#campus").val();
+		cursoId = $("#curso").val();  
+		periodo = $(this).val();
+		arrayString = periodo.split("/");
+		ano = arrayString[0];
+		semestre = arrayString[1];
 		querySelector = 'periodo';
 
 		//popula select Cursos
@@ -251,12 +260,12 @@
 
 	//detecta alteração no combo curso e chama funções do geral/notas/frequencias.html além de popular turmas
 	$('#curso').change(function() {
-		let campusId = $("#campus").val(); 
-		let cursoId = $(this).val();
-		let periodo = $("#periodo").val(); 
-		let arrayString = periodo.split("/");
-		let ano = arrayString[0];
-		let semestre = arrayString[1];
+		campusId = $("#campus").val(); 
+		cursoId = $(this).val();
+		periodo = $("#periodo").val(); 
+		arrayString = periodo.split("/");
+		ano = arrayString[0];
+		semestre = arrayString[1];
 		querySelector = 'curso';
 		passaCurso = true;
 
@@ -297,13 +306,13 @@
 
 	//detecta alteração no combo turmas e chama funções do geral/notas/frequencias.html
 	$('#turma').change(function() {
-		let campusId = $("#campus").val();
-		let cursoId = $("#curso").val();  
-		let periodo = $("#periodo").val();
-		let arrayString = periodo.split("/");
-		let ano = arrayString[0];
-		let semestre = arrayString[1];
-		let turmaId = $(this).val();
+		campusId = $("#campus").val();
+		cursoId = $("#curso").val();  
+		periodo = $("#periodo").val();
+		arrayString = periodo.split("/");
+		ano = arrayString[0];
+		semestre = arrayString[1];
+		turmaId = $(this).val();
 		querySelector = 'turma';
 
 		if (paginaAtual == 'geral') {
@@ -331,6 +340,66 @@
 	if (thisPage == "geral" || thisPage == "notas" || thisPage == "Frequências") { //não considera a página de detalhes pq ela não tem menu
 		document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página
 	}
+
+	//ao redimensionar a janela os gráficos são redesenhados, tornardo os charts responsívos https://stackoverflow.com/questions/41319720/make-google-chart-responsive
+	$(window).resize(function(){ 
+		if (querySelector == "periodo") {
+			if (paginaAtual == 'geral') {
+				renderChartsGeral("chart_forma_ingresso", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_status_discente", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_total_matriculas", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_concluintes", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_tamanho_turmas", querySelector, campusId, ano, semestre);
+				renderChartsGeral("chart_discentes_evadidos", querySelector, campusId, ano, semestre);
+			}else if(paginaAtual == 'notas'){
+				renderChartsNota("chart_notas_parciais", 1, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_notas_parciais", 2, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_medias_finais", null, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_discentes_exame", null, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_aprovados_reprovados", null, querySelector, campusId, ano, semestre);
+				renderChartsNota("chart_status_disciplinas", null, querySelector, campusId, ano, semestre);
+			}else if(paginaAtual == 'Frequências'){
+				renderChartsFrequencia("chart_percentuais_frequencia", querySelector, campusId, ano, semestre);
+			}
+		}else if (querySelector == "curso") {
+			if (paginaAtual == 'geral') {
+				renderChartsGeral("chart_forma_ingresso", querySelector, campusId, ano, semestre, cursoId);
+			    renderChartsGeral("chart_status_discente", querySelector, campusId, ano, semestre, cursoId);
+				renderChartsGeral("chart_total_matriculas", querySelector, campusId, ano, semestre, cursoId);
+				renderChartsGeral("chart_concluintes", querySelector, campusId, ano, semestre, cursoId);
+				renderChartsGeral("chart_tamanho_turmas", querySelector, campusId, ano, semestre, cursoId);
+				renderChartsGeral("chart_discentes_evadidos", querySelector, campusId, ano, semestre, cursoId);
+			}else if(paginaAtual == 'notas'){
+				renderChartsNota("chart_notas_parciais", 1, querySelector, campusId, ano, semestre, cursoId);
+				renderChartsNota("chart_notas_parciais", 2, querySelector, campusId, ano, semestre, cursoId);
+				renderChartsNota("chart_medias_finais", null, querySelector, campusId, ano, semestre, cursoId);
+				renderChartsNota("chart_discentes_exame", null, querySelector, campusId, ano, semestre, cursoId);
+				renderChartsNota("chart_aprovados_reprovados", null, querySelector, campusId, ano, semestre, cursoId);
+				renderChartsNota("chart_status_disciplinas", null, querySelector, campusId, ano, semestre, cursoId);
+			}else if(paginaAtual == 'Frequências'){
+				renderChartsFrequencia("chart_percentuais_frequencia", querySelector, campusId, ano, semestre, cursoId);
+			}
+		}else if (querySelector == "turma") {
+			if (paginaAtual == 'geral') {
+				renderChartsGeral("chart_forma_ingresso", querySelector, null, ano, semestre, null, turmaId); 
+				renderChartsGeral("chart_status_discente", querySelector, null, ano, semestre,null, turmaId);
+				renderChartsGeral("chart_total_matriculas", querySelector, null, ano, semestre, null, turmaId);
+				renderChartsGeral("chart_concluintes", querySelector, null, ano, semestre, null, turmaId);
+				renderChartsGeral("chart_tamanho_turmas", querySelector, null, ano, semestre, null, turmaId);
+	            renderChartsGeral("chart_discentes_evadidos", querySelector, null, ano, semestre, null, turmaId);
+			}else if(paginaAtual == 'notas'){
+				renderChartsNota("chart_notas_parciais", 1, querySelector, null, ano, semestre, null, turmaId);
+				renderChartsNota("chart_notas_parciais", 2, querySelector, null, ano, semestre, null, turmaId);
+				renderChartsNota("chart_medias_finais", null, querySelector, null, ano, semestre, null, turmaId);
+				renderChartsNota("chart_discentes_exame", null, querySelector, null, ano, semestre, null, turmaId);
+				renderChartsNota("chart_aprovados_reprovados", null, querySelector, null, ano, semestre, null, turmaId);
+				renderChartsNota("chart_status_disciplinas", null, querySelector, null, ano, semestre, null, turmaId);
+			}else if(paginaAtual == 'Frequências'){
+				renderChartsFrequencia("chart_percentuais_frequencia", querySelector, null, ano, semestre, null, turmaId);
+			}
+		}
+		alterarAlturaMenuLateral("dashboards"); //altera o tamanho do menu lateral da esquerda para corresponder com o novo tamanho da div dashboards
+	});
 </script>
 {% endblock js %}
 

@@ -80,8 +80,8 @@ function alterarAlturaMenuLateral(elemento){
  	let height_filtros = document.getElementById("filtros").offsetHeight; //pega a altura da div filtos (combos)
  	let height_elemento = document.getElementById(elemento).offsetHeight; //pega a altura do elemento em questão (div dashboards ou table)
  	let heigth_total = height_elemento + height_filtros; //soma a altura dos combos com a do elemento
- 	if (heigth_total <  1257) { //define uma altura mínima para a página
- 		heigth_total =  1257;
+ 	if (heigth_total <  1290) { //define uma altura mínima para a página
+ 		heigth_total =  1290;
  	}
 	document.getElementById("menu_esquerda").style.height = heigth_total + "px"; // seta a soma das alturas no menu lateral
 }
