@@ -75,6 +75,7 @@ function mostrarDiv(id_elemento, visibilidade) {
 	}else{
 		document.getElementById(id_elemento).style.display = 'none';
 	}
+	scrollTop(); //sempre que as divs foram alternadas, a página vai ser mostrada no topo
 }
 
 // Como eu não consegui, apenas com CSS, alterar dinamicamente a altura da div do menu lateral para que sempre esteja do mesmo tamanho da div dashboards e da div da tabela detalhes, tive que fazer a função abaixo 
@@ -86,4 +87,9 @@ function alterarAlturaMenuLateral(elemento){
  		heigth_total =  1290;
  	}
 	document.getElementById("menu_esquerda").style.height = heigth_total + "px"; // seta a soma das alturas no menu lateral
+}
+
+//função que rola a página de volta para o topo
+function scrollTop(){
+	$('html, body').animate({scrollTop: '0px'}, 0); 
 }
