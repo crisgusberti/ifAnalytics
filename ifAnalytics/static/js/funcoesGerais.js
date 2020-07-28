@@ -40,13 +40,15 @@ function definirQuerySelector(querySelector){
 }
 
 //Função que centraliza o título do gráfico
+//https://stackoverflow.com/questions/11266286/center-align-title-google-chart
 function titleCenter() {
 	var chart_div_container = '#' + chart_div;
 	var $container = $(chart_div_container);
 	var svgWidth = $container.find('svg').width();
 	// var $titleElem = $container.find("text:contains(" + options.title + ")");
 	var $titleElem = $container.find("text:contains(" + titulo_grafico + ")");
-	var titleWidth = $titleElem.html().length * ($titleElem.attr('font-size')/2);
+	// var titleWidth = $titleElem.html().length * ($titleElem.attr('font-size')/2);
+	var titleWidth = titulo_grafico.length * ($titleElem.attr('font-size')/2);
 	var xAxisAlign = (svgWidth - titleWidth)/2;
 	$titleElem.attr('x', xAxisAlign);
 }
