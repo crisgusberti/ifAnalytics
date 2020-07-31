@@ -215,9 +215,9 @@
       this['data_table_' + chart_name].addColumn({type: 'string', role: 'tooltip'});
     }
 
-    else if (chart_name == "chart_concluintes") { //opção específica desse gráfico 
-      options.vAxis.viewWindow['max'] = 10; //limita a exibição até a escala 10
-    }
+    // else if (chart_name == "chart_concluintes") { //opção específica desse gráfico  -- foi comentado pq para o IFRS em 2020/1 tem uma coluna com 76 alunos e ela estava sendo cortada.
+    //   options.vAxis.viewWindow['max'] = 10; //limita a exibição até a escala 10
+    // }
 
     ////ALTERA TAMANHO DO GRÁFICO
     else if (chart_name == "chart_discentes_evadidos") { 

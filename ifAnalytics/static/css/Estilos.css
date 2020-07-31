@@ -231,6 +231,11 @@
 		max-width:20px;
 	    opacity: 0.5;
 	}
+	.icone_menu_suporte{
+		float: right;
+		max-width:23px;
+		opacity: 150;
+	}
 	.icone_menu_opaco{
 		float: right;
 		max-width:20px;
@@ -390,6 +395,28 @@
 	#btn_voltar input:hover{
 		background-color: #606060;
 		color: white;
+	}
+
+/*====Página Suporte====*/
+	.imagem_suporte{
+		float: left;
+		max-width: 40%;
+		padding-right: 2%;
+	}
+
+	.conteudo_suporte {
+		text-align: justify;
+	}
+
+	.conteudo_suporte h1{
+		text-align: center;
+	}
+
+	.centraliza_imagem {
+	  display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	  width: 50%;
 	}
 
 /*====Logo IFRS====*/

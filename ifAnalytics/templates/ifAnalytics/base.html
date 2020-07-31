@@ -31,7 +31,7 @@
 
 					<li>Utilize as caixas de seleção na seguinte ordem: <b>Campus > Período > Curso > Turma</b>. Por terem seu preenchimento realizado de forma dinâmica, a alteração de uma opção já selecionada, altera as seleções posteriores.</li><br>
 
-					<li>Os gráficos são mostrados dinâmicamente de acordo com as opções selecionadas. Caso tenha dúvidas sobre as informações mostradas consulte a página de suporte <u>[COLOCAR LINK AQUI!!].</u></li><br>
+					<li>Os gráficos são mostrados dinâmicamente de acordo com as opções selecionadas. Caso tenha dúvidas sobre as informações mostradas consulte a <a href="{% url 'suporte' %}" title="Suporte do sistema">página de suporte</a>.</li><br>
 
 					<li>Você pode obter mais detalhes sobre as informações exibidas nos gráficos clicando sobre elas.</li><br>
 
@@ -121,8 +121,7 @@
 			<li id="geral"><a href="{% url 'geral' %}" title="Informações Gerais">Geral<img src="{% static 'images/geral_icon.png' %}" class="icone_menu_opaco"></a></li>
 			<li id="notas"><a href="{% url 'notas' %}" title="Informações sobre notas">Notas<img src="{% static 'images/notas_icon.png' %}" class="icone_menu"></a></li>
 			<li id="Frequências"><a href="{% url 'frequencias' %}" title="Informações sobre frequência">Frequência<img src="{% static 'images/frequencia_icon.png' %}" class="icone_menu"></a></li>
-			
-			<!-- <li><a href="{% url 'suporte' %}" title="Suporte do sistema">Suporte</a><img src="{% static 'images/suporte_icon.png' %}" class="icone_menu_opaco"></li> --> <!-- Suporte comentado por enquanto -->
+			<li id="suporte"><a href="{% url 'suporte' %}" title="Suporte do sistema">Suporte<img src="{% static 'images/suporte_icon.png' %}" class="icone_menu_suporte"></a></li>
 		</ul>
 	</nav>
 
@@ -337,8 +336,12 @@
 	});
 
 	var thisPage = thisPage();  // recebe a string da página atual
-	if (thisPage == "geral" || thisPage == "notas" || thisPage == "Frequências") { //não considera a página de detalhes pq ela não tem menu
+	if (thisPage == "geral" || thisPage == "notas" || thisPage == "Frequências" || thisPage == "suporte") { //não considera a página de detalhes pq ela não tem menu
 		document.getElementById(thisPage).className= 'active';// altera a classe do elemento através do id que deve ser igual ao nome da página
+	}
+
+	if (thisPage == "suporte") {
+		mostrarDiv("filtros", false); //oculta os filtros na página de suporte
 	}
 
 	//ao redimensionar a janela os gráficos são redesenhados, tornardo os charts responsívos https://stackoverflow.com/questions/41319720/make-google-chart-responsive
