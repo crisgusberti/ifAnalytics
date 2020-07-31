@@ -419,6 +419,10 @@
 	  width: 50%;
 	}
 
+	.alinha_direita{
+		text-align: right;
+	}
+
 /*====Modal Imagens Suporte====*/
 
 	/* Style the Image Used to Trigger the Modal Suporte */
