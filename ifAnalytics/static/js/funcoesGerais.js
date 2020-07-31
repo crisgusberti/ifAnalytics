@@ -93,3 +93,21 @@ function alterarAlturaMenuLateral(elemento){
 function scrollTop(){
 	$('html, body').animate({scrollTop: '0px'}, 0); 
 }
+
+//Funções para Modal
+	// Open
+	function openModal(modal) {
+	  modal.style.display = 'block';
+	}
+
+	// Close
+	function closeModal(modal) {
+	  modal.style.display = 'none';
+	}
+
+	// Close If Outside Click
+	function outsideClick(event, modal) {
+	  if (event.target == modal) {
+	    modal.style.display = 'none';
+	  }
+	}

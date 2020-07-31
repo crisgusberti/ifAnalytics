@@ -53,10 +53,15 @@
 
 	<script> //Scripts do modal
 		
+		// Get DOM Elements
+		let my_modal = document.querySelector('#my-modal');
+		let closeBtn = document.querySelector('.close');
+
+		// Open modal if exibitModal is true
 		$(document).ready(function() {
 
 		   	if (localStorage.getItem("exibirModal") == null || localStorage.getItem("exibirModal") == "true") {
-			    openModal(); //abre o modal se não existir variável salva ou se ela for true
+			    openModal(my_modal); //abre o modal se não existir variável salva ou se ela for true
 			}
 		
 			$("#modal-checkbox").change(function() { //monitora quando o checkbox for modificado
@@ -68,31 +73,10 @@
 			});
 		});
 
-		// Get DOM Elements
-		const modal = document.querySelector('#my-modal');
-		const closeBtn = document.querySelector('.close');
-
 		// Events
 		//window.addEventListener('load', openModal) Não abre mais ao carregar a página, mas sim de acordo com a var do localStorage
-		closeBtn.addEventListener('click', closeModal);
-		window.addEventListener('click', outsideClick);
-
-		// Open
-		function openModal() {
-		  modal.style.display = 'block';
-		}
-
-		// Close
-		function closeModal() {
-		  modal.style.display = 'none';
-		}
-
-		// Close If Outside Click
-		function outsideClick(e) {
-		  if (e.target == modal) {
-		    modal.style.display = 'none';
-		  }
-		}
+		closeBtn.addEventListener('click', function() {closeModal(my_modal);}); //funções em funcoesGerais.js
+		window.addEventListener('click', function(event) {outsideClick(event, my_modal);});
 	</script>
 
 

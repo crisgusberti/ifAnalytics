@@ -391,13 +391,53 @@
 	</p><br>
 
 
+	<!-- Modal -->
+	<div id="modal_suporte" class="modal_suporte">
 
+	  <!-- Botão fechar -->
+	  <span class="close_modal_suporte">&times;</span>
 
+	  <!-- Conteúdo Modal (imagem) -->
+	  <img class="modal_suporte_content" id="imgModal">
+
+	  <!-- Legenda Modal (texto do alt) -->
+	  <div id="caption"></div>
+	</div>
 </div>
 
 <script>
 	$(document).ready(function(){ //define a altura do menu lateral ao carregar a página
 		alterarAlturaMenuLateral("dashboards");
 	});
+
+  	function abrirModal(img){ //Passando como parâmetro a própria tag <img> da imagem clicada
+
+    	//Pegando os elementos
+        //<div> principal com id "modal_suporte".
+		let modal_suporte = document.getElementById("modal_suporte");
+        //tag <img> que irá receber a imagem clicada.
+        let modalImg = document.getElementById("imgModal");
+        //<div> que recebe o texto relacionado com a imagem, o texto está no alt de cada imagem
+        let legenda = document.getElementById("caption");
+        //tag <span> que contém a letra "x" que será usada para fechar a janela modal
+        let btn_fechar = document.getElementsByClassName("close_modal_suporte")[0];
+
+        //Configura <div> em "block" para que fique visível, inicialmente no CSS este display é none
+        modal_suporte.style.display = "block";
+        //Captura o src da imagem clicada e passa a tag <img> que tem id="imgModal"
+        modalImg.src = img.src;
+        //Captura o alt da imagem clicada e passa a tag <img> que tem id="imgModal"
+        modalImg.alt = img.alt;
+        //Insere o texto do parâmetro alt da imagem dentro da <div> com id="caption"
+        legenda.innerHTML = img.alt;
+
+        //Função do evento onclick do <span> que usa a classe CSS "close_modal_suporte"
+        btn_fechar.onclick = function(){
+        	closeModal(modal_suporte); //em funcoesGerais.js
+        }
+
+        //Fecha o modal quando clicar fora
+		window.addEventListener('click', function(event) {outsideClick(event, modal_suporte);});
+ 	}
 </script>
 {% endblock %}
