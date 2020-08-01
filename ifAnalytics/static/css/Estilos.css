@@ -423,6 +423,11 @@
 		text-align: right;
 	}
 
+	.remove_marcador{
+		list-style-type: none;
+		padding-inline-start: 0px;
+	}
+
 /*====Modal Imagens Suporte====*/
 
 	/* Style the Image Used to Trigger the Modal Suporte */

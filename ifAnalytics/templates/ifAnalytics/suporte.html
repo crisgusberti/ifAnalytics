@@ -7,55 +7,59 @@
 
 	<h1><u>Página de Suporte do IfAnalytics</u></h1>
 	<p>
-		O IfAnalytics é produto de uma dissertação do Mestrado Profissional em Informática na Educação e tem por objetivo auxiliar o gestor acadêmico na obtenção de informações relevantes e importantes para realização de forma efetiva e eficiênte das suas atividades de gestão, tendo por base dados oriundos do banco de dados do sistema acadêmico.<br>
+		O IfAnalytics é produto de uma dissertação do Mestrado Profissional em Informática na Educação e tem por objetivo auxiliar o gestor acadêmico na obtenção de informações relevantes e importantes para realização de forma efetiva e eficiênte das suas atividades de gestão, tendo por base dados oriundos do banco de dados do sistema acadêmico.<br><br>
+
 		É importante ressaltar que as informações apresentadas dizem respeito apenas aos cursos cadastrados no Sistema Integrado de Gestão de Atividades Acadêmicas - SIGAA do IFRS.
 	</p><br>
 
 	<hr>
 	<h2><u><a name="topo"></a>Índice</u></h2>
 	<p>
-		<li><a href="#MenuSuperior">Menu Superior</a></li>
-		<li><a href="#MenuLateral">Menu Lateral</a></li>
-		<li><a href="#filtros1">Filtros</a></li>
-		<li><a href="#tabelaDetalhes">Tabela Detalhes</a></li>
-		<li><a href="#grafico1">Gráfico 1 - Forma de Ingresso</a></li>
-		<li><a href="#grafico2">Gráfico 2 - Status dos Discentes</a></li>
-		<li><a href="#grafico3">Gráfico 3 - Quantidade de Disciplinas em que os Alunos se Matricularam</a></li>
-		<li><a href="#grafico4">Gráfico 4 - Jubilados, em Vias de Jubilar e Formandos</a></li>
-		<li><a href="#grafico5">Gráfico 5 - Tamanho da(s) Turmas(s)</a></li>
-		<li><a href="#grafico6">Gráfico 6 - Discentes Evadidos por Disciplinas</a></li>
-		<li><a href="#grafico7">Gráfico 7.1 e 7.2 - Notas Parciais Unidade 1 e 2</a></li>
-		<li><a href="#grafico8">Gráfico 8 - Médias Finais</a></li>
-		<li><a href="#grafico9">Gráfico 9 - Discentes em Exame</a></li>
-		<li><a href="#grafico10">Gráfico 10 - Aprovados e Reprovados</a></li>
-		<li><a href="#grafico11">Gráfico 11 - Status nas Disciplinas</a></li>
-		<li><a href="#grafico12">Gráfico 12 - Percentuais de Frequências</a></li>
-		<li><a href="#contato">Contato</a></li>
+		<ul class="remove_marcador">
+			<li><a href="#MenuSuperior">Menu Superior</a></li>
+			<li><a href="#MenuLateral">Menu Lateral</a></li>
+			<li><a href="#filtros1">Filtros</a></li>
+			<li><a href="#tabelaDetalhes">Tabela Detalhes</a></li>
+			<li><a href="#grafico1">Gráfico 1 - Forma de Ingresso</a></li>
+			<li><a href="#grafico2">Gráfico 2 - Status dos Discentes</a></li>
+			<li><a href="#grafico3">Gráfico 3 - Quantidade de Disciplinas em que os Alunos se Matricularam</a></li>
+			<li><a href="#grafico4">Gráfico 4 - Jubilados, em Vias de Jubilar e Formandos</a></li>
+			<li><a href="#grafico5">Gráfico 5 - Tamanho da(s) Turmas(s)</a></li>
+			<li><a href="#grafico6">Gráfico 6 - Discentes Evadidos por Disciplinas</a></li>
+			<li><a href="#grafico7">Gráfico 7.1 e 7.2 - Notas Parciais Unidade 1 e 2</a></li>
+			<li><a href="#grafico8">Gráfico 8 - Médias Finais</a></li>
+			<li><a href="#grafico9">Gráfico 9 - Discentes em Exame</a></li>
+			<li><a href="#grafico10">Gráfico 10 - Aprovados e Reprovados</a></li>
+			<li><a href="#grafico11">Gráfico 11 - Status nas Disciplinas</a></li>
+			<li><a href="#grafico12">Gráfico 12 - Percentuais de Frequências</a></li>
+			<li><a href="#contato">Contato</a></li>
+		</ul>
 	</p><br>
 
 	<hr>
 	<h3><u><a name="MenuSuperior"></a>Menu Superior</u></h3>
 	<p>
 		<img id="img_menu_superior" src="{% static 'images/suporte/img_menu_superior.png' %}" alt="Menu Superior" class="imagem_suporte" onclick="abrirModal(this)">
-		O menu superior oferece opções para seleção do nível de ensino das informações que serão mostradas nos gráficos, além de acesso a pagina inicial e de sair do sistema.
+		O menu superior oferece opções para seleção do nível de ensino das informações que serão mostradas nos gráficos, além de acesso a página inicial e a sair do sistema. <br>
+		As opções disponíveis são:
 		<ul>
 			<li>
-				"Integrado": Mostra informações dos cursos Técnicos Integrados;
-			</li>
+				<b>Integrado:</b> Mostra informações dos cursos Técnicos Integrados;
+			</li><br>
 			<li>
-				"Técnico": Mostra informações dos cursos Técnicos;
-			</li>
+				<b>Técnico:</b> Mostra informações dos cursos Técnicos;
+			</li><br>
 			<li>
-				"Graduação": Mostra informações dos cursos Técnicos de Graduação;
-			</li>
+				<b>Graduação:</b> Mostra informações dos cursos de Graduação;
+			</li><br>
 			<li>
-				"Pós-Graduação": Mostra informações dos cursos de Pós-Graduação;
-			</li>
+				<b>Pós-Graduação:</b> Mostra informações dos cursos de Pós-Graduação;
+			</li><br>
 			<li>
-				"Home": Leva à página inicial;
-			</li>
+				<b>Home:</b> Leva à página inicial;
+			</li><br>
 			<li>
-				"Sair": Efetua o logoff do sistema.
+				<b>Sair:</b> Efetua o logoff do sistema.
 			</li>
 		</ul>
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
@@ -68,53 +72,59 @@
 		O menu lateral tem por objetivo separar informações que tem relação entre si.
 		<ul>
 			<li>
-				No menu "Geral" são apresentados gráficos com informações de cunho geral, como: Forma de Ingresso, Status dos Discentes, Quantidade de Matrículas, Número de Alunos Formandos, Jubilados, ou em vias de Jubilar, Tamanho de Turmas e Discentes Evadidos;
-			</li>
+				<b>No menu Geral</b> são apresentados gráficos com informações de cunho geral, como: Forma de Ingresso, Status dos Discentes, Quantidade de Matrículas, Número de Alunos Formandos, Jubilados, ou em vias de Jubilar, Tamanho de Turmas e Discentes Evadidos;
+			</li><br>
 			<li>
-				No menu "Notas" são apresentados gráficos com informações relativas a notas, como: Notas Parciais das Unidades 1 e 2, Médias Finais, Discentes em Exame, Número de Aprovados, Número de Reprovados e Status nas Disciplinas;
-			</li>
+				<b>No menu Notas</b> são apresentados gráficos com informações relativas a notas, como: Notas Parciais das Unidades 1 e 2, Médias Finais, Discentes em Exame, Número de Aprovados, Número de Reprovados e Status nas Disciplinas;
+			</li><br>
 			<li>
-				No menu "Frequências" é exibido um único gráfico com informações dos relacionadas aos percentuais de frequências dos discentes;
-			</li>
+				<b>No menu Frequências</b> é exibido um único gráfico com informações relacionadas aos percentuais de frequências dos discentes;
+			</li><br>
 			<li>
-				No menu "Suporte" são exibidas informações de ajuda ao usuário.
+				<b>No menu Suporte</b> são exibidas informações de ajuda ao usuário.
 			</li>
 		</ul>
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
-	</p><br><br><br><br><br><br><br>
+	</p><br>
 
 	<hr>
 	<h3><u><a name="filtros1"></a>Filtros</u></h3>
 	<p>
 		<img id="img_filtros" src="{% static 'images/suporte/img_filtros.png' %}" alt="Filtros" class="imagem_suporte" onclick="abrirModal(this)">
-		A área de filtros permite a seleção de diferentes informações para restringir e especificar melhor as informações mostradas nos gráficos
+		A área de filtros permite a seleção de diferentes parâmetros para restringir e especificar melhor as informações mostradas nos gráficos.
 		<ul>
 			<li>
-				A caixa de seleção "Campus" permite selecionar qual será o campus das informações mostradas nos gráficos. Existe também a opção "INSTITUTO FEDERAL RIO GRANDE DO SUL" que mostra informações de todos os campus do IFRS de forma unificada;
-			</li>
+				<b>A caixa de seleção Campus</b> permite selecionar qual será o campus das informações mostradas nos gráficos. <br>
+				Existe também a opção "INSTITUTO FEDERAL RIO GRANDE DO SUL" que mostra informações de todos os campus do IFRS de forma unificada;
+			</li><br>
 			<li>
-				A caixa de seleção "Período" permite selecionar qual o ano/semestre das informações mostradas nos gráficos. Importante destacar que somente aparecerão os períodos cadastrados no campus selecionado anteriormente no filtro "Campus";
-			</li>
+				<b>A caixa de seleção Período</b> permite selecionar qual o ano/semestre das informações mostradas nos gráficos. <br>
+				Importante destacar que somente aparecerão os períodos cadastrados no campus selecionado anteriormente no filtro "Campus";
+			</li><br>
 			<li>
-				A caixa de seleção "Curso" permite selecionar qual o curso das informações mostradas nos gráficos. Importante destacar que somente aparecerão os cursos cadastrados no campus selecionado anteriormente no filtro "Campus" e que estejam no nível de ensino selecionado no "Menu Superior";
-			</li>
+				<b>A caixa de seleção Curso</b> permite selecionar qual o curso das informações mostradas nos gráficos. <br>
+				Importante destacar que somente aparecerão os cursos cadastrados no campus selecionado anteriormente no filtro "Campus" e que estejam no nível de ensino selecionado no "Menu Superior";
+			</li><br>
 			<li>
-				A caixa de seleção "Turma" permite selecionar qual é a turma das informações mostradas nos gráficos. Importante destacar que no SIGAA o conceito de "turma" representa a caracterização de um grupo de estudantes que estão matriculados na mesma disciplina e tem suas aulas ministradas em um determinado dia e horário da semana por um professor(a) especifico.<br>
-				A apresentação das turmas dentro da caixa de seleção "Turma" representa as seguintes informações da seguinte forma: Exemplo: "01 - CAX-QUI001 - QUÍMICA GERAL".<br>
+				<b>A caixa de seleção Turma</b> permite selecionar qual é a turma das informações mostradas nos gráficos. <br>
+				Importante destacar que no SIGAA o conceito de "turma" representa a caracterização de um grupo de estudantes que estão matriculados na mesma disciplina e tem suas aulas ministradas em um determinado dia e horário da semana por um professor(a) especifico.<br>
+				A apresentação das turmas dentro da caixa de seleção "Turma" representa as informações conforme exemplo abaixo:<br><br>
+				<i>"01 - CAX-QUI001 - QUÍMICA GERAL"</i>. <br><br>
+				Onde:
 				<ul>
 					<li>
-						"01": Número da Turma;
+						<i>"01"</i> é o Número da Turma;
 					</li>
 					<li>
-						"CAX-QUI001": Código da Disciplina;
+						<i>"CAX-QUI001"</i> é o Código da Disciplina;
 					</li>
 					<li>
-						"QUÍMICA GERAL": Nome da Disciplina.
+						<i>"QUÍMICA GERAL"</i> é o Nome da Disciplina.
 					</li>
 				</ul>
 			</li>
 		</ul>
-		Importante destacar que as opções disponiveis para seleção nos filtros pode variar de acordo com o seu nível de permissão de acesso.
+		Importante destacar que as opções disponíveis para seleção nos filtros pode variar de acordo com o seu nível de permissão de acesso.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
 	</p><br>
 
@@ -123,9 +133,13 @@
 	<p>
 		<img id="img_tabela_detalhes" src="{% static 'images/suporte/img_tabela_detalhes.png' %}" alt="Tabela Detalhes" class="imagem_suporte" onclick="abrirModal(this)">
 		Ao clicar sobre qualquer fatia ou barra dos gráficos apresentados, a tabela detalhes é exibida com informações adicionais para maior detalhamento dos alunos que compoem aquela parcela do gráfico. <br><br>
+
 		Cada gráfico possui um conjunto diferente de informações na tabela detalhes. <br><br>
+
 		Os ícones da coluna contato são clicáveis e permitem acesso ao endereço de e-mail e telefone/WhatsApp do discente. <br><br>
-		IMPORTANTE: Sempre utilize o botão "Voltar" que aparece no fim da tabela detalhes para retornar aos gráficos. <br><br>
+
+		<span style="color: red"><u><i><b>IMPORTANTE:</b></i></u></span> Sempre utilize o botão "Voltar" que aparece no fim da tabela detalhes para retornar aos gráficos. <br><br>
+
 		Alternativamente, também é possível alterar a seleção feita nos filtros para voltar a visualizar os gráficos.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
 	</p><br>
@@ -135,9 +149,11 @@
 	<p>
 		<img id="img_grafico1" src="{% static 'images/suporte/img_grafico1.png' %}" alt="Gráfico 1" class="imagem_suporte" onclick="abrirModal(this)">
 		O Gráfico 1 mostra o percentual de alunos em cada uma das formas de ingresso possíveis no SIGAA. <br><br>
-		São considerados na contagem apenas alunos cujo status seja "ATIVO" ou "FORMANDO". <br><br>
-		O total desse gráfico deve bater com a fatia de alunos ativos + formandos do Gráfico 2. <br><br>
-		As informações são filtradas de acordo com os filtros e nível de ensino selecionados. <br><br>
+
+		São considerados na contagem apenas alunos cujo status seja <i>"ATIVO"</i> ou <i>"FORMANDO"</i>. <br><br>
+
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e nível de ensino escolhido. <br><br>
+
 		As formas de ingresso disponíveis no SIGAA são:
 		<ul>
 			<li>1 -  ACESSO UNIVERSAL;</li>
@@ -152,7 +168,9 @@
 			<li>10 - PORTADOR DEFICIENCIA;</li>
 			<li>11 - PROCESSO ESPECIAL - INDIGENA.</li>
 		</ul>
-		Para saber mais detalhes sobre qual a definição de cada uma das formas de ingresso e os critérios para categorização dessas formas de ingresso, entre em contato com o setor de registros acadêmicos.
+		Para saber mais detalhes sobre qual a definição de cada uma das formas de ingresso e os critérios para categorização dos alunos nessas formas de ingresso, entre em contato com o setor de registros acadêmicos. <br><br>
+
+		A título de conhecimento, o quantitativo total desse gráfico deve ser igual à fatia de alunos ativos + formandos do <a href="#grafico2">Gráfico 2</a>. <br><br>
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
 	</p><br>
 
@@ -160,8 +178,10 @@
 	<h3><u><a name="grafico2"></a>Gráfico 2 - Status dos Discentes</u></h3>
 	<p>
 		<img id="img_grafico2" src="{% static 'images/suporte/img_grafico2.png' %}" alt="Gráfico 2" class="imagem_suporte" onclick="abrirModal(this)">
-		O Gráfico 2 mostra o percentual de alunos em cada um dos status possíveis no SIGAA. <br>
-		As informações são filtradas de acordo com os filtros e nível de ensino selecionados. <br>
+		O Gráfico 2 mostra o percentual de alunos em cada um dos status possíveis no SIGAA. <br><br>
+
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e nível de ensino escolhido. <br><br>
+
 		Os status disponíveis no SIGAA são:
 		<ul>
 			<li>DESCONHECIDO;</li>
@@ -188,9 +208,11 @@
 	<h3><u><a name="grafico3"></a>Gráfico 3 - Quantidade de Disciplinas em que os Alunos se Matricularam</u></h3>
 	<p>
 		<img id="img_grafico3" src="{% static 'images/suporte/img_grafico3.png' %}" alt="Gráfico 3" class="imagem_suporte" onclick="abrirModal(this)">
-		O Gráfico 3 mostra a quantidade de alunos (eixo vertical) que estão matriculados em um total (eixo horizontal) de disciplinas. <br>
-		O objetivo do gráfico é demostrar de forma visual qual a carga de disciplinas dos alunos, no sentido de mostrar ao gestor quantas disciplinas em média os alunos estão matrículados em um determinado campus/período/curso. <br>
-		As informações são filtradas de acordo com os filtros e nível de ensino selecionados, além de serem consideradas na contagem apenas matrículas cujos alunos sejam "ATIVO" ou "FORMANDO" e cujo status da matrícula nas disciplinas seja:	
+		O Gráfico 3 mostra a quantidade de alunos (eixo vertical) que estão matriculados em um total (eixo horizontal) de disciplinas. <br><br>
+
+		O objetivo do gráfico é demostrar de forma visual qual a carga de disciplinas dos alunos, no sentido de mostrar ao gestor quantas disciplinas em média os alunos estão matrículados em um determinado campus/período/curso. <br><br>
+
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e nível de ensino escolhido, além de serem consideradas na contagem apenas matrículas cujos alunos estejam com status <i>"ATIVO"</i> ou <i>"FORMANDO"</i> e cujo status da matrícula nas disciplinas seja:	
 		<ul>
 			<li>MATRICULADO;</li>
 			<li>APROVADO;</li>
@@ -204,6 +226,7 @@
 			<li>REPROVADO POR NOTA E FALTA;</li>
 			<li>REPROVADO EM TODO PERÍODO LETIVO.</li>
 		</ul>
+		Para saber mais detalhes sobre qual a definição de cada um dos status das matrículas nas disciplinas e os critérios para categorização das matriculas nesses status, entre em contato com o setor de registros acadêmicos.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
 	</p><br>
 
@@ -220,19 +243,21 @@
 				<b>Alunos em Vias de Jubilar: </b> Mostra a quantidade de alunos que estão no semestre limite para conclusão padrão definido para o seu curso, no campus/período/curso/turma e nível de ensino selecionados e que não estão matriculados em todas as disciplinas pendentes do currículo. <br><br>
 			</li>
 			<li>
-				<b>Alunos Formandos: </b> Mostra a quantidade de alunos que são formandos no semestre atual e no campus/período/curso/turma e nível de ensino selecionados. <br>
+				<b>Alunos Formandos: </b> Mostra a quantidade de alunos que são formandos no campus/período/curso/turma e nível de ensino selecionados. <br>
 			</li>
 		</ul>
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
-	</p><br>
+	</p><br><br><br><br>
 
 	<hr>
 	<h3><u><a name="grafico5"></a>Gráfico 5 - Tamanho da(s) Turma(s)</u></h3>
 	<p>
 		<img id="img_grafico5" src="{% static 'images/suporte/img_grafico5.png' %}" alt="Gráfico 5" class="imagem_suporte" onclick="abrirModal(this)">
 		O Gráfico 5 mostra o tamanho das turmas em número de alunos matriculados. <br><br>
+
 		A linha vermelha representa a média de tamanho das turmas, dessa forma é possível constatar de maneira visual as turmas que estão abaixo ou acima do tamanho médio. <br><br>
-		As informações são filtradas de acordo com os filtros e nível de ensino selecionados, além de serem consideradas na contagem apenas matrículas de alunos cujo status seja "ATIVO" ou "FORMANDO" e cujo status da matrícula nas disciplinas seja:	
+
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e nível de ensino escolhido, além de serem consideradas na contagem apenas matrículas de alunos cujo status seja <i>"ATIVO"</i> ou <i>"FORMANDO"</i> e cujo status da matrícula nas disciplinas seja:	
 		<ul>
 			<li>MATRICULADO;</li>
 			<li>APROVADO;</li>
@@ -246,6 +271,7 @@
 			<li>REPROVADO POR NOTA E FALTA;</li>
 			<li>REPROVADO EM TODO PERÍODO LETIVO.</li>
 		</ul>
+		Para saber mais detalhes sobre qual a definição de cada um dos status das matrículas nas disciplinas e os critérios para categorização das matriculas nesses status, entre em contato com o setor de registros acadêmicos.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
 	</p><br>
 
@@ -254,20 +280,25 @@
 	<p>
 		<img id="img_grafico6" src="{% static 'images/suporte/img_grafico6.png' %}" alt="Gráfico 6" class="imagem_suporte" onclick="abrirModal(this)">
 		O Gráfico 6 mostra a quantidade de alunos evadidos por disciplina. <br><br>
-		As informações são filtradas de acordo com os filtros e nível de ensino selecionados, além de serem consideradas na contagem apenas matrículas cujo status da matrícula seja "CANCELADO". <br><br>	
-		Importante destacar que não existe no SIGAA um status específico para evasão em disciplinas. Dessa forma, a orientação é que os responsáveis pelos registros acadêmicos cadastrem o status "CANCELADO" para os casos de evasão em disciplinas. Entretando, é essencial fazer a ressalva que outras motivações, que não sejam apenas evasão, podem incitar o cancelamento da disciplina. Nesses casos a acuracidade deste gráfico pode ser comprometida.
+
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e nível de ensino escolhido, além de serem consideradas na contagem apenas matrículas cujo status da matrícula seja <i>"CANCELADO"</i>. <br><br>
+
+		Importante destacar que não existe no SIGAA um status específico para evasão em disciplinas ou curso. Dessa forma, a orientação é que os responsáveis pelos registros acadêmicos cadastrem o status <i>"CANCELADO"</i> para os casos de evasão em disciplinas e curso. Entretando, é essencial fazer a ressalva que outras motivações, que não sejam apenas evasão, podem incitar o cancelamento da disciplina. Nesses casos a acuracidade desse gráfico pode ser comprometida.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
-	</p><br>
+	</p><br><br><br><br><br><br><br><br><br>
 
 	<hr>
 	<h3><u><a name="grafico7"></a>Gráfico 7.1 e 7.2 - Notas Parciais Unidade 1 e 2</u></h3>
 	<p>
 		<img id="img_grafico7" src="{% static 'images/suporte/img_grafico7.png' %}" alt="Gráfico 7" class="imagem_suporte" onclick="abrirModal(this)">
-		Os Gráficos 7.1 e 7.2 mostram o percentual de alunos cuja nota final da unidada está acima (nota_final_unidade >= 7) e abaixo (nota_final_unidade < 7) da média 7 na Unidade 1 (gráfico 7.1) e na Unidade 2 (gráfico 7.2). <br><br>
+		Os Gráficos 7.1 e 7.2 mostram o percentual de alunos cuja nota final da unidade está acima (<i>nota_final_unidade >= 7</i>) e abaixo (<i>nota_final_unidade < 7</i>) da média 7 na Unidade 1 (gráfico 7.1) e na Unidade 2 (gráfico 7.2). <br><br>
+
 		Importante ressaltar que a nota final da unidade utilizada nesses gráficos é a nota da unidade após a recuperação paralela. <br><br>
+
 		A imagem abaixo explicita visualmente qual a nota considerada nesses gráficos: <br><br>
 		<br><img id="img_adicional_grafico7" src="{% static 'images/suporte/img_adicional_grafico7.png' %}" alt="Notas Parciais em Destaque" class="centraliza_imagem" onclick="abrirModal(this)"><br><br>
-		As informações constantes nos gráficos são filtradas de acordo com os filtros e nível de ensino selecionados, além de serem considerados apenas alunos cujo status seja "ATIVO" ou "FORMANDO" e cujo status da matrícula nas disciplinas seja:	
+
+		As informações constantes nos gráficos são filtradas de acordo com os filtros selecionados e nível de ensino escolhido, além de serem considerados apenas alunos cujo status seja <i>"ATIVO"</i> ou <i>"FORMANDO"</i> e cujo status da matrícula nas disciplinas seja:	
 		<ul>
 			<li>MATRICULADO;</li>
 			<li>APROVADO;</li>
@@ -281,6 +312,8 @@
 			<li>REPROVADO POR NOTA E FALTA;</li>
 			<li>REPROVADO EM TODO PERÍODO LETIVO.</li>
 		</ul>
+		Para saber mais detalhes sobre qual a definição de cada um dos status das matrículas nas disciplinas e os critérios para categorização das matriculas nesses status, entre em contato com o setor de registros acadêmicos. <br><br>
+
 		Dependendo do momento no semestre os gráficos podem aparecer sem informações. Isso acontece quando as notas das unidades ainda não foram lançadas no SIGAA.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
 	</p><br>
@@ -289,11 +322,14 @@
 	<h3><u><a name="grafico8"></a>Gráfico 8 - Médias Finais</u></h3>
 	<p>
 		<img id="img_grafico8" src="{% static 'images/suporte/img_grafico8.png' %}" alt="Gráfico 8" class="imagem_suporte" onclick="abrirModal(this)">
-		O Gráfico 8 mostra o percentual de alunos cuja média final (ou resutado) do semestre está acima (media_final >= 5) e abaixo (media_final < 5) da média 5. <br><br>
+		O Gráfico 8 mostra o percentual de alunos cuja média final (ou resutado) do semestre está acima (<i>media_final >= 5</i>) e abaixo (<i>media_final < 5</i>) da média 5. <br><br>
+
 		Importante ressaltar que a média final utilizada nesse gráfico é a média obtida após realilzação do exame. <br><br>
+
 		A imagem abaixo explicita visualmente qual a nota considerada nesse gráfico: <br><br>
 		<br><img id="img_adicional_grafico8" src="{% static 'images/suporte/img_adicional_grafico8.png' %}" alt="Médias Finais em Destaque" class="centraliza_imagem" onclick="abrirModal(this)"><br><br>
-		As informações constantes no gráfico são filtradas de acordo com os filtros e nível de ensino selecionados, além de serem considerados apenas alunos cujo status seja "ATIVO" ou "FORMANDO" e cujo status da matrícula nas disciplinas seja:	
+
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e nível de ensino escolhido, além de serem considerados apenas alunos cujo status seja <i>"ATIVO"</i> ou <i>"FORMANDO"</i> e cujo status da matrícula nas disciplinas seja:	
 		<ul>
 			<li>MATRICULADO;</li>
 			<li>APROVADO;</li>
@@ -307,6 +343,8 @@
 			<li>REPROVADO POR NOTA E FALTA;</li>
 			<li>REPROVADO EM TODO PERÍODO LETIVO.</li>
 		</ul>
+		Para saber mais detalhes sobre qual a definição de cada um dos status das matrículas nas disciplinas e os critérios para categorização das matriculas nesses status, entre em contato com o setor de registros acadêmicos. <br><br>
+
 		Dependendo do momento no semestre o gráfico pode aparecer sem informações. Isso acontece quando as notas das unidades e do exame ainda não foram lançadas no SIGAA.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
 	</p><br>
@@ -316,19 +354,24 @@
 	<p>
 		<img id="img_grafico9" src="{% static 'images/suporte/img_grafico9.png' %}" alt="Gráfico 9" class="imagem_suporte" onclick="abrirModal(this)">
 		O Gráfico 9 mostra o percentual de alunos que estão em exame. <br><br>
+
 		A imagem abaixo explicita visualmente quais alunos são considerados nesse gráfico: <br><br>
+
 		<br><img id="img_adicional_grafico9" src="{% static 'images/suporte/img_adicional_grafico9.png' %}" alt="Alunos em Exame em Destaque" class="centraliza_imagem" onclick="abrirModal(this)"><br><br>
-		As informações constantes no gráfico são filtradas de acordo com os filtros e nível de ensino selecionados, além de serem considerados apenas alunos cujo status seja "ATIVO" ou "FORMANDO". <br><br>
+
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e nível de ensino escolhido, além de serem considerados apenas alunos cujo status seja <i>"ATIVO"</i> ou <i>"FORMANDO"</i>. <br><br>
+
 		Dependendo do momento no semestre o gráfico pode aparecer sem informações. Isso acontece quando as médias finais ainda não foram calculadas no SIGAA.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
-	</p><br>
+	</p><br><br>
 
 	<hr>
 	<h3><u><a name="grafico10"></a>Gráfico 10 - Aprovados e Reprovados</u></h3>
 	<p>
 		<img id="img_grafico10" src="{% static 'images/suporte/img_grafico10.png' %}" alt="Gráfico 10" class="imagem_suporte" onclick="abrirModal(this)">
 		O Gráfico 10 mostra o percentual de alunos aprovados e reprovados nas disciplinas em qualquer status de aprovação ou reprovação conforme listagem abaixo. <br><br>
-		As informações constantes no gráfico são filtradas de acordo com os filtros e nível de ensino selecionados, além de serem considerados apenas alunos cujo status seja "ATIVO" ou "FORMANDO" e cujo status da matrícula nas disciplinas seja:	
+
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e nível de ensino escolhido, além de serem considerados apenas alunos cujo status seja <i>"ATIVO"</i> ou <i>"FORMANDO"</i> e cujo status da matrícula nas disciplinas seja:	
 		<ul>
 			<li>MATRICULADO;</li>
 			<li>APROVADO;</li>
@@ -342,8 +385,9 @@
 			<li>REPROVADO POR NOTA E FALTA;</li>
 			<li>REPROVADO EM TODO PERÍODO LETIVO.</li>
 		</ul>
+		Para saber mais detalhes sobre qual a definição de cada um dos status e os critérios para categorização das matriculas nesses status, entre em contato com o setor de registros acadêmicos. <br><br>
+
 		Dependendo do momento no semestre o gráfico pode aparecer sem informações. Isso acontece quando as notas das unidades e do exame ainda não foram lançadas no SIGAA.
-		Para saber mais detalhes sobre qual a definição de cada um dos status e os critérios para categorização das matriculas nesses status, entre em contato com o setor de registros acadêmicos.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
 	</p><br>
 
@@ -351,9 +395,11 @@
 	<h3><u><a name="grafico11"></a>Gráfico 11 - Status nas Disciplinas</u></h3>
 	<p>
 		<img id="img_grafico11" src="{% static 'images/suporte/img_grafico11.png' %}" alt="Gráfico 11" class="imagem_suporte" onclick="abrirModal(this)">
-		O Gráfico 11 mostra o percentual de alunos em cada um dos status de matrícula nas disciplinas possíveis no SIGAA. <br><br>
-		As informações constantes no gráfico são filtradas de acordo com os filtros e nível de ensino selecionados, além de serem considerados apenas alunos cujo status seja "ATIVO" ou "FORMANDO". <br><br>
-		Os status de matrículas em disciplinas possíveis no SIGAA são:
+		O Gráfico 11 mostra o percentual de alunos em cada um dos possíveis status de matrícula nas disciplinas no SIGAA. <br><br>
+
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e nível de ensino escolhido, além de serem considerados apenas alunos cujo status seja <i>"ATIVO"</i> ou <i>"FORMANDO"</i>. <br><br>
+
+		Os possíveis status de matrículas em disciplinas no SIGAA são:
 		<ul>
 			<li>AGUARDANDO DEFERIMENTO;</li>
 			<li>APROVEITAMENTO DE  ESTUDOS;</li>
@@ -380,7 +426,8 @@
 			<li>TRANSFERIDO.</li>
 		</ul>
 		Para saber mais detalhes sobre qual a definição de cada um dos status e os critérios para categorização das matriculas nesses status, entre em contato com o setor de registros acadêmicos. <br><br>
-		Por considerar todos os status possíveis na ou nas turmas esse gráfico pode divergir do Gráfico 1, 2 e 5 porque neste caso são consideras status de matrículas nas disciplinas cujo status são: excluida, cancelada, trancada, etc.
+
+		Por considerar todos os status possíveis, esse gráfico pode divergir do Gráfico 1, 2 e 5 porque neste caso são considerados os status de matrícula excluida, cancelada, trancada, etc.
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>
 	</p><br>
 
@@ -389,19 +436,20 @@
 	<p>
 		<img id="img_grafico12" src="{% static 'images/suporte/img_grafico12.png' %}" alt="Gráfico 12" class="imagem_suporte" onclick="abrirModal(this)">
 		O Gráfico 12 mostra o percentual de alunos em cada uma dos 8 intervalos de percentuais de frequência definidos. <br><br>
+
 		Os 8 intervalos de percentuais de frequência definidos são:
 		<ul>
-			<li>Alunos com percentual de frequência = 100%;</li>
-			<li>Alunos com percentual de frequência < 100% e >= 95%;</li>
-			<li>Alunos com percentual de frequência < 95% e >= 90%;</li>
-			<li>Alunos com percentual de frequência < 90% e >= 85%;</li>
-			<li>Alunos com percentual de frequência < 85% e >= 80%;</li>
-			<li>Alunos com percentual de frequência < 80% e >= 75%;</li>
-			<li>Alunos com percentual de frequência < 75%;</li>
-			<li>Alunos sem percentual de frequência.</li>
+			<li><b>Alunos com percentual de frequência = 100%;</b></li>
+			<li><b>Alunos com percentual de frequência < 100% e >= 95%;</b></li>
+			<li><b>Alunos com percentual de frequência < 95% e >= 90%;</b></li>
+			<li><b>Alunos com percentual de frequência < 90% e >= 85%;</b></li>
+			<li><b>Alunos com percentual de frequência < 85% e >= 80%;</b></li>
+			<li><b>Alunos com percentual de frequência < 80% e >= 75%;</b></li>
+			<li><b>Alunos com percentual de frequência < 75%;</b></li>
+			<li><b>Alunos sem percentual de frequência.</b></li>
 		</ul>
 
-		As informações constantes no gráfico são filtradas de acordo com os filtros e nível de ensino selecionados, além de serem considerados apenas alunos cujo status seja "ATIVO" ou "FORMANDO" e cujo status da matrícula nas disciplinas seja:	
+		As informações constantes no gráfico são filtradas de acordo com os filtros selecionados e o nível de ensino escolhido, além de serem considerados apenas alunos cujo status seja <i>"ATIVO"</i> ou <i>"FORMANDO"</i> e cujo status da matrícula nas disciplinas seja:	
 		<ul>
 			<li>MATRICULADO;</li>
 			<li>APROVADO;</li>
@@ -415,6 +463,7 @@
 			<li>REPROVADO POR NOTA E FALTA;</li>
 			<li>REPROVADO EM TODO PERÍODO LETIVO.</li>
 		</ul>
+		Para saber mais detalhes sobre qual a definição de cada um dos status e os critérios para categorização das matriculas nesses status, entre em contato com o setor de registros acadêmicos. <br><br>
 		<p class="alinha_direita"><a href="#topo">Voltar ao Topo</a></p>	
 	</p><br>
 
