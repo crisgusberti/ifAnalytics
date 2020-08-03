@@ -412,11 +412,25 @@
 		text-align: center;
 	}
 
+	.itens_suporte{
+		width: 100%;
+		margin-top: 3%; 
+		display: inline-block;
+		list-style-position: inside;
+	}
+
+	.itens_suporte ul{ /*deixa todos os itens da lista alinhados um abaixo do outro sem quebra de parágrafo*/
+		overflow: hidden; 
+		text-overflow: ellipsis;
+		white-space: normal;
+		padding-left: 0%;
+	}
+
 	.centraliza_imagem {
 	  display: block;
 	  margin-left: auto;
 	  margin-right: auto;
-	  width: 50%;
+	  max-width: 50%;
 	}
 
 	.alinha_direita{
