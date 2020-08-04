@@ -50,7 +50,7 @@ ORDER BY CAST (SUBSTR(mi.descricao, 1, 2) AS integer) --ordena de acordo com os 
 ===============
 --CONSULTA PRA TELA DE DETALHES:
 
-SELECT mi.descricao AS forma_ingresso, d.matricula, p.nome AS discente, c.nome AS curso, p.email AS contato
+SELECT mi.descricao AS forma_ingresso, d.matricula, p.nome AS discente, c.nome AS curso, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 
 FROM discente d 
 

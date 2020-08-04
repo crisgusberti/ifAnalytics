@@ -185,7 +185,7 @@ SELECT total_matricula_discente AS total_disciplinas_ano, COUNT(*) AS total_alun
 --CONSULTA PARA TABELA DE DETALHES (FEITA POR MIM)
 --a mesma consulta serve para campus/curso/turma (é a mesma consulta acima, apenas trazendo mais dados)
 WITH q1 AS (
-	SELECT COUNT(mc.*) AS total_matricula_discente, mc.id_discente, d.matricula, p.nome AS discente, c.nome AS curso, p.email AS contato
+	SELECT COUNT(mc.*) AS total_matricula_discente, mc.id_discente, d.matricula, p.nome AS discente, c.nome AS curso, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 	
 	FROM ensino.matricula_componente mc
 	
@@ -214,10 +214,10 @@ WITH q1 AS (
 		-- filtrando por disciplinas
 		--AND t.id_turma = 2900
 	
-	GROUP BY mc.id_discente, d.matricula, discente, curso, contato
+	GROUP BY mc.id_discente, d.matricula, discente, curso, p.email, celular
 )
-SELECT matricula, discente, curso, total_matricula_discente AS total_disciplinas_ano, contato
+SELECT matricula, discente, curso, total_matricula_discente AS total_disciplinas_ano, email, celular
 	FROM q1
 	WHERE total_matricula_discente = 6 --por turma não precisa colocar esse parametro pq ele precisa listar todos os alunos daquela turma de qlqr jeito, já que só tem uma.
-GROUP BY matricula, discente, curso, total_disciplinas_ano, contato
+GROUP BY matricula, discente, curso, total_disciplinas_ano, email, celular
 ORDER BY discente

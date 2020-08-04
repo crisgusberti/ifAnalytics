@@ -39,7 +39,7 @@ GROUP BY q1.unidade
 =====================================
 CONSULTA DETALHES - MÉDIAS PARCIAIS
 
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, nu.nota_final_unidade, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, nu.nota_final_unidade, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 
 FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
@@ -114,7 +114,7 @@ WHERE d.nivel = 'G'
 CONSULTA DETALHES - MÉDIAS FINAIS
 --a consulta para cada um dos parametros será repetida, um com AND mc.media_final >= 5 e outra com AND mc.media_final < 5 quem define vai ser o querySelector
 
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, mc.media_final, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, mc.media_final, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 		
 FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma

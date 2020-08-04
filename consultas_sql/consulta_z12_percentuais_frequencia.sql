@@ -37,7 +37,7 @@ CONSULTA DETALHES
 -- Para consulta de 100%, menos de 75% e frequencia nulla, substituir o ultimo WHERE por: WHERE frequencia = 100 ou WHERE frequencia < 75 ou WHERE frequencia IS NULL. Para os demais percentuais a consulta é padronizada conforme abaixo
 
 WITH q1 AS(
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, mc.porcentagem_frequencia AS frequencia,  p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, mc.porcentagem_frequencia AS frequencia, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 
 FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma --Embora esse join não está sendo usado, se eu comentar ele, muda o resultado dos alunos sem frequencia.
@@ -63,7 +63,7 @@ WHERE d.nivel = 'G'
     -- turma específica
 	--AND mc.id_turma = 2892
 )
-SELECT matricula, discente, curso, disciplina, frequencia, contato
+SELECT matricula, discente, curso, disciplina, frequencia, email, celular
 FROM q1
 --	WHERE frequencia = 100
 --	WHERE frequencia < 100 AND frequencia >= 95

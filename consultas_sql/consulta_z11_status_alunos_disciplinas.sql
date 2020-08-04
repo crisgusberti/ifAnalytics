@@ -36,7 +36,7 @@ ORDER BY q1.status_disciplina
 =============================
 --CONSULTA DETALHES
 
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 
 FROM ensino.matricula_componente mc
 	INNER JOIN ensino.situacao_matricula sm ON sm.id_situacao_matricula = mc.id_situacao_matricula
@@ -61,6 +61,6 @@ WHERE d.nivel = 'G'
 	
 	AND sm.descricao = 'APROVADO'
 	
-GROUP BY id_matricula_componente, matricula, discente, curso, disciplina, situacao, contato --esse id_matricula_componente está aqui pq sem ele da diferença entre o numero de 'EXCLUIDAS' no gráfico de contagem e de 'EXCLUIDAS' na tabela detalhes (não entendi pq, mas assim como está funciona)
+GROUP BY id_matricula_componente, matricula, discente, curso, disciplina, situacao, p.email, celular --esse id_matricula_componente está aqui pq sem ele da diferença entre o numero de 'EXCLUIDAS' no gráfico de contagem e de 'EXCLUIDAS' na tabela detalhes (não entendi pq, mas assim como está funciona)
 ORDER BY discente, situacao
 	

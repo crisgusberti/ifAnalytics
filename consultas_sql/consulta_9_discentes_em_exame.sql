@@ -95,7 +95,7 @@ FROM Q2
 --CONSULTA PARA DETALHES
 
 WITH Q1 AS(
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, SUM(nu.nota_final_unidade) / 2 AS media_parcial, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, SUM(nu.nota_final_unidade) / 2 AS media_parcial, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 	
 FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
@@ -123,12 +123,12 @@ WHERE
     -- turma específica
 	--AND mc.id_turma = 2892
 
-GROUP BY d.matricula, discente, curso, disciplina, contato 
+GROUP BY d.matricula, discente, curso, disciplina, p.email, celular 
 )
-SELECT matricula, discente, curso, disciplina, ROUND (CAST(media_parcial AS numeric),2) AS media_final, contato
+SELECT matricula, discente, curso, disciplina, ROUND (CAST(media_parcial AS numeric),2) AS media_final, email, celular
 FROM q1
 	--parametro de detalhes. Na view vai ter duas consultas repetidas, uma com média < 7 e outra com média >= 7. O querySelector vai definir qual das duas vai ser executada
 	WHERE q1.media_parcial >= 7
 	--WHERE q1.media_parcial < 7
-GROUP BY matricula, discente, curso, disciplina, media_parcial, contato
+GROUP BY matricula, discente, curso, disciplina, media_parcial, email, celular
 ORDER BY discente, media_parcial

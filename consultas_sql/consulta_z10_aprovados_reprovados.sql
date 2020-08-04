@@ -26,7 +26,7 @@ WHERE mc.ano= 2019 AND mc.periodo = 1
 ====================================
 --CONSULTA DETALHES
 
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, sm.descricao AS situacao, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 
 
 FROM ensino.matricula_componente mc
@@ -54,5 +54,5 @@ WHERE  d.nivel = 'G'
 	AND mc.id_situacao_matricula IN (4, 21, 22, 24) --para os aprovados
 	--AND mc.id_situacao_matricula IN (6, 7 , 9, 25, 26, 27) --para os reprovados
 	
-GROUP BY matricula, discente, curso, disciplina, situacao, contato
+GROUP BY matricula, discente, curso, disciplina, situacao, p.email, celular
 ORDER BY discente, situacao

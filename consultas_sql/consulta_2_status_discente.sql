@@ -254,7 +254,7 @@ ORDER BY sd.descricao
 
 
 -- DETALHES NOVA VERSÃO UNIFICADA PARA CAMPUS/CURSO/TURMA !!!!!!!!!!!!!!!!!!!!!QUE ESTÃO IMPLEMENTADAS NO SISTEMA!!!!!!!!!!!!!!!!!!!!!!!!!!!
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, sd.descricao AS status, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, sd.descricao AS status, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 FROM discente d
 INNER JOIN status_discente sd ON sd.status = d.status 
 INNER JOIN ensino.matricula_componente mc ON mc.id_discente = d.id_discente 
@@ -267,5 +267,5 @@ AND d.id_gestora_academica IN (SELECT id_unidade FROM dti_ifrs.montar_arvore_org
 --AND d.id_curso =  211165 --lic matematica
 --AND mc.id_turma = 3511
 AND sd.descricao = 'ATIVO'
-GROUP BY d.matricula, discente, curso, sd.descricao, contato
+GROUP BY d.matricula, discente, curso, sd.descricao, p.email, celular
 ORDER BY discente

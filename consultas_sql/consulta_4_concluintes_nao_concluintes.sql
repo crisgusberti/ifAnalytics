@@ -113,7 +113,7 @@ FROM q1
 --precisei de consultas diferentes para os detalhes pq o gráfico possui dois indicadores diferentes embutidos(alunos que passaram do prazo de conclusão (jubilados) e alunos formandos (concluintes)). Então a consulta de detalhes é diferente para cada indicador
 --CONSULTA PARA DETALHES (específica para a coluna de NÃO CONCLUINTES)
 
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 
 FROM ensino.matricula_componente mc 
 	INNER JOIN discente d ON d.id_discente = mc.id_discente
@@ -136,14 +136,14 @@ WHERE d.nivel = 'G'
    -- turma específica
 	--AND mc.id_turma = 4277
 	
-GROUP BY matricula, discente, curso, d.prazo_conclusao, contato
+GROUP BY matricula, discente, curso, d.prazo_conclusao, p.email, celular
 ORDER BY discente
 
 
 ==========================================================
 --CONSULTA PARA DETALHES (específica para a coluna de CONCLUINTES)
 
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 
 FROM ensino.matricula_componente mc 
 	INNER JOIN discente d ON d.id_discente = mc.id_discente
@@ -165,14 +165,14 @@ WHERE d.nivel = 'G'
    -- turma específica
 	--AND mc.id_turma = 4277
 	
-GROUP BY matricula, discente, curso, d.prazo_conclusao, contato
+GROUP BY matricula, discente, curso, d.prazo_conclusao, p.email, celular
 ORDER BY discente
 
 
 ===================================================
 --CONSULTA PARA DETALHES (específica para a coluna de EM VIAS DE JUBILAR)
 
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, dg.ch_nao_atividade_obrig_pendente AS ch_componente_obrig_pendente, dg.ch_optativa_pendente, dg.ch_complementar_pendente, dg.ch_total_pendente, p.email AS contato
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, d.prazo_conclusao, dg.ch_nao_atividade_obrig_pendente AS ch_componente_obrig_pendente, dg.ch_optativa_pendente, dg.ch_complementar_pendente, dg.ch_total_pendente, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 
 FROM ensino.matricula_componente mc 
 	INNER JOIN discente d ON d.id_discente = mc.id_discente
@@ -196,7 +196,7 @@ WHERE d.nivel = 'G'
    -- turma específica
 	--AND mc.id_turma = 4277
 	
-GROUP BY matricula, discente, curso, d.prazo_conclusao, ch_componente_obrig_pendente, dg.ch_optativa_pendente, dg.ch_complementar_pendente, dg.ch_total_pendente, contato
+GROUP BY matricula, discente, curso, d.prazo_conclusao, ch_componente_obrig_pendente, dg.ch_optativa_pendente, dg.ch_complementar_pendente, dg.ch_total_pendente, p.email, celular
 ORDER BY discente
 
 

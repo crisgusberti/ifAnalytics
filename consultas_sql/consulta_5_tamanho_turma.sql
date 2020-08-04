@@ -85,7 +85,7 @@ ORDER BY total_matriculados
 --CONSULTA DETALHES
 --serve para campus/curso/turma
 
-SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, p.email AS contato 
+SELECT d.matricula, p.nome AS discente, c.nome AS curso, ccd.nome AS disciplina, p.email, translate(('55' || CAST(p.codigo_area_nacional_telefone_celular AS varchar) || p.telefone_celular), '-', '') AS celular
 	
 FROM ensino.matricula_componente mc
 	INNER JOIN ensino.turma t ON t.id_turma = mc.id_turma
@@ -112,7 +112,7 @@ WHERE d.nivel = 'G'
 
 	-- detalhe
 	--AND ccd.nome = 'METALURGIA FÍSICA I'
-GROUP BY d.matricula, discente, curso, disciplina, contato
+GROUP BY d.matricula, discente, curso, disciplina, p.email, celular
 ORDER BY discente
 
 

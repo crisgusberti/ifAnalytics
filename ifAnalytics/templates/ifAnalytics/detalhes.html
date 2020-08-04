@@ -56,11 +56,11 @@
 		for (let i = 0; i < data_from_view.length; i++) { //for que adiciona uma linha da tabela
 			let corpo_tabela = "<tr>"+"<td>"+numero_linha+"</td>"; //adiciona linha em <tr> e abaixo adiciona célula (coluna) em <td>. Nessa mesma linha adiciona um <td> com o contador "numero_linha" para aparecer na tabela o numero de cada linha
 
-			for(let j = 0; j < data_from_view[i].length; j++){ //pega a quantidade de itens (tamanho) da linha i do array
-				if (j != data_from_view[i].length-1) { //verifica se não é a última posição adiciona as colunas normalmente
+			for(let j = 0; j < data_from_view[i].length-1; j++){ //pega a quantidade de itens (tamanho) da linha i do array (-1 pq e-mail e whats são concatenados na mesma coluna então a tabela tem uma posição (coluna) a menos que o array)
+				if (j != data_from_view[i].length-2) { //verifica se não é a "penultima" posição da tabela e adiciona as colunas normalmente (penultima pq a ultima é e-mail + whats que serão tratadas no else (lembra que sempre precisa se considerar o array com uma posição a menos pq e-mail e whats são uma só coluna, por isso utilizo -2, já que a última seria -1))
 					corpo_tabela +="<td>"+data_from_view[i][j]+"</td>"; //enquanto nessa linha i, percorre cada posição da linha i como sendo j
-				}else{ //se for a ultima posição (e-mail) adiciona uma imagem com o link para o e-mail do aluno
-					corpo_tabela +="<td><a href=mailto:"+data_from_view[i][j]+"><img src='{% static 'images/email.png' %}' title='Enviar e-mail'></a></td>";
+				}else{ //se for a ultima posição (que na vdd é data_from_view[i].length-1) adiciona uma imagem com o link para o e-mail e do whats do aluno concatenados
+					corpo_tabela +="<td><a href=mailto:"+data_from_view[i][j]+"><img src='{% static 'images/email.png' %}' title='Enviar e-mail'></a> | <a href=https://wa.me/"+data_from_view[i][j+1]+" target='_blank'><img src='{% static 'images/whatsapp.png' %}' title='WhatsApp'></a></td>";
 				}
 			}
 

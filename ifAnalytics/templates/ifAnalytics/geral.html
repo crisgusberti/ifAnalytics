@@ -215,9 +215,9 @@
       this['data_table_' + chart_name].addColumn({type: 'string', role: 'tooltip'});
     }
 
-    // else if (chart_name == "chart_concluintes") { //opção específica desse gráfico  -- foi comentado pq para o IFRS em 2020/1 tem uma coluna com 76 alunos e ela estava sendo cortada.
-    //   options.vAxis.viewWindow['max'] = 10; //limita a exibição até a escala 10
-    // }
+    else if (chart_name == "chart_concluintes") { //opção específica desse gráfico  -- era 10 mas para o IFRS em 2020/1 tem uma coluna com 76 alunos e ela estava sendo cortada.
+      options.vAxis.viewWindow['max'] = 100; //limita a exibição até a escala 100
+    }
 
     ////ALTERA TAMANHO DO GRÁFICO
     else if (chart_name == "chart_discentes_evadidos") { 
@@ -355,7 +355,7 @@
       var parametroDetalhes = data_table_chart_forma_ingresso.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); //persiste aqui o parametro selecionado no gráfico
       persistirParametros("url_consulta", "/get_data_forma_ingresso/"); //persiste aqui a url da consulta a ser executada na pg detalhes
-      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Forma ingresso", "E-mail"]); //persiste inf. cabeçalho tabela
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Forma ingresso", "Contato"]); //persiste inf. cabeçalho tabela
       persistirParametros("titulo_tabela_detalhes", "Detalhamento da Forma de Ingresso dos Discentes");
       definirQuerySelector(sessionStorage.getItem("querySelector")); //chama a função, passando o querySelector atual para definir o novo querySelector que dirá que consulta da view será executada na página de detalhes
     }
@@ -367,7 +367,7 @@
       var parametroDetalhes = data_table_chart_status_discente.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_status_discente/");
-      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Status", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Status", "Contato"]);
       persistirParametros("titulo_tabela_detalhes", "Detalhamento do Status dos Discentes");
       definirQuerySelector(sessionStorage.getItem("querySelector")); 
     }
@@ -379,7 +379,7 @@
       var parametroDetalhes = data_table_chart_total_matriculados.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes); 
       persistirParametros("url_consulta", "/get_data_total_matriculas/");
-      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Quantidade de Disciplinas Matriculadas", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Quantidade de Disciplinas Matriculadas", "Contato"]);
       persistirParametros("titulo_tabela_detalhes", "Detalhamento do Total de Disciplinas por Aluno");
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
@@ -393,12 +393,12 @@
       persistirParametros("colunaSelecionada", colunaSelecionada);
       persistirParametros("parametroDetalhes", parametroDetalhes); //não está sendo usado nessa consulta, pq eu listo todos os alunos da coluna selecionada
       persistirParametros("url_consulta", "/get_data_concluintes/"); 
-      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Prazo de Conclusão", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Prazo de Conclusão", "Contato"]);
       if (colunaSelecionada == "Alunos Formandos") {
         persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos Formandos");
       } else if (colunaSelecionada =="Alunos em Vias de Jubilar") {
         persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos em Vias de Jubilar");
-        persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Prazo de Conclusão", "CH Componentes Obrigatórios Pendente", "CH Optativa Pendente", "CH Complementar Pendente", "CH Total Pendente", "E-mail"]);
+        persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Prazo de Conclusão", "CH Componentes Obrigatórios Pendente", "CH Optativa Pendente", "CH Complementar Pendente", "CH Total Pendente", "Contato"]);
       } else {
         persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Alunos Jubilados");
       }
@@ -412,7 +412,7 @@
       var parametroDetalhes = data_table_chart_tamanho_turmas.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_tamanho_turmas/"); 
-      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Contato"]);
       persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Discentes da Turma");
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
@@ -424,7 +424,7 @@
       var parametroDetalhes = data_table_chart_discentes_evadidos.getValue(selectedItem.row, 0);
       persistirParametros("parametroDetalhes", parametroDetalhes);
       persistirParametros("url_consulta", "/get_data_discentes_evadidos/"); 
-      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "E-mail"]);
+      persistirParametros("array_cabecalho", ["#", "Matricula", "Nome", "Curso", "Disciplina", "Contato"]);
       persistirParametros("titulo_tabela_detalhes", "Detalhamento dos Discentes Evadidos");
       definirQuerySelector(sessionStorage.getItem("querySelector"));
     }
