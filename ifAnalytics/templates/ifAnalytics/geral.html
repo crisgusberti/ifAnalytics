@@ -240,6 +240,8 @@
         document.getElementById(chart_div).style.width = '100%'; //aumenta o tamanho do gráfico
         document.getElementById(chart_div).style.height = '450px';
         document.getElementById(chart_div).style.overflow = 'auto'; //acrescenta barras de rolagem
+        document.getElementById(chart_div).style.overflowY = 'hidden'; //remove barras de rolagem verticais
+        document.getElementById(chart_div).style.paddingBottom = '2%'; //Impede que a borda inferior do gráfico seja cortada pela div
         alterarAlturaMenuLateral("dashboards"); //altera o tamanho do menu lateral da esquerda
       } else { //mostra gráfico pequeno
         var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
@@ -333,6 +335,8 @@
       document.getElementById(chart_div).style.width = '100%'; //aumenta o tamanho do gráfico
       document.getElementById(chart_div).style.height = '450px';
       document.getElementById(chart_div).style.overflow = 'auto'; //acrescenta barras de rolagem
+      document.getElementById(chart_div).style.overflowY = 'hidden'; //remove barras de rolagem verticais
+      document.getElementById(chart_div).style.paddingBottom = '2%'; //Impede que a borda inferior do gráfico seja cortada pela div
       alterarAlturaMenuLateral("dashboards"); //altera o tamanho do menu lateral da esquerda
     } else { //mostra gráfico pequeno
       var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
