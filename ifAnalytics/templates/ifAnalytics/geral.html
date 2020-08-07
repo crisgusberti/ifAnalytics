@@ -226,13 +226,26 @@
         options.vAxis.viewWindow['max'] = 10; //limita a exibição até a escala 10
         options.hAxis['slantedText'] = 'True' //forca a inclinação da legenda do eixo horizontal
         options.hAxis['slantedTextAngle'] = 60 //define o angulo de inclinação dessa legenda
+
+        widthParent = $('#'+chart_div).width(); //pega a largura da div pai (que é dashboards)
+        if (dados.length/2 * 45 < widthParent) { //se esse calculo der uma valor menor que a largura do pai
+          options.width = widthParent //seta a largura do pai para não ficar um quadrado menor que os demais e que a largura da página
+        }else{
+          options.width = dados.length/2 * 45 //senão seta a largura para esse valor, que eu inventei só pra ser dinâmico de acordo com o tamanho de colunas
+        }
+        options.chartArea['left'] = 90 //seta para essas modificões que deixam o gráfico com barras de rolagem uma margem esquerda maior para garantir que as legendas vertiais não sejam cortadas
+        options.annotations = {textStyle: {fontSize: 10}} //diminui o tamanho dos numeros sobre as barras
+        options.tooltip = {textStyle: {fontSize: 10}} //diminui o tamanho dos tooltips
+
         document.getElementById(chart_div).style.width = '100%'; //aumenta o tamanho do gráfico
         document.getElementById(chart_div).style.height = '450px';
+        document.getElementById(chart_div).style.overflow = 'auto'; //acrescenta barras de rolagem
         alterarAlturaMenuLateral("dashboards"); //altera o tamanho do menu lateral da esquerda
       } else { //mostra gráfico pequeno
         var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
         element.style.removeProperty("width");
         element.style.removeProperty("height");
+        element.style.removeProperty("overflow");
         alterarAlturaMenuLateral("dashboards");
       }
     }
@@ -257,6 +270,9 @@
     //ADICIONA LISTENER(vale para todos os gráficos de coluna)
     google.visualization.events.addListener(this[chart_name], 'ready', titleCenter); //listener que centraliza o titulo
     google.visualization.events.addListener(this[chart_name], 'select', window['select_handler_' + chart_name]); //lister para interatividade
+    if (chart_name == "chart_discentes_evadidos") {
+      google.visualization.events.addListener(this[chart_name], 'ready', function () {modificarLabels(columnChart_discentes_evadidos)}); //listener que modifica atributos da fonte das legendas
+    }
     
     //DESENHA O GRÁFICO (vale para todos os gráficos de coluna)
     this[chart_name].draw(view, options);//passando a view no lugar da DataTable
@@ -303,13 +319,26 @@
       options.hAxis.textStyle['fontSize'] = 7 //seta o tamanho de fonte dos labels do eixo horizontal
       options.hAxis['slantedText'] = 'True' //forca a inclinação da legenda do eixo horizontal
       options.hAxis['slantedTextAngle'] = 60 //define o angulo de inclinação dessa legenda
+
+      widthParent = $('#'+chart_div).width(); //pega a largura da div pai (que é dashboards)
+      if (dados.length/2 * 45 < widthParent) { //se esse calculo der uma valor menor que a largura do pai
+        options.width = widthParent //seta a largura do pai para não ficar um quadrado menor que os demais e que a largura da página
+      }else{
+        options.width = dados.length/2 * 45 //senão seta a largura para esse valor, que eu inventei só pra ser dinâmico de acordo com o tamanho de colunas
+      }
+      options.chartArea['left'] = 90 //seta para essas modificões que deixam o gráfico com barras de rolagem uma margem esquerda maior para garantir que as legendas vertiais não sejam cortadas
+      options.annotations = {textStyle: {fontSize: 10}} //diminui o tamanho dos numeros sobre as barras
+      options.tooltip = {textStyle: {fontSize: 10}} //diminui o tamanho dos tooltips
+
       document.getElementById(chart_div).style.width = '100%'; //aumenta o tamanho do gráfico
       document.getElementById(chart_div).style.height = '450px';
+      document.getElementById(chart_div).style.overflow = 'auto'; //acrescenta barras de rolagem
       alterarAlturaMenuLateral("dashboards"); //altera o tamanho do menu lateral da esquerda
     } else { //mostra gráfico pequeno
       var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
       element.style.removeProperty("width");
       element.style.removeProperty("height");
+      element.style.removeProperty("overflow");
       alterarAlturaMenuLateral("dashboards");
     }
 
@@ -340,7 +369,8 @@
     //ADICIONA LISTENER(vale para todos os gráficos combochart)
     google.visualization.events.addListener(this[chart_name], 'ready', titleCenter); //listener que centraliza o titulo
     google.visualization.events.addListener(this[chart_name], 'select', window['select_handler_' + chart_name]); //lister para interatividade
-    
+    google.visualization.events.addListener(this[chart_name], 'ready', function () {modificarLabels(comboChart_tamanho_turmas)});//listener que modifica atributos da fonte das legendas
+
     //DESENHA O GRÁFICO (vale para todos os gráficos combochart)
     this[chart_name].draw(view, options);//passando a view no lugar da DataTable
   }

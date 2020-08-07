@@ -111,3 +111,20 @@ function scrollTop(){
 	    modal.style.display = 'none';
 	  }
 	}
+
+function modificarLabels(chart_div){
+	// Fonte: https://stackoverflow.com/questions/38393972/how-to-give-style-to-x-axis-of-google-charts
+	//x-axis labels have a value of 'middle', y-axis 'end'
+	var labels = chart_div.getElementsByTagName('text');
+	Array.prototype.forEach.call(labels, function(label) {
+		if (label.getAttribute('text-anchor') === 'middle') {
+			label.style.fontSize = '10px';  
+		}
+		if (label.getAttribute('fill') === '#444444') { //atributos CSS para pegar os números da escala vertical
+			label.style.fontSize = '10px';  
+		}
+		if (label.getAttribute('fill') === '#222222' && label.getAttribute('font-style') === 'italic') { //atributos CSS para pegar o título do eixo vertical
+			label.style.fontSize = '13px';  
+		}
+	});
+}
