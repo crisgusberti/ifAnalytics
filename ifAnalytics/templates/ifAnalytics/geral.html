@@ -227,21 +227,23 @@
         options.hAxis['slantedText'] = 'True' //forca a inclinação da legenda do eixo horizontal
         options.hAxis['slantedTextAngle'] = 60 //define o angulo de inclinação dessa legenda
 
-        widthParent = $('#'+chart_div).width(); //pega a largura da div pai (que é dashboards)
-        if (dados.length/2 * 45 < widthParent) { //se esse calculo der uma valor menor que a largura do pai
-          options.width = widthParent //seta a largura do pai para não ficar um quadrado menor que os demais e que a largura da página
-        }else{
-          options.width = dados.length/2 * 45 //senão seta a largura para esse valor, que eu inventei só pra ser dinâmico de acordo com o tamanho de colunas
-        }
-        options.chartArea['left'] = 90 //seta para essas modificões que deixam o gráfico com barras de rolagem uma margem esquerda maior para garantir que as legendas vertiais não sejam cortadas
-        options.annotations = {textStyle: {fontSize: 10}} //diminui o tamanho dos numeros sobre as barras
-        options.tooltip = {textStyle: {fontSize: 10}} //diminui o tamanho dos tooltips
-
         document.getElementById(chart_div).style.width = '100%'; //aumenta o tamanho do gráfico
         document.getElementById(chart_div).style.height = '450px';
         document.getElementById(chart_div).style.overflow = 'auto'; //acrescenta barras de rolagem
         document.getElementById(chart_div).style.overflowY = 'hidden'; //remove barras de rolagem verticais
-        document.getElementById(chart_div).style.paddingBottom = '2%'; //Impede que a borda inferior do gráfico seja cortada pela div
+        document.getElementById(chart_div).style.paddingBottom = '2rem'; //Impede que a borda inferior do gráfico seja cortada pela div
+
+        widthParent = $('#'+chart_div).width(); //pega a largura da div pai (que é dashboards)
+        if (dados.length/2 * 45 < widthParent) { //se esse calculo der uma valor menor que a largura do pai
+          options.width = widthParent //seta a largura do pai para não ficar um quadrado menor que os demais e que a largura da página
+        }else{
+          options.width = Math.ceil(dados.length/2 * 45)+1 //senão seta a largura para esse valor, que eu inventei só pra ser dinâmico de acordo com o tamanho de colunas. (Math.ceil é função JS que arredonda pra cima)
+        }
+
+        options.chartArea['left'] = 90 //seta para essas modificões que deixam o gráfico com barras de rolagem uma margem esquerda maior para garantir que as legendas vertiais não sejam cortadas
+        options.annotations = {textStyle: {fontSize: 10}} //diminui o tamanho dos numeros sobre as barras
+        options.tooltip = {textStyle: {fontSize: 10}} //diminui o tamanho dos tooltips
+
         alterarAlturaMenuLateral("dashboards"); //altera o tamanho do menu lateral da esquerda
       } else { //mostra gráfico pequeno
         var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
@@ -274,6 +276,15 @@
     google.visualization.events.addListener(this[chart_name], 'select', window['select_handler_' + chart_name]); //lister para interatividade
     if (chart_name == "chart_discentes_evadidos") {
       google.visualization.events.addListener(this[chart_name], 'ready', function () {modificarLabels(columnChart_discentes_evadidos)}); //listener que modifica atributos da fonte das legendas
+
+      //listener que, dps do gráfico pronto, altera a largura e a altura pra impedir que a borda direita e inferior (principalmente) sejam cortadas
+      google.visualization.events.addListener(this[chart_name], 'ready', function () {
+        var $container = $(this); //pega o gráfico atual
+        var svgWidth = $container.find('svg').width(); //procura no grafico o elemento svg e pega a largura dele
+        var svgHeight = $container.find('svg').height(); //procura no grafico o elemento svg e pega a altura dele
+        $container.find('svg').width(Math.ceil(svgWidth)+1); //adiciona nesse msm elemento svg a largura dele anterior, mas arredondada pra cima e somada a 1
+        $container.find('svg').height(Math.floor(svgHeight)-1); //adiciona nesse msm elemento svg a altura dele anterior, mas arredondada pra baixo e subtraida de 1
+      }); 
     }
     
     //DESENHA O GRÁFICO (vale para todos os gráficos de coluna)
@@ -322,21 +333,23 @@
       options.hAxis['slantedText'] = 'True' //forca a inclinação da legenda do eixo horizontal
       options.hAxis['slantedTextAngle'] = 60 //define o angulo de inclinação dessa legenda
 
-      widthParent = $('#'+chart_div).width(); //pega a largura da div pai (que é dashboards)
-      if (dados.length/2 * 45 < widthParent) { //se esse calculo der uma valor menor que a largura do pai
-        options.width = widthParent //seta a largura do pai para não ficar um quadrado menor que os demais e que a largura da página
-      }else{
-        options.width = dados.length/2 * 45 //senão seta a largura para esse valor, que eu inventei só pra ser dinâmico de acordo com o tamanho de colunas
-      }
-      options.chartArea['left'] = 90 //seta para essas modificões que deixam o gráfico com barras de rolagem uma margem esquerda maior para garantir que as legendas vertiais não sejam cortadas
-      options.annotations = {textStyle: {fontSize: 10}} //diminui o tamanho dos numeros sobre as barras
-      options.tooltip = {textStyle: {fontSize: 10}} //diminui o tamanho dos tooltips
-
       document.getElementById(chart_div).style.width = '100%'; //aumenta o tamanho do gráfico
       document.getElementById(chart_div).style.height = '450px';
       document.getElementById(chart_div).style.overflow = 'auto'; //acrescenta barras de rolagem
       document.getElementById(chart_div).style.overflowY = 'hidden'; //remove barras de rolagem verticais
-      document.getElementById(chart_div).style.paddingBottom = '2%'; //Impede que a borda inferior do gráfico seja cortada pela div
+      document.getElementById(chart_div).style.paddingBottom = '2rem'; //Impede que a borda inferior do gráfico seja cortada pela div
+
+      widthParent = $('#'+chart_div).width(); //pega a largura da div pai (que é dashboards)
+      if (dados.length/2 * 45 < widthParent) { //se esse calculo der uma valor menor que a largura do pai
+        options.width = widthParent //seta a largura do pai para não ficar um quadrado menor que os demais e que a largura da página
+      }else{
+        options.width = Math.ceil(dados.length/2 * 45)+1 //senão seta a largura para esse valor, que eu inventei só pra ser dinâmico de acordo com o tamanho de colunas. (Math.ceil é função JS que arredonda pra cima)
+      }
+
+      options.chartArea['left'] = 90 //seta para essas modificões que deixam o gráfico com barras de rolagem uma margem esquerda maior para garantir que as legendas vertiais não sejam cortadas
+      options.annotations = {textStyle: {fontSize: 10}} //diminui o tamanho dos numeros sobre as barras
+      options.tooltip = {textStyle: {fontSize: 10}} //diminui o tamanho dos tooltips
+
       alterarAlturaMenuLateral("dashboards"); //altera o tamanho do menu lateral da esquerda
     } else { //mostra gráfico pequeno
       var element = document.getElementById(chart_div); //limpa qualquer stilo de tamanho fixado pra ele pegar o padrão do CSS
@@ -374,6 +387,14 @@
     google.visualization.events.addListener(this[chart_name], 'ready', titleCenter); //listener que centraliza o titulo
     google.visualization.events.addListener(this[chart_name], 'select', window['select_handler_' + chart_name]); //lister para interatividade
     google.visualization.events.addListener(this[chart_name], 'ready', function () {modificarLabels(comboChart_tamanho_turmas)});//listener que modifica atributos da fonte das legendas
+    //listener que, dps do gráfico pronto, altera a largura e a altura pra impedir que a borda direita e inferior (principalmente) sejam cortadas
+    google.visualization.events.addListener(this[chart_name], 'ready', function () {
+      var $container = $(this); //pega o gráfico atual
+      var svgWidth = $container.find('svg').width(); //procura no grafico o elemento svg e pega a largura dele
+      var svgHeight = $container.find('svg').height(); //procura no grafico o elemento svg e pega a altura dele
+      $container.find('svg').width(Math.ceil(svgWidth)+1); //adiciona nesse msm elemento svg a largura dele anterior, mas arredondada pra cima e somada a 1
+      $container.find('svg').height(Math.floor(svgHeight)-1); //adiciona nesse msm elemento svg a altura dele anterior, mas arredondada pra baixo e subtraida de 1
+    }); 
 
     //DESENHA O GRÁFICO (vale para todos os gráficos combochart)
     this[chart_name].draw(view, options);//passando a view no lugar da DataTable
