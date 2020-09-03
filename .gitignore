@@ -1,6 +1,7 @@
 #ARQUIVOS INCLUIDOS MANUALMENTE:
 siteIfAnalytics/settings.py
 venvIfAnalytics/
+autenticacao/usuarios_cadastrados.json
 
 # Created by https://www.gitignore.io/api/django
 # Edit at https://www.gitignore.io/?templates=django
