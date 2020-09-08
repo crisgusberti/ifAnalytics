@@ -1,4 +1,5 @@
 from django.urls import path
+from ifAnalytics.views import index
 from ifAnalytics.views import geral
 from ifAnalytics.views import notas
 from ifAnalytics.views import frequencias
@@ -25,6 +26,7 @@ from ifAnalytics.views import get_data_percentuais_frequencia
 urlpatterns = [
 	# Cada uma das views definidas deve ser registrada aqui (lembrar de importar acima)
 	# Na ordem: 'ENDEREÇO', 'FUNÇÃO(nome da view)', 'NAME=(opcional. Variável que referencia a view') 
+	path('', index, name='index'),
 	path('geral/', geral, name='geral'),
 	path('notas/', notas, name='notas'),
 	path('frequencias/', frequencias, name='frequencias'),

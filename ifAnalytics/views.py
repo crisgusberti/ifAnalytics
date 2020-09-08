@@ -5,6 +5,12 @@ from django.http import JsonResponse
 
 
 #Renderiza as paginas HTML para acesso pelos links do menu da direita
+def index(request):
+	if not request.session.get('username'): #verifica autenticação
+		return redirect('login') #se não está autenticado, redireciona para a página de login
+	else:
+		return redirect('geral');
+
 def geral(request):
 	if not request.session.get('username'): #verifica autenticação
 		return redirect('login') #se não está autenticado, redireciona para a página de login
